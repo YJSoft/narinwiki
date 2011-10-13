@@ -1,14 +1,14 @@
-
 /* 위키 기본 스타일  *****************************************************************/
-	
-	.narin_contents p2:after {
+  
+  /* 위키 내용이 보여지는 wrapper */
+  .narin_contents p2:after {
   clear: both;
   content: ".";
   display: block;
   height: 0;
   visibility: hidden;
   font-size: 0;		
-		}
+  }
 	
 	/* wiki tab */
 	.wiki_tab { width:100%;margin:auto auto; margin-bottom:10px; }
@@ -51,7 +51,7 @@
 	-moz-box-shadow: 3px 3px 4px #ccc;
 	-webkit-box-shadow: 3px 3px 4px #ccc;
 	box-shadow: 3px 3px 4px #ccc;
-/* For IE 8 */
+  /* For IE 8 */
 	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
 	/* For IE 5.5 - 7 */
 	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
