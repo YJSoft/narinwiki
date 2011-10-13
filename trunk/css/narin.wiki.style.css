@@ -1,60 +1,60 @@
 /* 위키 기본 스타일  *****************************************************************/
-  
-  /* 위키 내용이 보여지는 wrapper */
-  .narin_contents p2:after {
-  clear: both;
-  content: ".";
-  display: block;
-  height: 0;
-  visibility: hidden;
-  font-size: 0;		
-  }
-	
-  /* wiki tab */
-  .wiki_tab { width:100%;margin:auto auto; margin-bottom:10px; }
-  .wiki_tab ul {list-style: none;padding: 0;margin: 0; border-bottom:1px solid #ccc}
-  .wiki_tab li {float: left; margin-right:2px; border: 1px solid #fff;border-bottom-width: 0;margin: 0;}
-  .wiki_tab a {text-decoration: none;display: block;;background-color:#f0f0f0;padding: 5px 8px;color: #888;text-align: center;}
-  .wiki_tab a:hover {background:#C0C0C0; color:#555;}
-  .wiki_tab .selected { border-color: #ccc;}
-  .wiki_tab .selected a {position: relative;top: 1px;background:#fff;color:#555; ;font-weight: bold;}
 
-	/* for emoticon */
-	img.middle{vertical-align:middle;}	
-	img.left { float:left; }
-	img.right { float:right; }
-	img.center {display:block;margin-left:auto;margin-right:auto;}
-	
+/* 위키 내용이 보여지는 wrapper */
+.narin_contents p2:after {
+clear: both;
+content: ".";
+display: block;
+height: 0;
+visibility: hidden;
+font-size: 0;		
+}
+
+/* wiki tab */
+.wiki_tab { width:100%;margin:auto auto; margin-bottom:10px; }
+.wiki_tab ul {list-style: none;padding: 0;margin: 0; border-bottom:1px solid #ccc}
+.wiki_tab li {float: left; margin-right:2px; border: 1px solid #fff;border-bottom-width: 0;margin: 0;}
+.wiki_tab a {text-decoration: none;display: block;;background-color:#f0f0f0;padding: 5px 8px;color: #888;text-align: center;}
+.wiki_tab a:hover {background:#C0C0C0; color:#555;}
+.wiki_tab .selected { border-color: #ccc;}
+.wiki_tab .selected a {position: relative;top: 1px;background:#fff;color:#555; ;font-weight: bold;}
+
+/* for emoticon */
+img.middle{vertical-align:middle;}	
+img.left { float:left; }
+img.right { float:right; }
+img.center {display:block;margin-left:auto;margin-right:auto;}
+
 /* float clearing for IE6 *****************************************************************/
 * html .clear{
-  height: 1%;	
-  overflow: visible;
+height: 1%;	
+overflow: visible;
 }
 
 /* float clearing for IE7 *****************************************************************/
 *+html .clear{
-  min-height: 1%;
+min-height: 1%;
 }
 
 /* float clearing for everyone else *****************************************************************/
 .clear:after{
-  clear: both;
-  content: ".";
-  display: block;
-  height: 0;
-  visibility: hidden;
-  font-size: 0;
+clear: both;
+content: ".";
+display: block;
+height: 0;
+visibility: hidden;
+font-size: 0;
 }	
 
 /* shadow ****************************/
 .shadow {
-	-moz-box-shadow: 3px 3px 4px #ccc;
-	-webkit-box-shadow: 3px 3px 4px #ccc;
-	box-shadow: 3px 3px 4px #ccc;
-  /* For IE 8 */
-	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
-	/* For IE 5.5 - 7 */
-	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
+-moz-box-shadow: 3px 3px 4px #ccc;
+-webkit-box-shadow: 3px 3px 4px #ccc;
+box-shadow: 3px 3px 4px #ccc;
+/* For IE 8 */
+-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
+/* For IE 5.5 - 7 */
+filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
 
 }
 
