@@ -132,15 +132,3 @@
 }
 .markItUp .wiki_find_doc  .wf_result li a:hover {	text-decoration:none; 	background-color:#E2EAEF; }
 
-/*
-.wiki_emoticons {
-	position:absolute;
-	width:300px;	
-	background-color:#fff;
-	padding:5px;
-	line-height:20px;
-	border:1px solid #3C769D;	
-}
-
-.wiki_emoticons a { display:block; float:left; margin:2px; }
-*/
