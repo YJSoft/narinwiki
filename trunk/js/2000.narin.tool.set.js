@@ -6,53 +6,57 @@ narinWikiSettings = {
 	nameSpace: "wiki",
 	
 	// 탭 입력 이벤트 처리
-	onTab : { keepDefault : false, replaceWith : function(h) {
-		lines = h.textarea.value.substring(0, h.caretPosition).split('\n');
-		if(lines.length <= 0) return '  ';
-		m =  lines[lines.length-1].match(/^(\s{2,})([\*|-])(.+)/);
-		if(m) {
-				// FIXME : it's not working
-				if(h.shiftKey) {
-					h.textarea.value = h.textarea.value.substring(0, h.caretPosition - m[0].length + 2) + 
-														h.textarea.value.substring(h.caretPosition -m[0].length, h.textarea.value.length);	    			
-					return;		    											
-				} else {	    			
-					h.textarea.value = h.textarea.value.substring(0, h.caretPosition - m[0].length) + 
-														'  ' + 
-														h.textarea.value.substring(h.caretPosition -m[0].length, h.textarea.value.length);
-					return;
-				}
-			}
-			return '  ';
-		}
-	},
+  onTab : { keepDefault : false, replaceWith : function(h) {
+		// check if it is list
+  	lines = h.textarea.value.substring(0, h.caretPosition).split('\n');
+  	if(lines.length <= 0) return '  ';
+  	m =  lines[lines.length-1].match(/^(\s{2,})([\*|-])(.+)/);
+  	if(m) {
+  		if(h.shiftKey) {
+				h.textarea.value = h.textarea.value.substring(0, h.caretPosition - m[0].length + 2) + 
+    											h.textarea.value.substring(h.caretPosition -m[0].length, h.textarea.value.length);	    			
+				return;		    											
+  		} else {	    			
+  			pos = h.caretPosition;
+  			setTimeout(function() {
+	    		h.textarea.value = h.textarea.value.substring(0, pos - m[0].length) 
+	    											 + '  ' 
+	    											 + h.textarea.value.substring(pos -m[0].length, h.textarea.value.length);
+					setCaretPosition(h.textarea, pos+2);
+				}, 10);
+				return;
+  		}
+  	}
+  	return '  ';
+  }},
 	
 	// 엔터 입력 이벤트 처리
-	onEnter: { keepDefault : false, 
-		replaceWith : function(h) {
-			lines = h.textarea.value.substring(0, h.caretPosition).split('\n');
-			if(lines.length <= 0) return;
-			m =  lines[lines.length-1].match(/^(\s{2,})([\*|-])(.+)/);	    	
-			bs = sp = "";
-			ent = '\n';
-			if(m) {
-				if($.trim(m[3]) != '') {
-					sp = m[1] + m[2] + ' ';
+	onEnter: { keepDefault : true, afterInsert : function(h) {
+		pos = h.caretPosition;
+		lines = h.textarea.value.substring(0, pos).split('\n');
+		if(lines.length <= 0) return;
+		m =  lines[lines.length-1].match(/^(\s{2,})([\*|-])(.+)/);	    	
+		if(m) {
+			if($.trim(m[3]) != '') {
+				setTimeout(function() {
+					h.textarea.value = h.textarea.value.substring(0, pos) + '\n' + m[1] + m[2] + ' ' + h.textarea.value.substring(pos+1, h.textarea.value.length);
+					setCaretPosition(h.textarea, pos+m[1].length+3);
+				}, 10);
+			} else {
+				if(m[1].length >= 4 && m[1].length % 2 == 0) {
+	  			setTimeout(function() {
+						h.textarea.value = h.textarea.value.substring(0, pos - m[0].length) + h.textarea.value.substring(pos-m[0].length+2, pos) + h.textarea.value.substring(pos+1, h.textarea.value.length);
+						setCaretPosition(h.textarea, pos-2);
+					}, 10);	    				
 				} else {
-					pos = h.caretPosition;
-					h.textarea.value = h.textarea.value.substring(0, h.caretPosition - m[0].length) + h.textarea.value.substring(h.caretPosition, h.textarea.value.length);
-					setCaretPosition(h.textarea, pos-m[0].length);
-					return;
+	  			setTimeout(function() {
+						h.textarea.value = h.textarea.value.substring(0, pos - m[0].length) + h.textarea.value.substring(pos+1, h.textarea.value.length);  	  				
+						setCaretPosition(h.textarea, pos-m[0].length);
+					}, 10);
 				}
 			}
-			setTimeout(function() {
-				if(h.caretPosition + h.scrollPosition > h.textarea.scrollHeight  ) {						
-					h.textarea.scrollTop = h.textarea.scrollHeight;
-				}
-			}, 5);
-			return bs + ent + sp;
 		}
-	},
+	}},
 	markupSet:  mark_set
 }	
 
