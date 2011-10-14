@@ -108,6 +108,18 @@ mark_set.push({name:'굵게', key:'B', openWith:"** ", closeWith:" **", classNam
 mark_set.push({name:'기울게', key:'I', openWith:"// ", closeWith:" //", className:'narin_italic'});
 mark_set.push({name:'밑줄', key:'U', openWith:"__ ", closeWith:" __", className:'narin_underline'});
 mark_set.push({name:'취소선', key:'S', openWith:'<del> ', closeWith:' </del>', className:'narin_stroke'});
+
+mark_set.push({name:'글자크기', className:'narin_sizes', dropMenu: [
+	{name:'6pt',	openWith:'<size 6pt>', closeWith:'</size>', className:"size6" },
+	{name:'8pt',  openWith:'<size 8pt>', closeWith:'</size>', className:"size8" },
+	{name:'10pt',  openWith:'<size 10pt>', closeWith:'</size>', className:"size10" },
+	{name:'12pt',  openWith:'<size 12pt>', closeWith:'</size>', className:"size12" },
+	{name:'14pt',  openWith:'<size 14pt>', closeWith:'</size>', className:"size14" },
+	{name:'16pt',  openWith:'<size 16pt>', closeWith:'</size>', className:"size16" },
+	{name:'18pt',  openWith:'<size 18pt>', closeWith:'</size>', className:"size18" },
+	{name:'20pt',  openWith:'<size 20pt>', closeWith:'</size>', className:"size20" }
+]});
+
 mark_set.push({name:'글자색', className:'narin_colors', dropMenu: [
 	{name:'Yellow',  openWith:'<color #FCE94F>', closeWith:'</color>', className:"col1-1" },
 	{name:'Yellow',  openWith:'<color #EDD400>', closeWith:'</color>', className:"col1-2" },

@@ -33,7 +33,30 @@
 .markItUp .narin_meta .meta_cache a {		background-image:url(tool_images/meta_cache.png);	}
 .markItUp .preview a {	background-image:url(tool_images/preview.png);}
 
-
+.markItUp .narin_sizes a {	background-image:url(tool_images/font-size.png);}
+.markItUp .narin_sizes li a { background-image:none;width:65px;height:auto;padding:3px 0;margin:0;text-align:center;}
+.markItUp .narin_sizes ul { width:68px; padding:1px; margin:0;}
+.markItUp .narin_sizes li {	
+		width:65px;
+		padding:0;
+		border:1px solid #fff;
+		margin:0px;
+		float:left;	}
+.markItUp .narin_sizes .size6 a { font-size:6pt}		
+.markItUp .narin_sizes .size7 a { font-size:7pt}				
+.markItUp .narin_sizes .size8 a { font-size:8pt}		
+.markItUp .narin_sizes .size9 a { font-size:9pt}		
+.markItUp .narin_sizes .size10 a { font-size:10pt}		
+.markItUp .narin_sizes .size11 a { font-size:11pt}	
+.markItUp .narin_sizes .size12 a { font-size:12pt}		
+.markItUp .narin_sizes .size13 a { font-size:13pt}		
+.markItUp .narin_sizes .size14 a { font-size:14pt}		
+.markItUp .narin_sizes .size15 a { font-size:15pt}			
+.markItUp .narin_sizes .size16 a { font-size:16pt}			
+.markItUp .narin_sizes .size18 a { font-size:18pt}			
+.markItUp .narin_sizes .size20 a { font-size:20pt}			
+.markItUp .narin_sizes .size22 a { font-size:22pt}			
+			
 .markItUp .narin_colors a {	background-image:url(tool_images/colors.png);}
 .markItUp .narin_colors ul {		width:55px; padding:1px;		}
 .markItUp .narin_colors li {		
@@ -131,4 +154,3 @@
 	color:#39606C;
 }
 .markItUp .wiki_find_doc  .wf_result li a:hover {	text-decoration:none; 	background-color:#E2EAEF; }
-
