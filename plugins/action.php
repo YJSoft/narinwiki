@@ -25,8 +25,21 @@ class NarinAction extends NarinActionPlugin {
 		$ctrl->addHandler("DELETE_TAIL", $this, "on_delete_tail");
 		$ctrl->addHandler("DELETE_ALL_HEAD", $this, "on_delete_all_head");
 		$ctrl->addHandler("DELETE_ALL_TAIL", $this, "on_delete_all_tail");
+		$ctrl->addHandler("MOVE_DOC", $this, "on_doc_move");		
 	}
-	
+
+	/**
+	 * 문서명 변경 (이동)
+	 */
+	public function on_doc_move($params) {		
+		// 최근 변경 내역 업데이트
+		$wikiChanges = wiki_class_load("Changes");
+		$toDoc = $params[to];
+		$doc = $params[from];
+		$wikiChanges->update($doc, "이름 변경 (이전)", $this->member[mb_id]);		
+		$wikiChanges->update($toDoc, "이름 변경 (이후)", $this->member[mb_id]);		
+	}
+		
 	/**
 	 * 댓글 작성/업데이트 시 
 	 * 위키문서 링크 수정 (/ 로 시작하지 않는 문서에 대해서)
@@ -142,6 +155,13 @@ class NarinAction extends NarinActionPlugin {
 			for($i=0; $i<count($backlinks); $i++) {
 				$wikiArticle->shouldUpdateCache($backlinks[$i][wr_id], 1);
 			}
+			
+			// 최근 변경 내역 업데이트
+			$wikiChanges = wiki_class_load("Changes");
+			$status = "새문서";
+			if($params[w] == 'u') $status = "편집";
+			$wikiChanges->update($fullname, $status, $this->member[mb_id]);	
+					
 		}
 
 		@mkdir($wiki[path]."/data/$bo_table");
@@ -187,12 +207,17 @@ class NarinAction extends NarinActionPlugin {
 		
 		$wikiArticle->deleteArticleById($wr_id);
 		
+		// 문서 이력 삭제
 		$wikiHistory = wiki_class_load("History");
 		$wikiHistory->clear($wr_id, $delete_all = true);
-				
+
+		// 캐시 삭제				
 		$wikiCache = wiki_class_load("Cache");
 		$wikiCache->delete($wr_id);
 		
+		// 최근 변경 내역 업데이트
+		$wikiChanges = wiki_class_load("Changes");
+		$wikiChanges->update($doc, "삭제", $this->member[mb_id]);
 	}
 
 	/**
@@ -240,6 +265,9 @@ class NarinAction extends NarinActionPlugin {
 		// 일일이 체크해가며 cache 삭제
 		$wikiCache = wiki_class_load("Cache");
 		$wikiHistory = wiki_class_load("History");	
+
+		// 최근 변경 내역 업데이트
+		$wikiChanges = wiki_class_load("Changes");
 			
 		for ($i=count($tmp_array)-1; $i>=0; $i--) 
 		{
@@ -249,6 +277,7 @@ class NarinAction extends NarinActionPlugin {
 				$wikiHistory->clear($tmp_array[$i], $delete_all = true);
 				$d_doc = $this->delete_all_docs[$tmp_array[$i]];
 				$backlinks = $wikiArticle->getBackLinks($d_doc, $includeSelf = false);
+				$wikiChanges->update($d_doc, "삭제", $this->member[mb_id]);				
 				for($k=0; $k<count($backlinks); $k++) {
 					$wikiArticle->shouldUpdateCache($backlinks[$k][wr_id], 1);
 				}
@@ -443,6 +472,9 @@ END;
 			$ret[wiki_admin_href] = $wiki_admin_href;
 		}
 		
+		// 최근 변경내역 보기 링크
+		$ret[recent_href] = $wiki[path]."/recent.php?bo_table=".$wiki[bo_table];
+		
 		// 백링크
 		$wikiArticle = wiki_class_load("Article");
 		$back_links = $wikiArticle->getBackLinks($doc);
@@ -476,6 +508,5 @@ END;
 	}
 	
 }
-
 
 ?>

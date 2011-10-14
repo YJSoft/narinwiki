@@ -160,7 +160,7 @@ class NarinArticle extends NarinClass {
 		list($toNS, $toDocName, $toFullName) = wiki_page_name($toDoc, $strip=false);		
 		list($fromNS, $fromDocName, $fromFullName) = wiki_page_name($fromDoc, $strip=false);		
 		$this->fromDoc = $fromFullName;
-		$this->toDoc = $toFullName;		
+		$this->toDoc = $toFullName;				
 		
 		// 이미 존재한다면 이동하지 않음
 		$ex = $this->getArticle($toNS, $toDocName, __FILE__, __LINE__);
@@ -173,7 +173,6 @@ class NarinArticle extends NarinClass {
 		for($i=0; $i<count($backLinks); $i++) {
 			$content = $backLinks[$i][wr_content];
 			$content = mysql_real_escape_string(preg_replace_callback('/(\[\[)(.*?)(\]\])/', array(&$this, 'wikiLinkReplace'), $content));	
-			
 			/* FIXME : <pre></pre>, <nowiki></nowiki> 에 있는거는 제외하고자 했으나 something wrong
 	    $content = preg_replace_callback('/(<pre>)([\s\S]*)(<\/pre>)/i',array($this,"_saveNoWiki"),$content); 
 	    $content = preg_replace_callback('/(<nowiki>)(.*?)(<\/nowiki>)/i',array($this,"_saveNoWiki"),$content);    			
@@ -187,6 +186,9 @@ class NarinArticle extends NarinClass {
 			
 			sql_query("UPDATE {$this->wiki[write_table]} SET wr_content = '$content' WHERE wr_id = {$backLinks[$i][wr_id]}");
 		}
+		
+		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent->trigger("MOVE_DOC", array("from"=>$fromFullName, "to"=>$toFullName));
 		
 		$this->namespace->checkAndRemove($fromNS);
 
