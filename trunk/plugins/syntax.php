@@ -1,23 +1,6 @@
 <?
 
 class NarinSyntax extends NarinSyntaxPlugin {
-
-	/* Defined on WikiPlugin (parent class)
-		$wiki;					// 위키 설정
-		$g4;						// 그누보드 설정
-		$config;				// 그누보드 기본 설정		
-		$member;				// 로그인 정보 (그누보드의 $member 변수)
-		$get;						// $_GET
-		$post;					// $_POST
-		$is_guest;			// 로그인 안한 상태인가?
-		$is_member;			// 로그인한 상태인가?
-		$is_admin;			// 관리자 인가
-		$is_wiki_admin;	// 위키 관리자 인가?
-		$plugin_path;		// 플러그인 경로 ($wiki[path]/plugins/Default)
-		$doc;						// 경로/문서명
-		$docname;				// 문서명
-		$folder;				// 문서경로 e.g. "/폴더1/폴더2"
-	*/
 	
 	var $id; 
   var $sections = array();
@@ -104,6 +87,7 @@ class NarinSyntax extends NarinSyntaxPlugin {
       'wiki_sub'=>'&lt;sub&gt;(.*?)&lt;\/sub&gt;',
       'wiki_sup'=>'&lt;sup&gt;(.*?)&lt;\/sup&gt;',
       'wiki_color'=>'&lt;color(.*?)&gt;(.*?)&lt;\/color&gt;',
+      'wiki_font_size'=>'&lt;size(.*?)&gt;(.*?)&lt;\/size&gt;',
       'wiki_footnotes'=>'\(\((.*?)\)\)',
       'wiki_no_toc'=>'~~NOTOC~~',
       'wiki_comment'=>'~~COMMENT~~'
@@ -481,8 +465,16 @@ END;
 	 */
   public function wiki_color($matches, $params)
   {  	  	
-    return "<font color='".trim($matches[1])."'>".trim($matches[2]). "</font>";
-  }      
+    return "<span style=\"color:".trim($matches[1])."\">".trim($matches[2]). "</span>";
+  }    
+  
+ 	/**
+	 * 글자 크기 (font-size)
+	 */
+  public function wiki_font_size($matches, $params)
+  {  	  	
+    return "<span style=\"font-size:".trim($matches[1])."\">".trim($matches[2]). "</span>";
+  }       
   
   public function wiki_footnotes($matches, $params)
   {
@@ -728,10 +720,6 @@ END;
       $title
     );
   }
-
-	public function wiki_link_image($matches) {
-		
-	}
 
 	/**
 	 * 외부 링크 생성
