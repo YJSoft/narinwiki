@@ -14,12 +14,13 @@ class NarinHistory  extends NarinClass {
 
 	function update($wr_id, $content, $mb_id, $summary='')
 	{
+		global $_SERVER;
 		$wr_id = mysql_real_escape_string($wr_id);
 		$content = mysql_real_escape_string($content);
 		$mb_id = mysql_real_escape_string($mb_id);
 		$summary = mysql_real_escape_string($summary);
-		
-		$sql = "INSERT INTO {$this->wiki[history_table]} (bo_table, wr_id, content, editor_mb_id, summary) VALUES ('{$this->wiki[bo_table]}', '$wr_id', '$content', '$mb_id', '$summary')";
+				
+		$sql = "INSERT INTO {$this->wiki[history_table]} (bo_table, wr_id, content, editor_mb_id, summary, ip_addr, reg_date) VALUES ('{$this->wiki[bo_table]}', '$wr_id', '$content', '$mb_id', '$summary', '$_SERVER[REMOTE_ADDR]', '{$this->g4[time_ymdhis]}')";
 		sql_query($sql);
 		
 		$wikiEvent = wiki_class_load("Event");

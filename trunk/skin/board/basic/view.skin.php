@@ -24,22 +24,22 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		<div class="wiki_tools_left">
 	  	
 	  	<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>
-			
 			<? if($history_href) {?>
 		  	<span class='button'><a href='<?=$history_href?>'>문서 이력</a></span>
 			<? }?>
 			  	
 		</div> <!--// wiki_tools_left -->
-		
-		<div class="wiki_tools_right">
-		
+		<div class="wiki_tools_right">			
 			<form action="<?=$wiki[path]?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
 			<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
 			<input type="text" class="search_text txt" name="stx" size="20"/>
 			<span class="button purple"><input type="submit" value="검색"></span>
-			</form>		
-				
+			</form>					
 		</div> <!--// wiki_tools_right -->
+
+		<div style="float:right;margin-right:5px;">
+			<span class='button'><a href='<?=$recent_href?>'>최근 변경내역</a></span>		
+		</div>
 		
 	</div> <!--// wiki_tools -->
 	

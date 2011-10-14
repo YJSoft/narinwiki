@@ -141,7 +141,43 @@ function delete_selected_history(wr_id)
 			}
 		});
 	}	
+}
 
+function delete_selected_changes()
+{
+	var cids = [];
+	var chks = $("input[@name='cid[]']:checked").map(function() {
+		cids.push(this.value);
+	});
+	
+  if (cids.length == 0) 
+  {
+      alert("변경내역을 하나 이상 선택하세요.");
+      return false;
+  }	
+	
+	if(confirm("선택한 변경내역을 삭제하시겠습니까?")) {		
+		$.post(wiki_path+"/exe/changes.php", { w : 'ds', bo_table : g4_bo_table, cids : cids}, function(data) {
+			if(data == 1) {
+				location.reload();
+			} else {
+				alert("변경내역 삭제를 못하였습니다.");				
+			}
+		});
+	}	
+}
+
+function clear_changes()
+{
+	if(confirm("모든 변경내역을 삭제하시겠습니까?\n페이지에 표시되지 않는 내역도 모두 삭제됩니다.")) {
+		$.post(wiki_path+"/exe/changes.php", { w : 'da', bo_table : g4_bo_table}, function(data) {
+			if(data == 1) {
+				location.reload();
+			} else {
+				alert("변경내역 삭제를 못하였습니다.");
+			}
+		});
+	}	
 }
 
 function createDoc(folder)
