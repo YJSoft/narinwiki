@@ -307,7 +307,7 @@ END;
 				
 			
 				// 정렬 
-				preg_match("/^([\s]*)([^\s]*?)([\s]*)$/", $arr[$i+1], $m);
+				preg_match("/^([\s]*)(.*?)([\s]*)$/", $arr[$i+1], $m);
 				$tag = $this->get_table_tag($arr[$i], $close=false, $withBracket=false);
 				$before_space = strlen($m[1]);
 				$after_space = strlen($m[3]);
