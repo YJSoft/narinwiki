@@ -49,6 +49,10 @@ if($is_wiki_admin) $colspan++;
 				
 		</div> <!--// wiki_tools_right -->
 		
+		<div style="float:right;margin-right:5px;">
+			<span class='button'><a href='<?=$recent_href?>'>최근 변경내역</a></span>		
+		</div>		
+		
 	</div> <!--// wiki_tools -->
 	
 	<div class="wiki_navigation">

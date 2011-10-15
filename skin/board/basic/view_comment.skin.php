@@ -81,17 +81,18 @@ for ($i=0; $i<count($list); $i++) {
 <div id=comment_write style="display:none;">
 <table width=100% border=0 cellpadding=1 cellspacing=0 style="border-top:1px dashed #ccc"><tr><td>
 <form name="fviewcomment" method="post" action="<?=$g4[bbs_path]?>/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" autocomplete="off" style="margin:0px;">
-<input type=hidden name=w           id=w value='c'>
-<input type=hidden name=bo_table    value='<?=$bo_table?>'>
-<input type=hidden name=wr_id       value='<?=$wr_id?>'>
-<input type=hidden name=comment_id  id='comment_id' value=''>
-<input type=hidden name=sca         value='<?=$sca?>' >
-<input type=hidden name=sfl         value='<?=$sfl?>' >
-<input type=hidden name=stx         value='<?=$stx?>'>
-<input type=hidden name=spt         value='<?=$spt?>'>
-<input type=hidden name=page        value='<?=$page?>'>
-<input type=hidden name=cwin        value='<?=$cwin?>'>
-<input type=hidden name=is_good     value=''>
+<input type=hidden name=w           id=w value="c">
+<input type=hidden name=bo_table    value="<?=$bo_table?>">
+<input type=hidden name=wr_id       value="<?=$wr_id?>">
+<input type=hidden name=wr_doc			value="<?=wiki_input_value($doc)?>">
+<input type=hidden name=comment_id  id='comment_id' value="'>
+<input type=hidden name=sca         value="<?=$sca?>" >
+<input type=hidden name=sfl         value="<?=$sfl?>" >
+<input type=hidden name=stx         value="<?=$stx?>">
+<input type=hidden name=spt         value="<?=$spt?>">
+<input type=hidden name=page        value="<?=$page?>">
+<input type=hidden name=cwin        value="<?=$cwin?>">
+<input type=hidden name=is_good     value="">
 
 <table width=100% cellpadding=3 height=156 cellspacing=0 bgcolor="#ffffff" style="border:1px solid #fff;">
 <tr>

@@ -60,7 +60,7 @@ class NarinParser extends NarinClass
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 		
 		// 기본 문법 해석기 로드
-		include_once $path."/syntax.php";
+		include_once "narin.syntax.php";
 		$syntax = new NarinSyntax();
 		$syntax->register($this);
 		array_push($this->plugins, $syntax);

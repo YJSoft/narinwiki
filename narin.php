@@ -2,7 +2,6 @@
 include_once("./_common.php");
 
 if(!trim($docname)) header("location:{$wiki[path]}");
-
 ob_start();	
 $wikiArticle = wiki_class_load("Article");
 $wikiControl = wiki_class_load("Control");
@@ -15,7 +14,6 @@ if(!$view) {
 } else {		
 	$wikiControl->viewDocument($doc, $view[wr_id]);
 }
-
 $content = ob_get_contents();
 ob_end_clean();
 

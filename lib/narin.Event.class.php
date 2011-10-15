@@ -25,7 +25,7 @@ class NarinEvent extends NarinClass
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 		
 		// 기본 액션 로드
-		include_once $path."/action.php";
+		include_once "narin.action.php";
 		$action = new NarinAction();
 		$action->register($this);
 		
@@ -82,6 +82,7 @@ class NarinEvent extends NarinClass
 	 * @params 문자열		$type 이벤트 타입
 	 */
 	public function trigger($type, $params) {		
+		$params[_type_] = $type;
 		if(is_array($this->actions[$type])) {
 			$returnValue = array();
 			foreach($this->actions[$type] as $idx => $p) {
