@@ -4,7 +4,7 @@ $pageid = "nowiki";
 include_once("_common.php");
 include_once "admin.head.php";
 
-$sql = "SELECT wr_id, wr_subject FROM {$wiki[write_table]} WHERE wr_id NOT IN ( SELECT wr_id FROM {$wiki[nsboard_table]} )";
+$sql = "SELECT wr_id, wr_subject FROM {$wiki[write_table]} WHERE wr_id NOT IN ( SELECT wr_id FROM {$wiki[nsboard_table]} ) AND wr_is_comment <> 1";
 $list = sql_list($sql);
 
 $sql = "SELECT * FROM {$wiki[ns_table]} WHERE bo_table = '{$wiki[bo_table]}'";
