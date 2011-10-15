@@ -25,6 +25,7 @@ if($_POST[md] == "doit") {
 		$history_columns = wiki_db_table_columns($history_table);
 		if(!$history_columns['ip_addr']) {
 			$sql = "ALTER TABLE $history_table ADD COLUMN ip_addr VARCHAR(255) AFTER summary";
+      sql_query($sql);
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////
