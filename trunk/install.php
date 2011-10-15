@@ -16,6 +16,19 @@ if($_POST[md] == "doit") {
 	}
 	
 	$db_prefix = "byfun_";
+	
+	// UPDATE DB PROCESS //////////////////////////////////////////////////////////////////////////
+	
+	// FROM 2011-10-15
+	$history_table = $db_prefix."narin_history";
+	if(wiki_db_table_exists($history_table)) {
+		$history_columns = wiki_db_table_columns($history_table);
+		if(!$history_columns['ip_addr']) {
+			$sql = "ALTER TABLE $history_table ADD COLUMN ip_addr VARCHAR(255) AFTER summary";
+		}
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	
 	$query =<<<EOF
 	
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -29,7 +42,6 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_cache` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `bo_table` varchar(20) NOT NULL,
@@ -37,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_history` (
   `content` text NOT NULL,
   `editor_mb_id` varchar(255) DEFAULT NULL,
   `summary` varchar(255) DEFAULT NULL,
+  `ip_addr` varchar(255) DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_namespace` (
   `ns` varchar(255) NOT NULL,
@@ -69,6 +81,19 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_option` (
   `content` text NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_changes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bo_table` varchar(20) NOT NULL,
+  `target_type` varchar(255) DEFAULT NULL,
+  `target` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `user` varchar(255) NOT NULL,
+  `ip_addr` varchar(255) NOT NULL,
+  `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 	  
 EOF;
 	
@@ -91,6 +116,7 @@ EOF;
 	$config_file .= "\$wiki[nsboard_table] = \"{$db_prefix}narin_nsboard\";\n";	
 	$config_file .= "\$wiki[option_table] = \"{$db_prefix}narin_option\";\n";	
 	$config_file .= "\$wiki[cache_table] = \"{$db_prefix}narin_cache\";\n";		
+	$config_file .= "\$wiki[changes_table] = \"{$db_prefix}narin_changes\";\n";		
 	$config_file .= "?>\n";
 	
 	$fp = @fopen("narin.config.php", "w");
@@ -205,5 +231,28 @@ function submit_check(f) {
 
 <?
 include_once $g4[path]."/tail.php";
+
+
+function wiki_db_table_exists ($table) { 
+	global $mysql_db;
+	$tables = mysql_list_tables ($mysql_db); 
+	while (list ($temp) = mysql_fetch_array ($tables)) {
+		if ($temp == $table) {
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+function wiki_db_table_columns($table_name) {
+	$list = array();
+	$res = sql_query("SHOW COLUMNS FROM $table_name");
+	while ($row = sql_fetch_array($res)) {
+		$list[$row['Field']] = $row;
+	}
+	return $list;
+}
+
+
 ?>
 

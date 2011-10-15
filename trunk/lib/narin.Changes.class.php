@@ -12,19 +12,20 @@ class NarinChanges extends NarinClass {
   	parent::__construct();
 	}
 
-	function update($doc, $status, $mb_id)
+	function update($type, $target, $status, $user)
 	{
 		global $_SERVER;
-
-		$doc = mysql_real_escape_string($doc);
+		
+		$type = mysql_real_escape_string($type);
+		$target = mysql_real_escape_string($target);
 		$status = mysql_real_escape_string($status);
-		$mb_id = mysql_real_escape_string($mb_id);
+		$user = mysql_real_escape_string($user);
 				
-		$sql = "INSERT INTO {$this->wiki[changes_table]} (bo_table, doc, status, mb_id, ip_addr, reg_date) VALUES ('{$this->wiki[bo_table]}', '$doc', '$status', '$mb_id', '$_SERVER[REMOTE_ADDR]', '{$this->g4[time_ymdhis]}')";
+		$sql = "INSERT INTO {$this->wiki[changes_table]} (bo_table, target_type, target, status, user, ip_addr, reg_date) VALUES ('{$this->wiki[bo_table]}', '$type', '$target', '$status', '$user', '$_SERVER[REMOTE_ADDR]', '{$this->g4[time_ymdhis]}')";
 		sql_query($sql);
 		
 		$wikiEvent = wiki_class_load("Event");
-		$wikiEvent->trigger("CHANGES_UPDATE", array("doc"=>$wr_id, "status"=>$content, "mb_id"=>$mb_id, "ip_addr"=>$_SERVER[REMOTE_ADDR]));
+		$wikiEvent->trigger("CHANGES_UPDATE", array("type"=>$type, "target"=>$target, "status"=>$status, "user"=>$user, "ip_addr"=>$_SERVER[REMOTE_ADDR]));
 	}
 
 	function delete($cid)

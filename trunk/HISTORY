@@ -1,10 +1,12 @@
-  * 2011-10-??
+  * 2011-10-16
     * 에디터 목록 입력 UI 개선
       * js/*.js
     * 글자 크기 문법 추가 <size #pt></size>
       * css/narin.tool.set.css
       * css/tool_images/font-size.png (added)
       * plugins/syntax.php
+    * 최근 변경 내역 보기 기능 추가
+    * 주의 : DB 업데이트로 인한 재설치 필요
 
   * 2011-10-14
     * 폴더보기에서 폴더목록 가나다 순으로 나오도록 수정

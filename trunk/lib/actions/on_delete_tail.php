@@ -27,7 +27,7 @@ $wikiCache->delete($wr_id);
 
 // 최근 변경 내역 업데이트
 $wikiChanges = wiki_class_load("Changes");
-$wikiChanges->update($doc, "삭제", $member[mb_id]);
+$wikiChanges->update("DOC", $doc, "삭제", ($member[mb_id] ? $member[mb_id] : $write[wr_name]));
 
 
 ?>
