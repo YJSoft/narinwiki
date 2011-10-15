@@ -56,6 +56,9 @@ class NarinNamespace extends NarinClass {
 		$this->_updateNamespace($wikiArticle, $srcNS, $dstNS);		
 	}
 	
+	/**
+	 * Update namespace (real routine)
+	 */
 	function _updateNamespace($wikiArticle, $srcNS, $toNS)
 	{
 		$wikiHistory = wiki_class_load("History");
@@ -92,6 +95,9 @@ class NarinNamespace extends NarinClass {
 		
 		$this->addNamespace($toNS);
 		$this->checkAndRemove($srcNS);
+		
+		$wikiChanges = wiki_class_load("Changes");
+		$wikichanges->update("FOLDER", $srcNS, "폴더명변경", $this->member[mb_id]);
 	}		
 	
 	

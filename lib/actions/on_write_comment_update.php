@@ -20,6 +20,6 @@ if($w == 'c' || $w == 'cu') {
 	$wikiChanges = wiki_class_load("Changes");
 	if($w == 'c') $status = "댓글 작성";
 	else $status = "댓글 편집";
-	$wikiChanges->update($doc, $status, ($member[mb_id] ? $member[mb_id] : $wr_name));		
+	$wikiChanges->update("DOC", $doc, $status, ($member[mb_id] ? $member[mb_id] : $wr_name));		
 }
 ?>

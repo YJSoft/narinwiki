@@ -8,7 +8,7 @@ if($member[mb_level] < $history_access_level) {
 	$wikiControl->error("권한 없음", "문서 이력 조회 권한이 없습니다.");
 }
 
-$page_rows = 10;
+$page_rows = 15;
 if(!$page) $page = 1;
 
 $sql_all = "SELECT id FROM {$wiki[changes_table]} WHERE bo_table = '{$wiki[bo_table]}'";				
@@ -33,9 +33,12 @@ if($is_wiki_admin) {
 $list = array();
 $res = sql_query($sql);
 while($row = sql_fetch_array($res)) {
-	$doc = urlencode($row[doc]);
-	$row[view_href] = $wiki[path]."/narin.php?bo_table=".$wiki[bo_table]."&doc=".$doc;
-	$row[history_href] = $wiki[path]."/history.php?bo_table=".$wiki[bo_table]."&doc=".$doc;
+	$target = urlencode($row[target]);
+	if($row[target_type] == "DOC") {
+		$row[view_href] = $wiki[path]."/narin.php?bo_table=".$wiki[bo_table]."&doc=".$target;
+	} else if($row[target_type] == "FOLDER") {
+		$row[view_href] = $wiki[path]."/folder.php?bo_table=".$wiki[bo_table]."&loc=".$target;		
+	}
 	array_push($list, $row);
 }
 

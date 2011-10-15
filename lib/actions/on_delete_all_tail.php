@@ -27,7 +27,7 @@ for ($i=count($wr_id_array)-1; $i>=0; $i--)
 		$wikiHistory->clear($wr_id_array[$i], $delete_all = true);
 		$d_doc = $delete_all_docs[$wr_id_array[$i]];
 		$backlinks = $wikiArticle->getBackLinks($d_doc, $includeSelf = false);
-		$wikiChanges->update($d_doc, "삭제", $member[mb_id]);				
+		$wikiChanges->update("DOC", $d_doc, "삭제", $member[mb_id]);				
 		for($k=0; $k<count($backlinks); $k++) {
 			$wikiArticle->shouldUpdateCache($backlinks[$k][wr_id], 1);
 		}

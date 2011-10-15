@@ -37,7 +37,7 @@ if($wr_doc) {
 	$status = "새문서";
 	
 	if($w == 'u') $status = "편집";	
-	$wikiChanges->update($fullname, $status, $member[mb_id]);				
+	$wikiChanges->update("DOC", $fullname, $status, ($member[mb_id] ? $member[mb_id] : $wr_name));				
 }
 
 @mkdir($wiki[path]."/data/$bo_table");

@@ -5,7 +5,7 @@ if (!defined('_GNUBOARD_')) exit;
 $wikiChanges = wiki_class_load("Changes");
 $toDoc = $params[to];
 $doc = $params[from];
-$wikiChanges->update($doc, "이름 변경 (이전)", $this->member[mb_id]);		
-$wikiChanges->update($toDoc, "이름 변경 (이후)", $this->member[mb_id]);
+$wikiChanges->update("DOC", $doc, "이름 변경 (이전)", $member[mb_id]);		
+$wikiChanges->update("DOC", $toDoc, "이름 변경 (이후)", $member[mb_id]);
 
 ?>

@@ -3,13 +3,8 @@ if (!defined("_GNUBOARD_")) exit; //개별 페이지 접근 불가
 
 /**********************************************
 $list : 최근 변경 내역
-$docname : 문서명
-$doc : 폴더 경로 + 문서명
-$history = array("id"=>history_id,
-                 "wr_id"=>wr_id,
-                 "content"=>content,
-                 "recover_href"=>recover href,
-                 "date"=>datetime);
+$paging : 페이징
+$clear_href : 관리자 일 경우
 ********************************************/
 $colspan = 2;
 if($clear_href) $colspan++;
@@ -37,9 +32,9 @@ if($clear_href) $colspan++;
 			<?=$list[$i][reg_date]?>
 		</td>
 		<td class="changes_doc">
-			<a href="<?=$list[$i][view_href]?>"><?=$list[$i][doc]?></a>&nbsp;
+			<a href="<?=$list[$i][view_href]?>"><?=$list[$i][target]?></a>&nbsp;
 			: <?=$list[$i][status]?>&nbsp;
-			- <?=($list[$i][mb_id] ? $list[$i][mb_id] : $list[$i][ip_addr])?>
+			- <?=($list[$i][user] ? $list[$i][user] : $list[$i][ip_addr])?>
 		</td>		
 
 	</tr>
