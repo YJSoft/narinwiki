@@ -97,7 +97,7 @@ class NarinNamespace extends NarinClass {
 		$this->checkAndRemove($srcNS);
 		
 		$wikiChanges = wiki_class_load("Changes");
-		$wikichanges->update("FOLDER", $srcNS, "폴더명변경", $this->member[mb_id]);
+		$wikiChanges->update("FOLDER", $srcNS, "폴더명변경", $this->member[mb_id]);
 	}		
 	
 	

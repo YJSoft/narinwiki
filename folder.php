@@ -22,6 +22,7 @@ if($member[mb_level] < $folderViewLevel || $member[mb_level] < $ns[ns_access_lev
 $folder[loc] = $n[ns];
 $folder[navi] = wiki_navigation($n[ns], $isNS=true);
 $folder[up] = wiki_get_parent_path($n[ns]);
+$recent_href = $wiki[path]."/recent.php?bo_table=".$bo_table;
 
 if($member[mb_level] >= $board[bo_write_level]) {
 	$create_doc_href = "javascript:createDoc('".wiki_input_value(preg_replace("/\'/", "\\\'", $folder[loc]))."');";
