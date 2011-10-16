@@ -1,3 +1,8 @@
+  * 2011-10-16b
+  	* 폴더명 변경시 오류 수정
+  		* lib/narin.Namespace.class.php
+  	* 폴더보기에서 최근 문서 링크 오류 수정
+  	  * folder.php
   * 2011-10-16
     * 에디터 목록 입력 UI 개선
       * js/*.js
