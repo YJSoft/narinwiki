@@ -2,7 +2,7 @@
 if (!defined('_GNUBOARD_')) exit;
 
 /**
- * ³ª¸°À§Å° ¿ÜºÎ¿¡¼­ »ç¿ëÇÏ±â À§ÇÑ ÇÔ¼ö ¸ğÀ½
+ * ë‚˜ë¦°ìœ„í‚¤ ì™¸ë¶€ì—ì„œ ì‚¬ìš©í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ ëª¨ìŒ
  */
 
 class NarinWikiLib {
@@ -14,9 +14,9 @@ class NarinWikiLib {
 	var $g4;
 	
 	/**
-	 * »ı¼ºÀÚ
-	 * @params (string) $wiki_path À§Å° °æ·Î (g4·Î ºÎÅÍ »ó´ë°æ·Î)
-	 * @params (string) $bo_table À§Å°·Î »ç¿ëµÇ´Â bo_table
+	 * ìƒì„±ì
+	 * @params (string) $wiki_path ìœ„í‚¤ ê²½ë¡œ (g4ë¡œ ë¶€í„° ìƒëŒ€ê²½ë¡œ)
+	 * @params (string) $bo_table ìœ„í‚¤ë¡œ ì‚¬ìš©ë˜ëŠ” bo_table
 	 */
 	public function __construct($wiki_path, $bo_table)
 	{
@@ -30,10 +30,10 @@ class NarinWikiLib {
 	}
 
 	/**
-	 * À§Å° Æú´õ ³»ÀÇ ¹®¼­/Æú´õ ¸ñ·Ï ¹İÈ¯
-	 * @params (string) $folder Á¶È¸ÇÏ°íÀÚ ÇÏ´Â Æú´õ
-	 * @params (boolean) $witharticle true ¸é Æú´õ ¸ñ·Ï°ú ÇÔ²² ¹®¼­¸ñ·Ï ¹İÈ¯, false ¸é Æú´õ ¸ñ·Ï¸¸ ¹İÈ¯
-	 * @return (array) ¸ñ·Ï ¹è¿­
+	 * ìœ„í‚¤ í´ë” ë‚´ì˜ ë¬¸ì„œ/í´ë” ëª©ë¡ ë°˜í™˜
+	 * @params (string) $folder ì¡°íšŒí•˜ê³ ì í•˜ëŠ” í´ë”
+	 * @params (boolean) $witharticle true ë©´ í´ë” ëª©ë¡ê³¼ í•¨ê»˜ ë¬¸ì„œëª©ë¡ ë°˜í™˜, false ë©´ í´ë” ëª©ë¡ë§Œ ë°˜í™˜
+	 * @return (array) ëª©ë¡ ë°°ì—´
 	 */	 
 	public function folderList($folder, $withArticle=true) {	
 		$bo_table = $this->bo_table;	
@@ -79,7 +79,7 @@ class NarinWikiLib {
 	}
 	
 	/**
-	 * ÃÖ±Ù ¾÷µ¥ÀÌÆ® µÈ ¹®¼­ ¸ñ·Ï
+	 * ìµœê·¼ ì—…ë°ì´íŠ¸ ëœ ë¬¸ì„œ ëª©ë¡
 	 */
 	public function recentUpdate($count=5) {
 	
@@ -102,7 +102,7 @@ class NarinWikiLib {
 	}	
 	
 	/**
-	 * ÃÖ±Ù º¯°æ ³»¿ª ¸ñ·Ï
+	 * ìµœê·¼ ë³€ê²½ ë‚´ì—­ ëª©ë¡
 	 */	
 	public function recentChanges($count = 5) {
 		$sql = "SELECT * FROM {$this->wiki[changes_table]} WHERE bo_table = '{$this->wiki[bo_table]}' ORDER BY id DESC LIMIT $count";		
@@ -121,9 +121,9 @@ class NarinWikiLib {
 	}
 	
 	/**
-	 * ¿¬°ü¹è¿­ÀÇ Å° ¼øÀ¸·Î Á¤·Ä (asort)
-	 * @params (array) $a Á¤·ÄÇÒ ¹è¿­
-	 * @params (string) $subkey ¹è¿­ÀÇ Å°°ª
+	 * ì—°ê´€ë°°ì—´ì˜ í‚¤ ìˆœìœ¼ë¡œ ì •ë ¬ (asort)
+	 * @params (array) $a ì •ë ¬í•  ë°°ì—´
+	 * @params (string) $subkey ë°°ì—´ì˜ í‚¤ê°’
 	 */
 	protected function subval_asort($a,$subkey) {
 		foreach($a as $k=>$v) {
@@ -137,9 +137,9 @@ class NarinWikiLib {
 	}
 	
 	/**
-	 * ¿¬°ü¹è¿­ÀÇ Å° ¼øÀ¸·Î Á¤·Ä (sort)
-	 * @params (array) $a Á¤·ÄÇÒ ¹è¿­
-	 * @params (string) $subkey ¹è¿­ÀÇ Å°°ª
+	 * ì—°ê´€ë°°ì—´ì˜ í‚¤ ìˆœìœ¼ë¡œ ì •ë ¬ (sort)
+	 * @params (array) $a ì •ë ¬í•  ë°°ì—´
+	 * @params (string) $subkey ë°°ì—´ì˜ í‚¤ê°’
 	 */
 	protected function subval_sort($a,$subkey) {
 		$c = subval_asort($a, $subkey);
@@ -148,7 +148,7 @@ class NarinWikiLib {
 	}
 	
 	/** 
-	 * Æú´õ¸í°ú ¹®¼­¸í ÇÕÄ¡±â
+	 * í´ë”ëª…ê³¼ ë¬¸ì„œëª… í•©ì¹˜ê¸°
 	 */
 	protected function doc($ns, $docname) {
 		return ($ns == "/" ? "" : $ns ) . "/" . $docname;
