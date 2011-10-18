@@ -159,9 +159,8 @@ mark_set.push({separator:'---------------' });
 mark_set.push({name:'위키문서', openWith:'[[[![문서명]!]|', closeWith:']]', placeHolder:'문서명', className:'narin_doc' });
 mark_set.push({name:'위키문서 검색',   
 	beforeInsert:function(h) {
-		btn = $(".markItUp .narin_find_doc a");
-		offset = btn.offset();
-		find_panel = $(h.textarea).next(".wiki_find_doc");
+		pos = $(".markItUp .narin_find_doc").position();
+		find_panel = $(h.textarea).prev(".wiki_find_doc");
 		if(!find_panel.length) {
 			find_panel = $("<div></div>").attr('class', 'wiki_find_doc')
 											.html([
@@ -177,9 +176,8 @@ mark_set.push({name:'위키문서 검색',
 											"<ul class='wf_result'></ul>",
 											"</div>"
 											].join(''));
-			$(h.textarea).after(find_panel);
-			find_panel.css('top', offset.top + 18).css('left', offset.left);		
-			
+			$(h.textarea).before(find_panel);
+			find_panel.css('margin-top', -4).css('margin-left', pos.left-5);			
 			find_panel.find(".wf_do").eq(0).click(function() { find_doc(find_panel) } );
 			find_panel.find(".find_doc").eq(0).keypress(function(evt) {
 				if(evt.which == 13) {

@@ -1,9 +1,9 @@
-<?php
+ï»¿<?php
 /*************************************************************************************
  * xbasic.php
  * ----------
- * Author: José Gabriel Moya Yangüela (josemoya@gmail.com)
- * Copyright: (c) 2005 José Gabriel Moya Yangüela (http://aprenderadesaprender.6te.net)
+ * Author: Jos Gabriel Moya Yangela (josemoya@gmail.com)
+ * Copyright: (c) 2005 Jos Gabriel Moya Yangela (http://aprenderadesaprender.6te.net)
  * Release Version: 1.0.8.10
  * Date Started: 2005/11/23
  *

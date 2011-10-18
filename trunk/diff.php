@@ -153,9 +153,21 @@ $options = array(
 	//'ignoreWhitespace' => true,
 	//'ignoreCase' => true
 );
-$diff = new Diff(explode("\n", $history[content]), explode("\n", $article[wr_content]), $options);
+if(wiki_is_euckr()) {
+	$history[content] = iconv("CP949", "UTF-8", $history[content]);
+	$article[wr_content] = iconv("CP949", "UTF-8", $article[wr_content]);
+}
+$history_content = explode("\n", $history[content]);
+$current_content = explode("\n", $article[wr_content]);
+$diff = new Diff($history_content, $current_content, $options);
 $renderer = new Diff_Renderer_Html_Inline();
-echo $diff->Render($renderer);
+$diffData = $diff->Render($renderer);
+
+if(wiki_is_euckr()) {
+	$diffData = preg_replace_callback("/(<td(.*?)>)(.*?)(<\/td>)/s", create_function('$matches', 'return $matches[1].iconv("UTF-8", "CP949", $matches[3]).$matches[4];'), $diffData);
+}
+
+echo $diffData;
 ?>
 
 <div class="clear" style="margin-top:10px">

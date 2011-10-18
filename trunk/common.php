@@ -27,7 +27,13 @@ include_once $wiki_path."/lib/narin.Plugin.class.php";
 if($loc && $doc) {
 	$doc = $loc."/".$doc;
 }
+
+$doc = wiki_url_data($doc);
+$loc = wiki_url_data($loc);
+
 if(!$doc) $doc = "/".$wiki[front];
+
+
 $doc = preg_replace('/\/+/', '/', $doc);
 
 list($ns, $docname, $doc) = wiki_validate_doc($doc);

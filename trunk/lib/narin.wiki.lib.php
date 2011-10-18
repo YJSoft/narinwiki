@@ -44,6 +44,7 @@ function wiki_class_load($className) {
 	return null;
 }
 
+
 /**
  * Parse page name as namespace and doc
  */
@@ -311,6 +312,9 @@ function wiki_get_skins($skin, $len='')
     return $result_array;
 }
 
+/**
+ * 위키 플러그인 목록 로드
+ */
 function wiki_plugin_load()
 {
 	global $wiki;
@@ -358,6 +362,9 @@ function wiki_plugin_load()
 	return $plugins;
 }
 
+/**
+ * 플러그인 정보 클래스 로드
+ */
 function wiki_plugin_info($plugin)
 {
 	global $wiki;
@@ -384,11 +391,17 @@ function wiki_plugin_info($plugin)
 	return null;
 }
 
+/**
+ * 폴더명과 문서명을 합침
+ */
 function wiki_doc($ns, $docname) {
 	return ($ns == "/" ? "" : $ns ) . "/" . $docname;
 }
 
-function subval_asort($a,$subkey) {
+/**
+ * 연관배열 키 기준으로 정렬 (asort)
+ */
+function wiki_subval_asort($a,$subkey) {
 	foreach($a as $k=>$v) {
 		$b[$k] = strtolower($v[$subkey]);
 	}
@@ -399,35 +412,32 @@ function subval_asort($a,$subkey) {
 	return $c;
 }
 
-function subval_sort($a,$subkey) {
+/**
+ * 연관배열 키 기준으로 정렬 (sort)
+ */
+function wiki_subval_sort($a,$subkey) {
 	$c = subval_asort($a, $subkey);
 	$c = array_reverse($c);
 	return $c;
 }
 
-/*
-function wiki_doc_acl($article) {
-	global $member, $board;
-	$ns = $article[ns];
-	$docname = $article[doc];
-	$doc = wiki_doc($ns, $docname);
-	$wikiControl = wiki_class_load("Control");
-	if( $article[access_level] > $member[mb_level] ) {
-		$wikiControl->notAllowedDocument($ns, $docname, $doc);
-	}
+/**
+ * EUC-KR 버전인가?
+ */
+function wiki_is_euckr() {
+	global $g4;
+	return $g4[charset] == 'euc-kr';
 }
 
-function wiki_folder_acl($folder) {
-	global $member;
-	
-	$wikiNS = wiki_class_load("Namespace");
-	$n = $wikiNS->get($folder);
-	
-	if($n[ns_access_level] > $member[mb_level]) {
-		$wikiControl->notAllowedFolder($ns);
-	}	
+/**
+ * URL 로 넘어온 데이터를 euc-kr 인코딩으로 변환
+ */
+function wiki_url_data($data) {
+	if(wiki_is_euckr() && mb_detect_encoding($data) == "UTF-8") {
+		return iconv("UTF-8", "CP949", rawurldecode($data)); 
+	}
+	return $data;
 }
-*/
 
 /**
  * ajax 가 아니면 페이지 없음 표시
@@ -457,6 +467,9 @@ function wiki_debug($str, $h=400)
 	echo "</textarea>";
 }
 
+/**
+ * 한줄 디버그 용
+ */
 function wiki_print($str)
 {
 	echo "==> $str <br/>";

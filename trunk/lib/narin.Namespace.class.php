@@ -162,7 +162,7 @@ class NarinNamespace extends NarinClass {
 		$sql = "SELECT ns FROM {$this->wiki[ns_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND ns LIKE '{$escapedParent}%' ORDER BY ns";		
 		if($withArticle) {
 			$sql = "SELECT nt.ns, nt.bo_table, wb.wr_subject AS doc FROM {$this->wiki[ns_table]} AS nt LEFT JOIN {$this->wiki[nsboard_table]} AS nb ON nt.ns = nb.ns LEFT JOIN {$this->wiki[write_table]} AS wb ON nb.wr_id = wb.wr_id WHERE nt.bo_table = '{$this->wiki[bo_table]}' AND nt.ns LIKE '{$escapedParent}%' ORDER BY nt.ns";
-		}		
+		}	
 		$result = sql_query($sql);
 		$list = array();
 		while ($row = sql_fetch_array($result))	
@@ -258,7 +258,7 @@ class NarinNamespace extends NarinClass {
 				array_push($folders, array("name"=>$name, "path"=>$row[ns], "href"=>$href, "internal_link"=>$ilink, "type"=>"folder"));
 			}		
 		}
-		if(count($folders)) $folders = subval_asort($folders, "name");
+		if(count($folders)) $folders = wiki_subval_asort($folders, "name");
 		$list = array_merge($folders, $files);
 		$this->cache[getList][$parent][$withArticle] = $list;
 		return $list;
