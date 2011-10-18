@@ -233,7 +233,7 @@ class NarinNamespace extends NarinClass {
 		
 		$sql = "SELECT *  FROM {$this->wiki[ns_table]} WHERE $add ns LIKE '$escapedParent%' AND ns NOT REGEXP '^$regp(.*)/' AND bo_table ='{$this->wiki[bo_table]}'";
 		if($withArticle) {
-			$sql = "SELECT nt.ns, nt.bo_table, wb.wr_subject AS doc, wb.wr_id FROM $ns_table AS nt LEFT JOIN $nsboard_table AS nb ON nt.ns = nb.ns AND nt.bo_table = nb.bo_table LEFT JOIN $write_table AS wb ON nb.wr_id = wb.wr_id WHERE ( $add nt.ns LIKE '$escapedParent$addSlash%' AND nt.ns NOT REGEXP '^$regp(.*)/' ) AND nt.bo_table = '$bo_table'ORDER BY wb.wr_subject";
+			$sql = "SELECT nt.ns, nt.bo_table, wb.wr_subject AS doc, wb.wr_id FROM {$this->wiki[ns_table]} AS nt LEFT JOIN {$this->wiki[nsboard_table]} AS nb ON nt.ns = nb.ns AND nt.bo_table = nb.bo_table LEFT JOIN {$this->wiki[write_table]} AS wb ON nb.wr_id = wb.wr_id WHERE ( $add nt.ns LIKE '$escapedParent$addSlash%' AND nt.ns NOT REGEXP '^$regp(.*)/' ) AND nt.bo_table = '{$this->wiki[bo_table]}'ORDER BY wb.wr_subject";
 		}		
 		
 		$folders = array();
