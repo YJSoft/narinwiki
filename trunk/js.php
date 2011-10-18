@@ -24,7 +24,7 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 	header ('Cache-Control:');
 } else {
 	header ('Cache-Control: max-age=' . $offset);
-	header ('Content-type: text/javascript; charset=UTF-8');
+	header ('Content-type: text/javascript; charset='.$g4[charset]);
 	header ('Pragma:');
 	header ("Last-Modified: ".gmdate("D, d M Y H:i:s", $modified )." GMT");
 
