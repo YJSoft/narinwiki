@@ -112,7 +112,6 @@ function clear_history(wr_id)
 				location.href = g4_url + "/" + g4_bbs + "/board.php?bo_table=" + g4_bo_table + "&wr_id=" + wr_id;
 			} else {
 				alert("문서 이력 삭제를 못하였습니다.");
-				//document.write("<textarea style='width:100%;height:500px;'>"+data+"</textarea>");
 			}
 		});
 	}	
@@ -137,7 +136,6 @@ function delete_selected_history(wr_id)
 				location.reload();
 			} else {
 				alert("문서 이력 삭제를 못하였습니다.");				
-				//document.write("<textarea style='width:100%;height:500px;'>"+data+"</textarea>");
 			}
 		});
 	}	
