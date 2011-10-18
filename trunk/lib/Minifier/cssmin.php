@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * CssMin - A (simple) css minifier with benefits
  * 

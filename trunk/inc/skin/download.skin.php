@@ -1,5 +1,5 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 include_once $wiki[path]."/inc/inc.download.php";
 
 $board_skin_path = $wiki[skin_path];

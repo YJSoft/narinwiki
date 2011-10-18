@@ -1,4 +1,4 @@
-<?
+﻿<?
 $pageid = "nowiki";
 
 include_once("_common.php");

@@ -1,4 +1,4 @@
-<?
+﻿<?
 
 if(!file_exists($wiki_path."/narin.config.php")) {
 	header("location:".$wiki_path."/install.php");

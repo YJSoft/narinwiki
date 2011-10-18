@@ -1,4 +1,4 @@
-
+﻿
 // 이모티콘 드랍 메뉴
 function narin_emoticons() {
 	var emos = {"8-)" : "icon_cool.gif",

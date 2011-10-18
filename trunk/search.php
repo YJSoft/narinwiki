@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once("./_common.php");
 
 $wikiControl = wiki_class_load("Control");

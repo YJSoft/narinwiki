@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 	
 class NarinUtil extends NarinClass
 {
@@ -16,7 +16,7 @@ class NarinUtil extends NarinClass
 	}
 	
 	//
-	// '/' ·Î ½ÃÀÛÇÏÁö ¾Ê´Â ¹®¼­ Á¦¸ñ¿¡ ÇöÀç Æú´õ °æ·Î¸¦ ‰EºÙÀÓ
+	// '/' ë¡œ ì‹œì‘í•˜ì§€ ì•ŠëŠ” ë¬¸ì„œ ì œëª©ì— í˜„ì¬ í´ë” ê²½ë¡œë¥¼ ë­ë¶™ì„
 	//
 	public function wiki_fix_internal_link($wr_content) {
 		
@@ -28,7 +28,7 @@ class NarinUtil extends NarinClass
 		return $content;
 	}
 	
-	// nowiki, pre, code ÅÂ±×¸¦ Á¦¿ÜÇÑ ³»¿ë ¹İÈ¯
+	// nowiki, pre, code íƒœê·¸ë¥¼ ì œì™¸í•œ ë‚´ìš© ë°˜í™˜
 	public function no_nowiki_content($wr_content) {
 		$nowikis = array();	
 		$content = $this->nowiki_backup($wr_content, $nowikis);
@@ -36,7 +36,7 @@ class NarinUtil extends NarinClass
 	}
 
 	//
-	// '/' ·Î ½ÃÀÛÇÏÁö ¾Ê´Â ¹®¼­ Á¦¸ñ¿¡ ÇöÀç Æú´õ °æ·Î¸¦ ‰EºÙÀÓ
+	// '/' ë¡œ ì‹œì‘í•˜ì§€ ì•ŠëŠ” ë¬¸ì„œ ì œëª©ì— í˜„ì¬ í´ë” ê²½ë¡œë¥¼ ë­ë¶™ì„
 	//
 	protected function wiki_add_folder_to_link($matches) {
 		

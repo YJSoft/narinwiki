@@ -1,4 +1,4 @@
-Header unset Etag
+﻿Header unset Etag
 FileETag none
 
 <ifModule mod_gzip.c>

@@ -1,4 +1,4 @@
-<?
+ï»¿<?
 class NarinPluginInfo extends NarinClass {
 	
 	protected $id;	
@@ -51,32 +51,32 @@ class NarinPluginInfo extends NarinClass {
 	}
 	
 	/**
-	 * ¼³Á¤ ¸®ÅÏ
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * ì„¤ì • ë¦¬í„´
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */
 	public function getSetting() {}
 	
 	/*
-	 * ¼³Á¤Àº ´ÙÀ½°ú °°ÀÌ µÇ¾ß ÇÔ	 
+	 * ì„¤ì •ì€ ë‹¤ìŒê³¼ ê°™ì´ ë˜ì•¼ í•¨	 
 		$setting = array(
-			"name"=>array("type"=>"text", "label"=>"ÀÌ¸§ : ", "desc"=>"ÀÌ¸§À» ÀÔ·ÂÇØ¿ä", "default"=>"it's default value", "value"=>"test"),
-			"desc"=>array("type"=>"textarea", "label"=>"¼³¸í : ", "default"=>"it's default value", "value"=>"ohohoh"),
-			"year"=>array("type"=>"select", "label"=>"¿¬µµ : ", "options"=>array(1, 2, 3, 4, 5, 6, 7, 8), "default"=>2, "value"=>4),
-			"lunar"=>array("type"=>"checkbox", "label"=>"À½·Â : ", "default"=>"checked", "setval"=>1)
+			"name"=>array("type"=>"text", "label"=>"ì´ë¦„ : ", "desc"=>"ì´ë¦„ì„ ì…ë ¥í•´ìš”", "default"=>"it's default value", "value"=>"test"),
+			"desc"=>array("type"=>"textarea", "label"=>"ì„¤ëª… : ", "default"=>"it's default value", "value"=>"ohohoh"),
+			"year"=>array("type"=>"select", "label"=>"ì—°ë„ : ", "options"=>array(1, 2, 3, 4, 5, 6, 7, 8), "default"=>2, "value"=>4),
+			"lunar"=>array("type"=>"checkbox", "label"=>"ìŒë ¥ : ", "default"=>"checked", "setval"=>1)
 		);	
 	*/
-    // ³ª¸°À§Å° °ü¸® ÆäÀÌÁö¿¡¼­ ÇÃ·¯±×ÀÎ¿¡ ´ëÇÑ ¼³Á¤À» ÇÒ ¼ö ÀÖµµ·Ï,
-    // ´ÙÀ½°ú °°Àº Çü½ÄÀ¸·Î setting Á¦°ø
-    // setting Çü½Ä : array( ÇÊµå1=>array(¼Ó¼º), ÇÊµå2=>array(¼Ó¼º) ...);
-    // ¼Ó¼º Çü½Ä
-    //    type=>text : <input type="text" ...> Çü½ÄÀ¸·Î ¼³Á¤ÆäÀÌÁö¿¡¼­ º¸ÀÓ
-    //    type=>textarea : <textarea ...></textarea> Çü½ÄÀ¸·Î ¼³Á¤ÆäÀÌÁö¿¡¼­ º¸ÀÓ
-    //    type=>select : <select ..><option...></select> Çü½ÄÀ¸·Î ¼³Á¤ÆäÀÌÁö¿¡¼­ º¸ÀÓ
-    //          select ÀÇ °æ¿ì options ¸¦ array Çü½ÄÀ¸·Î ¹İµå½Ã Á¦°øÇØ¾ß ÇÔ
-    //    type=>checkbox : <input type="checkbox" ..> Çü½ÄÀ¸·Î ¼³Á¤ÆäÀÌÁö¿¡¼­ º¸ÀÓ
-    //    value : ±âº»°ª
-    //    label : ¼³Á¤ÆäÀÌÁö ÀÔ·Â ÆûÀÇ ¿ŞÂÊÄ­¿¡ º¸ÀÏ ·¹ÀÌºí
-    //    desc : ÀÔ·Â°ª¿¡ ´ëÇÑ ¼³¸íÀÌ ÇÊ¿äÇÏ´Ù¸é ÀÔ·Â	
+    // ë‚˜ë¦°ìœ„í‚¤ ê´€ë¦¬ í˜ì´ì§€ì—ì„œ í”ŒëŸ¬ê·¸ì¸ì— ëŒ€í•œ ì„¤ì •ì„ í•  ìˆ˜ ìˆë„ë¡,
+    // ë‹¤ìŒê³¼ ê°™ì€ í˜•ì‹ìœ¼ë¡œ setting ì œê³µ
+    // setting í˜•ì‹ : array( í•„ë“œ1=>array(ì†ì„±), í•„ë“œ2=>array(ì†ì„±) ...);
+    // ì†ì„± í˜•ì‹
+    //    type=>text : <input type="text" ...> í˜•ì‹ìœ¼ë¡œ ì„¤ì •í˜ì´ì§€ì—ì„œ ë³´ì„
+    //    type=>textarea : <textarea ...></textarea> í˜•ì‹ìœ¼ë¡œ ì„¤ì •í˜ì´ì§€ì—ì„œ ë³´ì„
+    //    type=>select : <select ..><option...></select> í˜•ì‹ìœ¼ë¡œ ì„¤ì •í˜ì´ì§€ì—ì„œ ë³´ì„
+    //          select ì˜ ê²½ìš° options ë¥¼ array í˜•ì‹ìœ¼ë¡œ ë°˜ë“œì‹œ ì œê³µí•´ì•¼ í•¨
+    //    type=>checkbox : <input type="checkbox" ..> í˜•ì‹ìœ¼ë¡œ ì„¤ì •í˜ì´ì§€ì—ì„œ ë³´ì„
+    //    value : ê¸°ë³¸ê°’
+    //    label : ì„¤ì •í˜ì´ì§€ ì…ë ¥ í¼ì˜ ì™¼ìª½ì¹¸ì— ë³´ì¼ ë ˆì´ë¸”
+    //    desc : ì…ë ¥ê°’ì— ëŒ€í•œ ì„¤ëª…ì´ í•„ìš”í•˜ë‹¤ë©´ ì…ë ¥	
 	public function checkSetting($setting) {
 		foreach($setting as $name => $attr) {
 			if(!isset($attr[type]) || !isset($attr[label]) || !isset($attr[value])) {
@@ -90,32 +90,32 @@ class NarinPluginInfo extends NarinClass {
 	}
 	
 	/**
-	 * ÇÃ·¯±×ÀÎ ¼³Ä¡ÇØ¾ß ÇÏ³ª?
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * í”ŒëŸ¬ê·¸ì¸ ì„¤ì¹˜í•´ì•¼ í•˜ë‚˜?
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */
 	public function shouldInstall() { return false;	}
 
 	/**
-	 * ÇÃ·¯±×ÀÎ ¾ğÀÎ½ºÅçÇØ¾ß ÇÏ³ª?
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * í”ŒëŸ¬ê·¸ì¸ ì–¸ì¸ìŠ¤í†¨í•´ì•¼ í•˜ë‚˜?
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */
 	public function shouldUnInstall() { return false;	}
 	
 	/**
-	 * ÇÃ·¯±×ÀÎ ¼³Ä¡
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * í”ŒëŸ¬ê·¸ì¸ ì„¤ì¹˜
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */
 	public function install() { }
 	
 	/**
-	 * ÇÃ·¯±×ÀÎ »èÁ¦
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * í”ŒëŸ¬ê·¸ì¸ ì‚­ì œ
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */
 	public function uninstall() { }	
 	
 	/**
-	 * °ü¸®ÀÚÆäÀÌÁö¿¡¼­ ÇÃ·¯±×ÀÎ ¼³Á¤ ÈÄ È£Ãâ
-	 * syntax / action ÇÃ·¯±×ÀÎ¿¡¼­ Áßº¹±¸Çö µÊ
+	 * ê´€ë¦¬ìí˜ì´ì§€ì—ì„œ í”ŒëŸ¬ê·¸ì¸ ì„¤ì • í›„ í˜¸ì¶œ
+	 * syntax / action í”ŒëŸ¬ê·¸ì¸ì—ì„œ ì¤‘ë³µêµ¬í˜„ ë¨
 	 */	
 	public function afterSetSetting($setting) {}
 	

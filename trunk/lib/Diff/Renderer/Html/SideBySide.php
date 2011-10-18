@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Side by Side HTML diff generator for PHP DiffLib.
  *

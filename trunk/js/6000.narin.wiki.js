@@ -1,4 +1,4 @@
-
+﻿
 $(document).ready(function() {
 	$(".wiki_content img").removeAttr("onclick");
 	$(".wiki_content img").each(function() {

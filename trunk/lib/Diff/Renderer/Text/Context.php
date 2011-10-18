@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Context diff generator for PHP DiffLib.
  *

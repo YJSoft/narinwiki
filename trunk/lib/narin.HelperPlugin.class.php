@@ -1,4 +1,4 @@
-<?
+﻿<?
 
 class NarinHelperPlugin extends NarinPlugin {
 	

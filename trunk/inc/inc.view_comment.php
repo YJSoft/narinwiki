@@ -1,5 +1,5 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ í˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 
 
 extract($wikiEvent->trigger("VIEW_COMMENT", array("folder"=>$ns, 

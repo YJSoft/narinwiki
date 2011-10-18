@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once("./_common.php");
 
 $wikiConfig = wiki_class_load("Config");

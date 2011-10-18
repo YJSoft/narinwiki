@@ -1,4 +1,4 @@
-<?
+﻿<?
 
 class NarinPluginInfoHtml extends NarinPluginInfo {
 

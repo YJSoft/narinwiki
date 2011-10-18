@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Sequence matcher for Diff
  *

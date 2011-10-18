@@ -1,4 +1,4 @@
-<?
+﻿<?
 if (!defined('_GNUBOARD_')) exit;
 
 // 최근 변경 내역 업데이트

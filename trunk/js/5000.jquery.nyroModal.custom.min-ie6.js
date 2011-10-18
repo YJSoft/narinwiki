@@ -1,4 +1,4 @@
-/*
+﻿/*
  * nyroModal v2.alpha
  * for IE6
  *

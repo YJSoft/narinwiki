@@ -1,4 +1,4 @@
-<?
+ï»¿<?
 include_once "_common.php";
 include_once $wiki[path]."/lib/Minifier/jsmin.php";
 
@@ -9,10 +9,10 @@ if(substr($_SERVER['HTTP_USER_AGENT'], 25, 8) == "MSIE 6.0"){ $is_ie6 = true; }
 
 $included = "";
 
-// js ÆÄÀÏ ³»¿ë ¹öÆÛ
+// js íŒŒì¼ ë‚´ìš© ë²„í¼
 $script = "";
 
-// js Æú´õ ·Îµù
+// js í´ë” ë¡œë”©
 $script .= get_files_contents($wiki[path]."/js", "js");
 $script .= get_files_contents($wiki[skin_path], "js");
 if(file_exists($wiki[path]."/data/$bo_table/js"))  $script .= get_files_contents($wiki[path]."/data/$bo_table/js", "js");	// for plugin

@@ -1,4 +1,4 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 extract($wikiEvent->trigger("DELETE", array("wr_id"=>$wr_id, "write"=>&$write)));
 ?>

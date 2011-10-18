@@ -1,4 +1,4 @@
-<?
+﻿<?
 if (!defined('_GNUBOARD_')) exit;
 
 require_once $wiki[path]."/lib/Thumb/easyphpthumbnail.class.php";

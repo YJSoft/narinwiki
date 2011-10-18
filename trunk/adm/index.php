@@ -1,4 +1,4 @@
-<?
+﻿<?
 $pageid = "home";
 
 include_once("_common.php");

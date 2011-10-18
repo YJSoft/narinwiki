@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once "geshi.php";
 
 class NarinSyntaxCode extends NarinSyntaxPlugin {

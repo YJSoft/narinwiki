@@ -1,4 +1,4 @@
-<?
+﻿<?
 if (!defined('_GNUBOARD_')) exit;
 
 // 사용가능한 변수

@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once("_common.php");
 
 if(!$is_wiki_admin) alert("접근 금지");

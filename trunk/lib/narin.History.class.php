@@ -1,4 +1,4 @@
-<?
+ï»¿<?
 if (!defined('_GNUBOARD_')) exit;
 
 class NarinHistory  extends NarinClass {
@@ -63,7 +63,7 @@ class NarinHistory  extends NarinClass {
 		$total_count = mysql_num_rows($result);
 		
 		$total_page  = ceil($total_count / $page_rows);
-		$from_record = ($page - 1) * $page_rows; // ½ÃÀÛ ¿­À» ±¸ÇÔ
+		$from_record = ($page - 1) * $page_rows; // ì‹œìž‘ ì—´ì„ êµ¬í•¨
 
 		$sql = "SELECT ht.*, wt.wr_option, wt.mb_id FROM {$this->wiki[history_table]} AS ht LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' ORDER BY ht.id DESC LIMIT $from_record, $page_rows";			
 		$list = sql_list($sql);

@@ -1,4 +1,4 @@
-<?
+﻿<?
 if (!defined('_GNUBOARD_')) exit;
 
 include_once $wiki[path]."/lib/narin.Class.class.php";

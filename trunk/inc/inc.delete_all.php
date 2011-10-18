@@ -1,5 +1,5 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 
 extract($wikiEvent->trigger("DELETE_ALL", array("wr_id"=>$wr_id, "folder"=>$folder, "chk_wr_id"=>$_POST[chk_wr_id])));
 ?>

@@ -1,21 +1,21 @@
-<?
+ï»¿<?
 
 class NarinActionPlugin extends NarinPlugin {
 		
 	/**
-	 * »ý¼ºÀÚ
+	 * ìƒì„±ìž
 	 */
 	public function __construct() {
 		parent::__construct();
 	}		
 	
 	/**
-	 * ÇÏÀ§ Å¬·¡½º¿¡¼­ Áßº¹±¸ÇöÇØ¾ß ÇÔ
+	 * í•˜ìœ„ í´ëž˜ìŠ¤ì—ì„œ ì¤‘ë³µêµ¬í˜„í•´ì•¼ í•¨
 	 */
 	public function register($ctrl) {}
 		
 	/**
-	 * ÇÃ·¯±×ÀÎ À¯Çü
+	 * í”ŒëŸ¬ê·¸ì¸ ìœ í˜•
 	 */
 	public function getType() {
 		return "action";

@@ -1,4 +1,4 @@
-<?
+﻿<?
 $pageid = "plugin";
 
 include_once("_common.php");

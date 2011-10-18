@@ -1,8 +1,8 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 
 	
-// ÀÌº¥Æ® Æ®¸®°Å
+// ì´ë²¤íŠ¸ íŠ¸ë¦¬ê±°
 extract($wikiEvent->trigger("WRITE_UPDATE", array("folder"=>$ns, 
 																					"docname"=>$docname, 
 																					"w"=>$w, 

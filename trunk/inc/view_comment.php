@@ -1,5 +1,5 @@
-<?
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+ï»¿<?
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 $board_skin_path = $wiki[inc_skin_path];
 include_once $g4[bbs_path]."/view_comment.php";
 $board_skin_path = $wiki[skin_path];

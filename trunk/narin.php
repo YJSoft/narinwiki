@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once("./_common.php");
 
 if(!trim($docname)) header("location:{$wiki[path]}");

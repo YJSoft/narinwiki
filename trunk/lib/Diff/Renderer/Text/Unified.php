@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Unified diff generator for PHP DiffLib.
  *

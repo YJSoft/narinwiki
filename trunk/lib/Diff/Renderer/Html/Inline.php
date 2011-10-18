@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Inline HTML diff generator for PHP DiffLib.
  *

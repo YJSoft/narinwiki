@@ -1,4 +1,4 @@
-<?
+﻿<?
 if (!defined('_GNUBOARD_')) exit;
 
 class NarinCache extends NarinClass {

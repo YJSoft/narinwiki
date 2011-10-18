@@ -1,4 +1,4 @@
-<?
+ï»¿<?
 class NarinSyntaxPlugin extends NarinPlugin {
 	
 	/**
@@ -13,7 +13,7 @@ class NarinSyntaxPlugin extends NarinPlugin {
 	}
 
 	/**
-	 * ÇÏÀ§ Å¬·¡½º¿¡¼­ Áßº¹±¸ÇöÇØ¾ß ÇÔ
+	 * í•˜ìœ„ í´ëž˜ìŠ¤ì—ì„œ ì¤‘ë³µêµ¬í˜„í•´ì•¼ í•¨
 	 */
 	public function register($parser) {}
 }

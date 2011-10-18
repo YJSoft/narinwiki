@@ -1,4 +1,4 @@
-/*
+﻿/*
  * nyroModal v2.0.0
  * Core
  *

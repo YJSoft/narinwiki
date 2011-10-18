@@ -1,4 +1,4 @@
-<?
+﻿<?
 
 class NarinActionHtml extends NarinActionPlugin {
 

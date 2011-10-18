@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class NarinEvent extends NarinClass
 {

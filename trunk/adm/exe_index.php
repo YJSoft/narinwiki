@@ -1,4 +1,4 @@
-<?
+﻿<?
 include_once("_common.php");
 
 if($wiki_front_apply_exist_doc) {

@@ -1,4 +1,4 @@
-<?
+﻿<?
 class NarinSyntax extends NarinSyntaxPlugin {
 	
 	var $id; 
