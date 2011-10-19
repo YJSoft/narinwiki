@@ -45,6 +45,7 @@ class NarinAction extends NarinActionPlugin {
 		$is_wiki_admin = $this->is_wiki_admin;
 		$wiki_config = $this->wiki_config;
 		$write = &$this->write;
+		$bo_table = $wiki[bo_table];
 		
 		extract($this->shared);
 		extract($params);			
