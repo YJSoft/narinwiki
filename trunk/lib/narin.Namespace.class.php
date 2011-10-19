@@ -258,7 +258,7 @@ class NarinNamespace extends NarinClass {
 				array_push($folders, array("name"=>$name, "path"=>$row[ns], "href"=>$href, "internal_link"=>$ilink, "type"=>"folder"));
 			}		
 		}
-		if(count($folders)) $folders = subval_asort($folders, "name");
+		if(count($folders)) $folders = wiki_subval_asort($folders, "name");
 		$list = array_merge($folders, $files);
 		$this->cache[getList][$parent][$withArticle] = $list;
 		return $list;

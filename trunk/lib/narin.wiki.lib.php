@@ -416,7 +416,7 @@ function wiki_subval_asort($a,$subkey) {
  * 연관배열 키 기준으로 정렬 (sort)
  */
 function wiki_subval_sort($a,$subkey) {
-	$c = subval_asort($a, $subkey);
+	$c = wiki_subval_asort($a, $subkey);
 	$c = array_reverse($c);
 	return $c;
 }
