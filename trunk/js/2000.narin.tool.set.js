@@ -36,12 +36,13 @@ narinWikiSettings = {
 $(document).ready(function() {		
 	if(!is_comment) {
 		$('.wr_content').markItUp(narinWikiSettings);	
-		addKeyEvent($('.wr_content'));
+		$('.wr_content').narinEditor();
 	}
 });	
 
-function addKeyEvent(txtElement) {
-		$(txtElement).keydown(function(e) {
+jquery.fn.narinEditor = function() {
+	
+		this.keydown(function(e) {
 	    if(e.which != 13 &&
 	       e.which != 8  &&
 	       e.which != 32) return;
@@ -107,7 +108,11 @@ function addKeyEvent(txtElement) {
 	            return false;
 	        }
 	    }
-		});
+		});	
+}
+
+function addKeyEvent(txtElement) {
+
 }
 
 // textarea 에 caret 설정
