@@ -3,6 +3,8 @@ include_once "_common.php";
 
 include_once $wiki[path]."/lib/Minifier/cssmin.php";
 
+$print_version = ( $print == 1 ? true : false );
+
 $offset = 60 * 60 * 24 * 7; // Cache for 1 weeks
 $modified = 0;
 $cur_path = "";
@@ -47,15 +49,19 @@ function replace_css_path($matches) {
 }
 
 function get_files_contents($path, $extension) {
-	global $modified, $is_ie6, $cur_path;
+	global $modified, $is_ie6, $cur_path, $print_version;
+		
 	$cur_path = $path;
 	$str = "";
 	$files = scandir($path);
 	$extlen = -1 * (strlen($extension)+1);
 	foreach($files as $k=>$file) {
+
 		if(is_dir($path."/".$file)) continue;		
 		if(substr($file, $extlen) != '.'.$extension) continue;
 		if(!$is_ie6 && strpos($file, "ie6") > 0) continue;
+		if($print_version && strpos($file, "print") <= 0) continue;
+		if(!$print_version && strpos($file, "print") > 0) continue;
 
     $age = filemtime($path."/".$file);
     if($age > $modified) {

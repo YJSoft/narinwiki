@@ -487,4 +487,9 @@ function wiki_print($str)
 {
 	echo "==> $str <br/>";
 }
+
+function wiki_print_memory($s)
+{
+	wiki_print($s ." : " . (memory_get_usage()/1024/1024));
+}
 ?>

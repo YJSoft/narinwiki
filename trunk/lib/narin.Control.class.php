@@ -189,6 +189,7 @@ class NarinControl extends NarinClass {
 		if($layout) include_once $this->wiki[path] . "/head.php";		
 		include $include_path;		
 		if($layout) include_once $this->wiki[path] . "/tail.php";				
+		
 	}
 	
 	

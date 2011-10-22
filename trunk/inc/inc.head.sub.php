@@ -16,7 +16,8 @@ if($wiki[path] && file_exists($wiki[path]."/narin.config.php") ) {
 																					"doc"=>$doc)));	
 ?>
 
-<link rel="stylesheet" href="<?=$wiki[path]?>/css.php?bo_table=<?=$bo_table?>" type="text/css">
+<link rel="stylesheet" href="<?=$wiki[path]?>/css.php?bo_table=<?=$bo_table?>" type="text/css" media="all">
+<link rel="stylesheet" href="<?=$wiki[path]?>/css.php?bo_table=<?=$bo_table?>&print=1" type="text/css" media="print">
 <script type="text/javascript">
 	var wiki_path = "<?=$wiki[path]?>";
 	var wiki_script = "<?=(basename($_SERVER["SCRIPT_NAME"]))?>";

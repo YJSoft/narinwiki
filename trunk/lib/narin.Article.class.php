@@ -23,7 +23,7 @@ class NarinArticle extends NarinClass {
 	 * Return article
 	 */
 	public function getArticle($ns, $docname, $file='', $line='')
-	{	    
+	{	    		
 		if($this->cache[getArticle][$ns][$docname]) return $this->cache[getArticle][$ns][$docname];
 		$e_ns = mysql_real_escape_string($ns);
 		$e_docname = mysql_real_escape_string($docname);
@@ -58,7 +58,6 @@ class NarinArticle extends NarinClass {
 		$row = sql_fetch($sql);
 		$this->cache[getArticle][$row[ns]][$row[doc]] = &$row;
 		$this->cache[getArticleById][$wr_id] = &$row;
-		
 		return $row;		
 	}
 	

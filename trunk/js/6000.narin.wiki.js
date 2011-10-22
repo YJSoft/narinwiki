@@ -31,8 +31,10 @@ $(document).ready(function() {
 
 	// 글쓰기의 에디터 툴바
 	if(!is_comment) {
-		$('.wr_content').narinEditor('wiki_write');
+		$(".wr_content").narinEditor('wiki_write');
 	}
+	
+	//$(".narin_contents").parents().addClass('noprint');
     
 });
 

@@ -1,6 +1,5 @@
 <?
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
-
 extract($wikiEvent->trigger("VIEW", array("folder"=>$ns, 
 																	"docname"=>$docname, 
 																	"is_history"=>$is_history,
