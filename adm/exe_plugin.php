@@ -10,6 +10,9 @@ for($i=0; $i<count($wiki_plugin); $i++)
 $wikiConfig = wiki_class_load("Config");
 $wikiConfig->update("/using_plugins", $use_plugins);
 
+wiki_set_option("js_modified", "timestamp", time());
+wiki_set_option("css_modified", "timestamp", time());
+
 header("location:{$wiki[path]}/adm/plugin.php?bo_table={$bo_table}");
 ?>
 

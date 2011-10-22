@@ -58,7 +58,7 @@ END;
 			$l_duration = ( time() - $this->locked['time'] );	// in seconds
 			if($this->lock_life > $l_duration) {
 				$wikiControl = wiki_class_load("Control");
-				$wikiControl->error("문서 잠김", "다른 사용자가 문서를 편집중입니다.");
+				$wikiControl->error("문서 잠김", "편집중인 문서입니다.");
 			} else {
 				$this->lock($doc);
 			}
@@ -90,6 +90,7 @@ END;
 	public function on_ajax_call($params) {
 		list($ns, $docname, $doc) = wiki_page_name($params[post][doc], $strip=true);
 		$doc_code = md5($doc);		
+		
 		if($params[post][p] == "lock" && $params[post][m] == "keep_alive") {
 			$this->initialize_lock($doc);			
 			if(!$this->locked) { echo "0"; return; }	// lock 되어있지 않은 문서를 extend 할 수 없음			
@@ -97,6 +98,14 @@ END;
 			$this->lock($doc);
 			echo "1";
 			return;
+		}
+		
+		if($params[post][p] == "lock" && $params[post][m] == "unlock") {
+			$this->initialize_lock($doc);			
+			if($this->locked[ip] != $this->user_ip) { echo "0"; return; }	// 자신이 lock 한 문서만 unlock 할 수 있음
+			$this->unlock($doc);
+			echo "1";
+			return;			
 		}
 		echo "0";
 	}

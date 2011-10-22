@@ -1,6 +1,4 @@
 <?
-include_once "geshi.php";
-
 class NarinSyntaxCode extends NarinSyntaxPlugin {
 	
 	var $blocks = array();
@@ -45,6 +43,7 @@ class NarinSyntaxCode extends NarinSyntaxPlugin {
 			array_push($this->blocks, $matches[2]);
 			return "<code></code>";
 		}
+		include_once "geshi.php";
 		$geshi = new GeSHi(wiki_html($matches[2]), trim($matches[1]));
 		$highlighted_code = trim(preg_replace('!^<pre[^>]*>|</pre>$!','',$geshi->parse_code()),"\n\r");
 		array_push($this->blocks, $highlighted_code);

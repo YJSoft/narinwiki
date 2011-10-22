@@ -4,19 +4,18 @@ if (!defined('_GNUBOARD_')) exit;
 /**
  * 문서 보기 전처리
  */
-
 $view = &$params[view];
 
 // 위키 오브젝트 로드
 $wikiParser = wiki_class_load("Parser");	
 $wikiArticle = wiki_class_load("Article");
 $wikiUtil = wiki_class_load("Util");
-
 // <nowiki>, <pre> 를 제외한 컨텐츠
 $no_nowiki_content = $wikiUtil->no_nowiki_content($view[wr_content]);
 
 // 편집 권한
 $default_edit_level = $wikiConfig->setting[edit_level];
+
 $article = $wikiArticle->getArticle($folder, $docname, __FILE__, __LINE__);
 
 // 문서 작성자?

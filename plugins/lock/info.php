@@ -128,6 +128,13 @@ if(wiki_script == 'write.php') {
 		});			
 	}
 	
+	function lock_do_unlock() {
+		$.ajaxSetup({async:false});
+		$.post(wiki_path+"/exe/a.php", { w : "plugin", p : "lock", m : "unlock", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
+			
+		});			
+	}	
+	
 	function lock_extend()
 	{
 		lock_keep_alive();
@@ -161,8 +168,12 @@ if(wiki_script == 'write.php') {
 				lock_keep_alive();		
 		});	
 
+		$(window).unload(function() {
+			lock_do_unlock();
+		});
+
 		$(window).bind('beforeunload', function(){
-		  return '글이 저장되지 않았습니다.';
+		  return '저장하지 않고 다른 페이지로 이동하시겠습니까?';
 		});
 				
 	}

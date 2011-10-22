@@ -30,10 +30,8 @@ class NarinParser extends NarinClass
 	 */
 	public function __construct() {
 
-		parent::__construct();
-											
-		$this->loadPlugins();
-		
+		parent::__construct();		
+		$this->loadPlugins();		
 	}	
 	
 	protected function init() {
@@ -59,13 +57,12 @@ class NarinParser extends NarinClass
 		$use_plugins = array();
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 		
-		// 기본 문법 해석기 로드
-		include_once "narin.syntax.php";
+		// 기본 문법 해석기 로드		
+		include_once "narin.syntax.php";		
 		$syntax = new NarinSyntax();
 		$syntax->register($this);
 		array_push($this->plugins, $syntax);
 		// syntax 플러그인 로드
-		
 		$d = dir($path);		
 		while ($entry = $d->read()) {
 			
@@ -76,7 +73,6 @@ class NarinParser extends NarinClass
 				if(!$use_plugins[$entry]) {
 					continue;
 				}
-				
 				$classFile = $pluginPath ."/syntax.php";				
 				if(file_exists($classFile)) {
 			
