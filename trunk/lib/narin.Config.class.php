@@ -6,7 +6,7 @@ class NarinConfig {
 	protected $narinConfig;
 	protected $wiki;
 	protected $default_setting = array("skin"=>"basic", "head_file"=>"", "tail_file"=>"", "edit_level"=>5, "history_access_level"=>1, "folder_view_level"=>1);
-	protected $default_using_plugins = array("code", "html");
+	protected $default_using_plugins = array("code", "html", "lock");
 	protected $reg;
 	
 	/**

@@ -172,23 +172,6 @@ class NarinParser extends NarinClass
     $called = array();
     $line = rtrim($line);
 		
-		// 라인 핸들
-    foreach ($this->lineParsers as $id => $p)
-    {
-    	$regex = $p[regx];
-    	$klass = $p[klass];
-    	$func = $p[func];
-
-      if (preg_match("/$regex/i", $line, $matches))
-      {
-        $called[$id] = true;               
-        $line = $klass->$func($matches, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view));
-        if ($this->stop || $this->stop_all)
-        {
-          break;
-        }
-      }
-    }
     
     // 단어 핸들
     if (!$this->stop_all)
@@ -208,8 +191,27 @@ class NarinParser extends NarinClass
         }
       }
       
-      // variable 포멧 처리 : {{ something }}
-      $line = preg_replace_callback('/('. '\{\{' . '([^\}]*?)' . '\}\}' . ')/', array($this, "parse_variable"), $line);      
+    // variable 포멧 처리 : {{ something }}
+    $line = preg_replace_callback('/('. '\{\{' . '([^\}]*?)' . '\}\}' . ')/', array($this, "parse_variable"), $line);   		
+		
+		// 라인 핸들
+    foreach ($this->lineParsers as $id => $p)
+    {
+    	$regex = $p[regx];
+    	$klass = $p[klass];
+    	$func = $p[func];
+
+      if (preg_match("/$regex/i", $line, $matches))
+      {
+        $called[$id] = true;               
+        $line = $klass->$func($matches, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view));
+        if ($this->stop || $this->stop_all)
+        {
+          break;
+        }
+      }
+    }
+   
       
     }
 

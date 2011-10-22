@@ -219,8 +219,21 @@ function wiki_set_option($name, $field, $value)
 	
 	$eName = mysql_real_escape_string($name);
 	
+	if($field == null && $value == null) {
+		sql_query("DELETE FROM {$wiki[option_table]} WHERE name = '/{$wiki[bo_table]}/$eName'");
+		return;
+	}
+	
 	$opt = wiki_get_option($name);
-		
+	
+	if($value == null && $opt) {		
+		unset($opt[$field]);
+		$json_string = mysql_real_escape_string(json_encode($opt));
+		$sql = "UPDATE {$wiki[option_table]} SET content = '$json_string' WHERE name = '/{$wiki[bo_table]}/$eName'";
+		sql_query($sql);
+		return;
+	} 
+	
 	if($opt) {	// 저장된 옵션이 있다면 수정
 		
 		// 필드와 값이 모두 배열이면..

@@ -283,7 +283,7 @@ function comment_box(comment_id, work)
         document.getElementById(el_id).innerHTML = save_html;
         
         if(!$("#"+el_id).find(".wr_content").eq(0).hasClass("markItUpEditor")) {
-        	$("#"+el_id).find(".wr_content").eq(0).markItUp(narinWikiSettings);
+        	$("#"+el_id).find(".wr_content").eq(0).narinEditor(el_id);
         }
                 
         // 코멘트 수정

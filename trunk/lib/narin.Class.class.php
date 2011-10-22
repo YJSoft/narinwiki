@@ -21,13 +21,14 @@ class NarinClass {
 	protected $docname;
 	protected $board;
 	protected $wiki_config;
+	protected $user_ip;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
   	
-  	global $wiki, $g4, $member, $_GET, $_POST, $_SESSION, $doc, $wr_doc, $board, $write, $view, $write_table, $is_member, $is_admin, $is_guest, $is_wiki_admin, $config, $urlencode;
+  	global $wiki, $g4, $member, $_GET, $_POST, $_SESSION, $_SERVER, $doc, $wr_doc, $board, $write, $view, $write_table, $is_member, $is_admin, $is_guest, $is_wiki_admin, $config, $urlencode;
   	
 		$this->wiki = &$wiki;
 		$this->g4 = &$g4;
@@ -48,8 +49,9 @@ class NarinClass {
 		list($ns, $docname, $full) = wiki_page_name($doc, $strip=true);
 		$this->docname = $docname;
 		$this->doc = $full;
-		$this->folder = $ns;		
+		$this->folder = $ns;				
 		$this->wiki_config = &wiki_class_load("Config");
+		$this->user_ip = $_SERVER[REMOTE_ADDR];
 	}
 	
 }

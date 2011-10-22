@@ -23,5 +23,4 @@ if(!$w) {
 $return_array[title_msg] = $title_msg;
 $return_array[subject] = wiki_input_value($subject);
 $return_array[wr_doc] = wiki_input_value($wr_doc);
-
 ?>

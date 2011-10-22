@@ -3,6 +3,7 @@ class NarinPluginInfo extends NarinClass {
 	
 	protected $id;	
 	protected $plugin_path;
+	protected $data_path;
 	protected $setting;
 	
 	/**
@@ -30,6 +31,7 @@ class NarinPluginInfo extends NarinClass {
 		} 
 	
 		$this->plugin_path = $this->wiki[path]."/plugins/".basename(dirname(__FILE__));
+		$this->data_path = $this->wiki[path]."/data/".$this->wiki[bo_table];
 	}	
 
 	/**
@@ -45,6 +47,13 @@ class NarinPluginInfo extends NarinClass {
 	public function getPluginPath() {
 		return $this->plugin_path;
 	}
+	
+	/**
+	 * Return data path
+	 */
+	public function getDataPath() {
+		return $this->data_path;
+	}	
 
 	public function getPluginSetting() {
 		return $this->setting;
