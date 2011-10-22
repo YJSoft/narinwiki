@@ -119,9 +119,10 @@
 		
 
 	/* 검색 폼 */	
-	.wiki_form { position:relative; line-height:0; }
+	.wiki_form { position:relative; line-height:20px; }
 	.wiki_form input.txt { float:left;border:1px solid #ccc; height:20px; padding:0;margin:0 5px 0 0;vertical-align: middle;line-height:20px;}
 	.wiki_form .button { float:left; margin:0;padding:0;}
+	.wiki_form .form_label { float:left; margin:0 5px 0 0;padding:0;}
 	
 	/* folder view plugin */
 	ul.folder_list { list-style:none; padding-left:0;}

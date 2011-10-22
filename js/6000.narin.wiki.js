@@ -28,8 +28,14 @@ $(document).ready(function() {
   $(".button a, .button input").click(function() {
   	$(this).blur();
   }); 
+
+	// 글쓰기의 에디터 툴바
+	if(!is_comment) {
+		$('.wr_content').narinEditor('wiki_write');
+	}
     
 });
+
 
 /**
  * @param docname 경로는 제외한 문서명

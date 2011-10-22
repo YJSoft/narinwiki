@@ -17,6 +17,10 @@ $script .= get_files_contents($wiki[path]."/js", "js");
 $script .= get_files_contents($wiki[skin_path], "js");
 if(file_exists($wiki[path]."/data/$bo_table/js"))  $script .= get_files_contents($wiki[path]."/data/$bo_table/js", "js");	// for plugin
 
+header ('Content-type: text/javascript; charset='.$g4[charset]);
+echo $script;
+exit;
+
 header ('Expires: ' . gmdate ("D, d M Y H:i:s", time() + $offset) . ' GMT');
 
 if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $modified) {
@@ -27,7 +31,7 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 	header ('Content-type: text/javascript; charset='.$g4[charset]);
 	header ('Pragma:');
 	header ("Last-Modified: ".gmdate("D, d M Y H:i:s", $modified )." GMT");
-
+		
 	echo JSMin::minify($script);    
 }
 

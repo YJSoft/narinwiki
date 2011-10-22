@@ -94,7 +94,7 @@ class NarinSyntax extends NarinSyntaxPlugin {
     
     $variable_regs = array(
     	"wiki_folder"=>array("start_regx"=>"folder=", "end_regx"=>""),   				
-    	"wiki_newpage"=>array("start_regx"=>"NEWPAGE", "end_regx"=>""),
+    	"wiki_newpage"=>array("start_regx"=>"NEWPAGE", "end_regx"=>"(:(.*?))?((\?)(.*?))?"),
     	"wiki_search"=>array("start_regx"=>"SEARCH", "end_regx"=>""),
     	"wiki_image"=>array("start_regx"=>"image=", "end_regx"=>"((\?)(.*?))?"),
     	"wiki_file"=>array("start_regx"=>"file=(\d)(\s+", "end_regx"=>")?")
@@ -776,16 +776,22 @@ END;
 	 */	
 	public function wiki_newpage($matches, $params)
 	{	
-		$loc = wiki_input_value($this->folder);
+		if($matches[3]) {
+			$loc = wiki_input_value($matches[3]);
+		} else $loc = wiki_input_value($this->folder);
+		
+		if($matches[6]) parse_str(str_replace("&amp;", "&", $matches[6]));		
+		$btn_txt = ($title ? $title : "문서만들기");
 		$path = $this->wiki[path];		
 		return <<<EOF
 		
-				<div class="wiki_newpage clear">
-				<form action="$path/narin.php" method="get" class="wiki_form">
+				<div class="wiki_newpage clear" style="$style">				
+				<form action="$path/narin.php" method="get" class="wiki_form">				
 				<input type="hidden" name="bo_table" value="{$this->wiki[bo_table]}"/>
-				<input type="hidden" name="loc" value="$loc"/>
+				<input type="hidden" name="loc" value="$loc"/>				
+				<span class="form_label">$label</span>
 				<input type="text" name="doc" class="txt" size="20"/>
-				<span class="button"><input type="submit" value="문서만들기"></span>
+				<span class="button"><input type="submit" value="$btn_txt"></span>				
 				</form>    	
 				</div>
 				
