@@ -116,7 +116,7 @@ if(wiki_script == 'write.php') {
 			lock_do_unlock();
 			clearTimeout(lock_alert_timer);
 			clearTimeout(lock_keep_alive_timer);			
-			alert('문서 잠금이 해제되었습니다.\n문서를 저장했을 때 다른 사용자가 이 문서를 작성중이라면 저장되지 않습니다.\n작성중이던 문서를 다른 곳에 복사하시고 저장하세요.');	
+			alert('문서 잠금이 해제되었습니다.\\n문서를 저장했을 때 다른 사용자가 이 문서를 작성중이라면 저장되지 않습니다.\\n작성중이던 문서를 다른 곳에 복사하시고 저장하세요.');	
 			$.nmTop().close();
 		}, $expire_time);
 		
