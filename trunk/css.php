@@ -20,6 +20,11 @@ $script .= get_files_contents($wiki[path]."/css", "css");
 $script .= get_files_contents($wiki[skin_path], "css");
 if(file_exists($wiki[path]."/data/$bo_table/css")) $script .= get_files_contents($wiki[path]."/data/$bo_table/css", "css");	// for plugin
 
+$css_modified = wiki_get_option("css_modified");
+if($css_modified) {
+	$modified = max($css_modified['timestamp'], $modified);
+	wiki_set_option("css_modified", null, null);
+}
 
 header ('Expires: ' . gmdate ("D, d M Y H:i:s", time() + $offset) . ' GMT');
 

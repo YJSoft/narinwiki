@@ -23,6 +23,9 @@ $wikiConfig = wiki_class_load("Config");
 $wikiConfig->update("/plugin_setting/".$info->getId(), $_POST[setting]);
 $info->afterSetSetting($_POST[setting]);
 
+wiki_set_option("js_modified", "timestamp", time());
+wiki_set_option("css_modified", "timestamp", time());
+
 header("location:{$wiki[path]}/adm/plugin.php?bo_table={$bo_table}");
 
 ?>

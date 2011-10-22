@@ -3,7 +3,7 @@
 class NarinPluginInfoLock extends NarinPluginInfo {
 
 	var $js_file;
-	var $default_release_time = 5;
+	var $default_release_time = 15;
 	
 	/**
 	 * 생성자
@@ -72,7 +72,7 @@ class NarinPluginInfoLock extends NarinPluginInfo {
 	 */
 	public function getSetting() {
 		$option = array();
-		for($i=1; $i<=60; $i+=1) array_push($option, $i);
+		for($i=2; $i<=60; $i+=1) array_push($option, $i);
 		return array(		
 			"lock_release_time"=>array("type"=>"select", "label"=>"Lock 해제 시간", "desc"=>"설정된 시간동안 입력이 없으면 lock 을 해제합니다. (단위 : 분)", "options"=>$option, "value"=>$this->default_release_time)
 		);		
