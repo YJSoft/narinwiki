@@ -28,8 +28,8 @@ if($loc && $doc) {
 	$doc = $loc."/".$doc;
 }
 
-$doc = wiki_url_data($doc);
-$loc = wiki_url_data($loc);
+//$doc = wiki_url_data($doc);
+//$loc = wiki_url_data($loc);
 
 if(!$doc) $doc = "/".$wiki[front];
 
