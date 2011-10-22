@@ -17,6 +17,12 @@ $script .= get_files_contents($wiki[path]."/js", "js");
 $script .= get_files_contents($wiki[skin_path], "js");
 if(file_exists($wiki[path]."/data/$bo_table/js"))  $script .= get_files_contents($wiki[path]."/data/$bo_table/js", "js");	// for plugin
 
+$js_modified = wiki_get_option("js_modified");
+if($js_modified) {
+	$modified = max($js_modified['timestamp'], $modified);
+	wiki_set_option("js_modified", null, null);
+}
+
 header ('Expires: ' . gmdate ("D, d M Y H:i:s", time() + $offset) . ' GMT');
 
 if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) >= $modified) {

@@ -22,6 +22,9 @@ if(!$info) {
 
 $info->$w();
 
+wiki_set_option("js_modified", "timestamp", time());
+wiki_set_option("css_modified", "timestamp", time());
+
 header("location:{$wiki[path]}/adm/plugin.php?bo_table={$bo_table}");
 
 ?>
