@@ -93,25 +93,30 @@ class NarinPluginInfoLock extends NarinPluginInfo {
 		
 		return <<<END
 
+
 // write.php 에서만 실행
 if(wiki_script == 'write.php') {
 
 	var lock_expire_timer;
 	var lock_keep_alive_timer;
-
-	// 				
+	var lock_alert_timer;
+	var lock_expired = false;
+	
 	function lock_alert()
 	{
-		setTimeout(function() {
-			clearTimeout(lock_keep_alive_timer);
+		lock_alert_timer = setTimeout(function() {
 			$("#confirm_lock_extend").trigger('click');
 		}, $alert_time);
 	}
 	
 	function lock_expire()
 	{
-		lock_expire_timer = setTimeout(function() {						
-			alert('문서 잠금이 해제되었습니다.\\n문서를 저장했을 때 다른 사용자가 이 문서를 작성중이라면 저장되지 않습니다.\\n작성중이던 문서를 다른 곳에 복사하시고 저장하세요.');	
+		lock_expire_timer = setTimeout(function() {									
+			lock_expired = true;
+			lock_do_unlock();
+			clearTimeout(lock_alert_timer);
+			clearTimeout(lock_keep_alive_timer);			
+			alert('문서 잠금이 해제되었습니다.\n문서를 저장했을 때 다른 사용자가 이 문서를 작성중이라면 저장되지 않습니다.\n작성중이던 문서를 다른 곳에 복사하시고 저장하세요.');	
 			$.nmTop().close();
 		}, $expire_time);
 		
@@ -137,7 +142,10 @@ if(wiki_script == 'write.php') {
 	
 	function lock_extend()
 	{
-		lock_keep_alive();
+		clearTimeout(lock_alert_timer);
+		clearTimeout(lock_expire_timer);
+		lock_alert();
+		lock_expire();
 		$.nmTop().close();		
 	}
 	
@@ -178,6 +186,7 @@ if(wiki_script == 'write.php') {
 				
 	}
 }		
+
 		
 END;
 
