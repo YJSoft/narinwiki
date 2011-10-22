@@ -333,7 +333,9 @@ function fwrite_submit(f)
     else
         echo "f.action = '$g4[bbs_path]/write_update.php';";
     ?>   
-    
+		
+		$(window).unbind('beforeunload');    
+ 
     return true;
 }
 </script>
