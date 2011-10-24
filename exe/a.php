@@ -31,7 +31,16 @@ if($w == "plugin" && $p && $m) {
 if($w == "tmpsave_write" && $member[mb_id] && $wr_doc && $wr_content) {
 	$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
 	$reg = "tmpsave/$id";	
-	wiki_set_option($reg, "wr_content", stripcslashes($wr_content));
+	wiki_set_option($reg, array("wr_content", "wr_date"), array(stripcslashes($wr_content), date("Y-m-d h:i:s")));
+	echo 1;	
+	exit;
+}
+
+// 임시 저장 (삭제)
+if($w == "tmpsave_delete" && $member[mb_id] && $wr_doc) {
+	$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
+	$reg = "tmpsave/$id";	
+	wiki_set_option($reg, null, null);
 	echo 1;	
 	exit;
 }
@@ -40,11 +49,12 @@ if($w == "tmpsave_write" && $member[mb_id] && $wr_doc && $wr_content) {
 if($w == "tmpsave_read" && $member[mb_id] && $wr_doc) {
 	$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
 	$reg = "tmpsave/$id";	
-	$wr_content = wiki_get_option($reg, "wr_content");	
+	$tmp_saved = wiki_get_option($reg);	
 	$ret = array();	
-	if($wr_content) {
+	if($tmp_saved) {
 		$ret[code] = 1;
-		$ret[wr_content] = $wr_content;
+		$ret[wr_date] = $tmp_saved[wr_date];
+		$ret[wr_content] = $tmp_saved[wr_content];
 	} else {
 		$ret[code] = -1;
 	}

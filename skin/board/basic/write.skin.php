@@ -331,28 +331,47 @@ function fwrite_submit(f)
 </script>
 <? if($member[mb_id]) { ?>
 <script type="text/javascript">
+	var tmp_saved;
+	
+	function wiki_read_tmpsave() {
+		$("#wr_content").val(tmp_saved);
+		$.nmTop().close();
+	}
+	
+	function wiki_close_tmpsave() {		
+		$.nmTop().close();
+	}
+	function wiki_delete_tmpsave() {
+		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_delete', wr_doc : wiki_doc}, function(data) {});
+		$.nmTop().close();
+	}		
 	
 	$(document).ready(function() {
 		$.getJSON(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_read', wr_doc : wiki_doc}, function(json) {			
-			if(json.code == 1) {
-				if(confirm("임시 저장된 문서가 있습니다. 읽어올까요?")) {
-					$("#wr_content").val(json.wr_content);
-				}
+			if(json.code == 1) {					
+				tmp_saved = json.wr_content;
+				wiki_dialog('확인', '임시 저장된 문서가 있습니다.<br/>('+json.wr_date+')', {
+					buttons : [
+						'<span class="button green"><a href="javascript:wiki_read_tmpsave();">읽어오기</a></span>&nbsp;',
+						'<span class="button purple"><a href="javascript:wiki_delete_tmpsave();">삭제</a></span>&nbsp;',						
+						'<span class="button"><a href="javascript:wiki_close_tmpsave();">닫기</a></span>&nbsp;'					
+					].join('')
+				});
 			}
 		});
 	});
 
-	$("#btn_tmpsave").click(function() {
+	$("#btn_tmpsave").click(function(evt) {
+		evt.preventDefault();
+		$("#btn_tmpsave").hide();
 		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_write', wr_doc : wiki_doc, wr_content : $("#wr_content").val()}, function(data) {
+			msg = "저장하지 못했습니다.";
+			bgcolor = "#800000";
 			if(data == 1) {
-				msg = $("<div></div>")
-					.attr('style', 'display:none;margin:auto;padding:3px;text-align:center;border:1px solid #333;background-color:#555;color:#fff;')
-					.attr('id', 'msg_tmpsave')
-					.html('저장하였습니다.');
-				$(document.body).prepend(msg);
-				msg.fadeIn();
-				setTimeout(function() { msg.remove() }, 3000);
+				msg = "저장하였습니다.";
+				bgcolor = "#333";
 			}
+			wiki_msg(msg, {bgcolor:bgcolor, top:"35%", seconds : 2000, callback : function() { $("#btn_tmpsave").show(); } });
 		});
 	});
 </script>
