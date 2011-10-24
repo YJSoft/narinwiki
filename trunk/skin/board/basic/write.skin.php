@@ -198,6 +198,9 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	
 	<tr>
 		<td colspan="2" style="text-align:center">
+			<? if($wr_id) { ?>
+			<span class="button green"><a href="#tmpsave" id="btn_tmpsave">임시저장</a></span>&nbsp;
+			<? } ?>
 			<span class="button red"><input type=submit id="btn_submit" value="완료" border=0 accesskey='s'></span>&nbsp;
 	    <span class="button"><a href="javascript:history.go(-1);" id="btn_back">뒤로</a></span>&nbsp;
 	    <span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>" id="btn_list">시작페이지</a></span></td>
@@ -252,19 +255,6 @@ function html_auto_br(obj)
 
 function fwrite_submit(f) 
 {
-    /*
-    var s = "";
-    if (s = word_filter_check(f.wr_subject.value)) {
-        alert("제목에 금지단어('"+s+"')가 포함되어있습니다");
-        return false;
-    }
-
-    if (s = word_filter_check(f.wr_content.value)) {
-        alert("내용에 금지단어('"+s+"')가 포함되어있습니다");
-        return false;
-    }
-    */
-	
     if (document.getElementById('char_count')) {
         if (char_min > 0 || char_max > 0) {
             var cnt = parseInt(document.getElementById('char_count').innerHTML);
@@ -339,6 +329,23 @@ function fwrite_submit(f)
     return true;
 }
 </script>
-
+<? if($wr_id) { ?>
+<script type="text/javascript">
+	$("#btn_tmpsave").click(function() {
+		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave', wr_id : <?=$wr_id?>, wr_content : $("#wr_content").val()}, function(data) {
+			if(data == 1) {
+				msg = $("<div></div>")
+					.attr('style', 'display:none;margin:auto;padding:3px;text-align:center;border:1px solid #333;background-color:#555;color:#fff;')
+					.attr('id', 'msg_tmpsave')
+					.html('저장하였습니다.');
+				$(document.body).prepend(msg);
+				msg.fadeIn();
+				setTimeout(function() { msg.remove() }, 3000);
+			}
+			else alert(data);
+		});
+	});
+</script>
+<?}?>
 <script type="text/javascript" src="<?="$g4[path]/js/board.js"?>"></script>
 <script type="text/javascript"> window.onload=function() { drawFont(); } </script>

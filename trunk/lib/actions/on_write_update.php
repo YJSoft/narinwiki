@@ -40,6 +40,8 @@ if($wr_doc) {
 	$wikiChanges->update("DOC", $fullname, $status, ($member[mb_id] ? $member[mb_id] : $wr_name));				
 }
 
+set_session("ss_write_".$wr_id, false);
+
 @mkdir($wiki[path]."/data/$bo_table");
 @chmod($wiki[path]."/data/$bo_table", 0707);
 @mkdir($wiki[path]."/data/$bo_table/css");

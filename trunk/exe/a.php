@@ -27,11 +27,23 @@ if($w == "plugin" && $p && $m) {
 	$wikiEvent->trigger("AJAX_CALL", array("plugin"=>$p, "method"=>$m, "get"=>$_GET, "post"=>$_POST));
 }
 
+if($w == "tmpsave" && $wr_id && $wr_content) {
+	$ss_id = "ss_write_".$wr_id;
+	$ss = $_SESSION[$ss_id];
+	if($wr_content && $ss) {
+		sql_query("UPDATE $write_table SET wr_content = '$wr_content' WHERE wr_id = '$wr_id'");
+		echo 1;
+	} else echo -1;
+	
+	exit;
+}
 
 
 
 
 
+
+// Not used ////////////////////////////////////////
 // 폴더 목록 
 if($w == "folderlist") {
 	$wikiNS = wiki_class_load("Namespace");
