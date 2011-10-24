@@ -198,7 +198,7 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	
 	<tr>
 		<td colspan="2" style="text-align:center">
-			<? if($wr_id) { ?>
+			<? if($member[mb_id]) { ?>
 			<span class="button green"><a href="#tmpsave" id="btn_tmpsave">임시저장</a></span>&nbsp;
 			<? } ?>
 			<span class="button red"><input type=submit id="btn_submit" value="완료" border=0 accesskey='s'></span>&nbsp;
@@ -329,10 +329,21 @@ function fwrite_submit(f)
     return true;
 }
 </script>
-<? if($wr_id) { ?>
+<? if($member[mb_id]) { ?>
 <script type="text/javascript">
+	
+	$(document).ready(function() {
+		$.getJSON(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_read', wr_doc : wiki_doc}, function(json) {			
+			if(json.code == 1) {
+				if(confirm("임시 저장된 문서가 있습니다. 읽어올까요?")) {
+					$("#wr_content").val(json.wr_content);
+				}
+			}
+		});
+	});
+
 	$("#btn_tmpsave").click(function() {
-		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave', wr_id : <?=$wr_id?>, wr_content : $("#wr_content").val()}, function(data) {
+		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_write', wr_doc : wiki_doc, wr_content : $("#wr_content").val()}, function(data) {
 			if(data == 1) {
 				msg = $("<div></div>")
 					.attr('style', 'display:none;margin:auto;padding:3px;text-align:center;border:1px solid #333;background-color:#555;color:#fff;')
@@ -342,7 +353,6 @@ function fwrite_submit(f)
 				msg.fadeIn();
 				setTimeout(function() { msg.remove() }, 3000);
 			}
-			else alert(data);
 		});
 	});
 </script>

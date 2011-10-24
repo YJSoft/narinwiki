@@ -1,7 +1,7 @@
 <?
 include_once "./_common.php";
 
-//wiki_only_ajax();
+wiki_only_ajax();
 $wikiConfig = wiki_class_load("Config");
 
 // 문서 검색 (by toolbar)
@@ -27,14 +27,31 @@ if($w == "plugin" && $p && $m) {
 	$wikiEvent->trigger("AJAX_CALL", array("plugin"=>$p, "method"=>$m, "get"=>$_GET, "post"=>$_POST));
 }
 
-if($w == "tmpsave" && $wr_id && $wr_content) {
-	$ss_id = "ss_write_".$wr_id;
-	$ss = $_SESSION[$ss_id];
-	if($wr_content && $ss) {
-		sql_query("UPDATE $write_table SET wr_content = '$wr_content' WHERE wr_id = '$wr_id'");
-		echo 1;
-	} else echo -1;
+// 임시 저장 (쓰기)
+if($w == "tmpsave_write" && $member[mb_id] && $wr_doc && $wr_content) {
+	$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
+	$reg = "tmpsave/$id";	
+	wiki_set_option($reg, "wr_content", stripcslashes($wr_content));
+	echo 1;	
+	exit;
+}
+
+// 임시 저장 (읽기)
+if($w == "tmpsave_read" && $member[mb_id] && $wr_doc) {
+	$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
+	$reg = "tmpsave/$id";	
+	$wr_content = wiki_get_option($reg, "wr_content");	
+	$ret = array();	
+	if($wr_content) {
+		$ret[code] = 1;
+		$ret[wr_content] = $wr_content;
+	} else {
+		$ret[code] = -1;
+	}
 	
+	if(wiki_is_euckr()) wiki_ajax_data($ret);	
+	echo json_encode($ret);	
+			
 	exit;
 }
 
