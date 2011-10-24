@@ -371,7 +371,7 @@ function fwrite_submit(f)
 				msg = "저장하였습니다.";
 				bgcolor = "#333";
 			}
-			wiki_msg(msg, {bgcolor:bgcolor, top:"35%", seconds : 2000, callback : function() { $("#btn_tmpsave").show(); } });
+			wiki_msg(msg, {bgcolor:bgcolor, seconds : 2000, callback : function() { $("#btn_tmpsave").show(); } });
 		});
 	});
 </script>

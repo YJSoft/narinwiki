@@ -247,13 +247,48 @@ function wiki_dialog(title, msg, options)
 
 function wiki_msg(msg, options) {
 	
-	settings = { msg_id : 'wiki_msg', top:"50%", seconds : 2500, bgcolor : "#555", color : "#fff", callback : function() {} };
+	settings = { msg_id : 'wiki_msg', seconds : 2500, bgcolor : "#555", color : "#fff", callback : function() {} };
 	jQuery.extend(settings, options);
 	msgLayer = $("<div></div>")
-		.attr('style', 'display:none;position:absolute;top:'+settings.top+';padding:10px 30px;text-align:center;background-color:'+settings.bgcolor+';color:'+settings.color+';z-index:999999')
+		.attr('style', 'display:none;position:absolute;padding:10px 30px;text-align:center;background-color:'+settings.bgcolor+';color:'+settings.color+';z-index:999999')
 		.html(msg);
 	$(document.body).prepend(msgLayer);
-	msgLayer.css('left', $(window).width()/2- msgLayer.width()/2); 	
+	msgLayer.center();
 	msgLayer.fadeIn();
 	setTimeout(function() { msgLayer.fadeOut(function() { msgLayer.remove(); settings.callback(); });  }, settings.seconds);			
 }
+
+
+(function($){
+     $.fn.extend({
+          center: function (options) {
+               var options =  $.extend({ // Default values
+                    inside:window, // element, center into window
+                    transition: 0, // millisecond, transition time
+                    minX:0, // pixel, minimum left element value
+                    minY:0, // pixel, minimum top element value
+                    withScrolling:true, // booleen, take care of the scrollbar (scrollTop)
+                    vertical:true, // booleen, center vertical
+                    horizontal:true // booleen, center horizontal
+               }, options);
+               return this.each(function() {
+                    var props = {position:'absolute'};
+                    if (options.vertical) {
+                         var top = ($(options.inside).height() - $(this).outerHeight()) / 2;
+                         if (options.withScrolling) top += $(options.inside).scrollTop() || 0;
+                         top = (top > options.minY ? top : options.minY);
+                         $.extend(props, {top: top+'px'});
+                    }
+                    if (options.horizontal) {
+                          var left = ($(options.inside).width() - $(this).outerWidth()) / 2;
+                          if (options.withScrolling) left += $(options.inside).scrollLeft() || 0;
+                          left = (left > options.minX ? left : options.minX);
+                          $.extend(props, {left: left+'px'});
+                    }
+                    if (options.transition > 0) $(this).animate(props, options.transition);
+                    else $(this).css(props);
+                    return $(this);
+               });
+          }
+     });
+})(jQuery);
