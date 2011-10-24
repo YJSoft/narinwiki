@@ -24,8 +24,8 @@ include_once $wiki_path ."/lib/narin.Class.class.php";
 include_once $wiki_path ."/lib/narin.wiki.lib.php";
 include_once $wiki_path."/lib/narin.Plugin.class.php";
 
-$doc = wiki_url_data($doc);
-$loc = wiki_url_data($loc);
+//$doc = wiki_url_data($doc);
+//$loc = wiki_url_data($loc);
 
 if($loc && $doc) {
 	$doc = $loc."/".$doc;
