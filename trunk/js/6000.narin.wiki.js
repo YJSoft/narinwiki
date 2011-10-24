@@ -33,9 +33,7 @@ $(document).ready(function() {
 	if(!is_comment) {
 		$(".wr_content").narinEditor('wiki_write');
 	}
-	
-	//$(".narin_contents").parents().addClass('noprint');
-    
+		    
 });
 
 
@@ -207,4 +205,55 @@ function wiki_search(f)
 		return false;
 	}
 	return true;
+}
+
+function wiki_dialog(title, msg, options)
+{
+	settings = { 
+		msg_id : 'wiki_dialog', 
+		title_bgcolor : "#555", 
+		title_color : "#fff", 
+		closeOnClick : false,
+		closeOnEscape : false,		
+		buttons : '<span class="button"><a href="javascript:$.nmTop().close();">확인</a></span>',
+		onClose : function() {} 
+	};	
+	jQuery.extend(settings, options);	
+	
+	msgLayer = $("<div></div>")
+						.attr('style', 'display:none;')
+						.attr('id', settings.msg_id)
+						.html([
+							'<div style="padding:5px 10px;background-color:'+settings.title_bgcolor+';color:'+settings.title_color+';font-weight:bold;">',
+							title,
+							'</div>',
+							'<div style="padding:10px;line-height:160%;">',
+							msg,
+							'</div>',
+							'<div style="margin-top:10px;border-top:1px dashed #ccc;padding-top:10px;text-align:center">',
+							settings.buttons,
+							'</div>',
+							'<a href="#'+settings.msg_id+'" id="btn_'+settings.msg_id+'" style="display:none"></a>'
+							].join(''));
+					$(document.body).prepend(msgLayer);
+					$("#btn_"+settings.msg_id).nm({closeOnClick : settings.closeOnClick, closeOnEscape : settings.closeOnClick, closeButton : '', callbacks : {
+							afterClose : function() {
+								msgLayer.remove();
+								settings.onClose();
+							}
+						} }).nmCall();
+	
+}
+
+function wiki_msg(msg, options) {
+	
+	settings = { msg_id : 'wiki_msg', top:"50%", seconds : 2500, bgcolor : "#555", color : "#fff", callback : function() {} };
+	jQuery.extend(settings, options);
+	msgLayer = $("<div></div>")
+		.attr('style', 'display:none;position:absolute;top:'+settings.top+';padding:10px 30px;text-align:center;background-color:'+settings.bgcolor+';color:'+settings.color+';z-index:999999')
+		.html(msg);
+	$(document.body).prepend(msgLayer);
+	msgLayer.css('left', $(window).width()/2- msgLayer.width()/2); 	
+	msgLayer.fadeIn();
+	setTimeout(function() { msgLayer.fadeOut(function() { msgLayer.remove(); settings.callback(); });  }, settings.seconds);			
 }
