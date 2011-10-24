@@ -1,8 +1,7 @@
   * 2011-10-xx
-    * 임시저장 기능 (새문서가 아닐 경우)
-    	* lib/actions/on_write.php
+    * 임시저장 기능
     	* lib/actiosn/on_write_update.php
-    	* skin/board/write.php
+    	* skin/board/write.skin.php
     	* exe/a.php
   * 2011-10-22
     * locking 기능 추가 (빌트인플러그인)

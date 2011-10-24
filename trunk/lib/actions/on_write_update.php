@@ -40,7 +40,10 @@ if($wr_doc) {
 	$wikiChanges->update("DOC", $fullname, $status, ($member[mb_id] ? $member[mb_id] : $wr_name));				
 }
 
-set_session("ss_write_".$wr_id, false);
+// 임시저장 삭제
+$id = md5($member[mb_id]."_".stripcslashes($wr_doc));
+$reg = "tmpsave/$id";	
+wiki_set_option($reg, null, null);
 
 @mkdir($wiki[path]."/data/$bo_table");
 @chmod($wiki[path]."/data/$bo_table", 0707);
