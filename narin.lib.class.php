@@ -43,7 +43,7 @@ class NarinWikiLib {
 		$write_table = $this->write_table;
 		$escapedParent = mysql_real_escape_string($folder);
 		$regp = ($folder == "/" ? "/" : $escapedParent."/");	
-		if($parent != "/") {
+		if($folder != "/") {
 			$add =	"nt.ns = '$escapedParent' OR ";
 			$addSlash = "/";
 		}
@@ -58,16 +58,16 @@ class NarinWikiLib {
 		$result = sql_query($sql);
 		while ($row = sql_fetch_array($result))	
 		{
-			if($row[ns] == $parent) {
+			if($row[ns] == $folder) {
 				if(!$row[doc]) continue;
 				$path = ($row[ns] == "/" ? "/" : $row[ns]."/").$row[doc];
 				$href = $wiki_path.'/narin.php?bo_table='.$bo_table.'&doc='.urlencode($path);
 				$ilink = "[[".$path."]]";
 				array_push($files, array("name"=>$row[doc], "path"=>$path, "href"=>$href, "wr_id"=>$row[wr_id], "type"=>"doc"));
 			} else {				
-				$href = $wiki_path.'/folder.php?bo_table='.$bo_table.'&loc='.urlencode($row[ns]);
-				$name = ereg_replace($parent."/", "", $row[ns]);
-				$name = ereg_replace($parent, "", $name);			
+				$href = $wiki_path.'/folder.php?bo_table='.$bo_table.'&loc='.urlencode($row[ns]);				
+				$name = ereg_replace($folder."/", "", $row[ns]);
+				$name = ereg_replace($folder, "", $name);			
 				if($already[$name]) continue;
 				$already[$name] = $name;
 				array_push($folders, array("name"=>$name, "path"=>$row[ns], "href"=>$href, "type"=>"folder"));
@@ -82,15 +82,13 @@ class NarinWikiLib {
 	 * 최근 업데이트 된 문서 목록
 	 */
 	public function recentUpdate($count=5) {
-	
-		$sql = "SELECT wt.wr_id, wt.wr_subject as docname, nt.ns, ht.editor_mb_id, ht.reg_date
-						FROM {$this->wiki[history_table]} AS ht 
-						LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
-						LEFT JOIN {$this->wiki[nsboard_table]} AS nt ON nt.wr_id = wt.wr_id AND nt.bo_table = '{$this->wiki[bo_table]}' 
-						WHERE ht.bo_table = '{$this->wiki[bo_table]}' 
-						GROUP BY wt.wr_id 
-						ORDER BY ht.id DESC LIMIT 0, $count";
-
+		$sql = "SELECT ht.id, ht.wr_id, ht.editor_mb_id, mt.mb_name, mt.mb_nick, Max(ht.reg_date) AS reg_date, wt.wr_subject AS docname, nt.ns FROM {$this->wiki[history_table]} AS ht 
+						JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
+						JOIN {$this->wiki[nsboard_table]} AS nt ON nt.wr_id = wt.wr_id AND nt.bo_table = '$this->bo_table' 
+						JOIN {$this->g4[member_table]} AS mt ON wt.mb_id = mt.mb_id
+						GROUP BY ht.wr_id 
+						ORDER BY ht.id DESC LIMIT 5";
+		
 		$res = sql_query($sql);
 		$list = array();
 		while($row = sql_fetch_array($res)) {
@@ -153,5 +151,42 @@ class NarinWikiLib {
 	protected function doc($ns, $docname) {
 		return ($ns == "/" ? "" : $ns ) . "/" . $docname;
 	}	
+}
+
+function  getElapsedTime($date, $f = 'h:ma M. j Y T') {
+
+	$timeyear = 365 * 24 * 60 * 60;
+	$timemonth = 30 * 7 * 24 * 60 * 60;
+	$timeweek = 7 * 24 * 60 * 60;
+	$timeday = 24 * 60 * 60;
+	$timehour = 60 * 60;
+	$timemins = 60;
+	$timeseconds = 1;
+	$dates = array("", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "주일");
+	$argtime = strtotime($date);
+	$x = time() - $argtime;
+
+	if($x >= $timeyear) 
+	{	
+		return date("Y년 M월 j일", strtotime($argtime));
+	} else if($x >= $timemonth) {
+		return date("M월 j일", strtotime($argtime));
+	} else if($x >= $timeday) {
+		$x = round($x / $timeday);
+		if($x < 7)	return "지난 " . $dates[date("N", $argtime)];
+		else return date("n월 j일", strtotime($argtime));	
+	} else if($x >= $timehour) {
+		$x = round($x / $timehour); 
+		return $x . ' 시간전';
+	} else if($x >= $timemins) { 
+		$x = round($x / $timemins); 
+		return $x . ' 분전';
+	} else if($x >= $timeseconds) { 
+		$x = round($x / $timeseconds); 
+		return $x . ' 초전';
+	}
+	
+	// may not be reached here
+	return date("j M Y", strtotime($argtime));
 }	
 ?>
