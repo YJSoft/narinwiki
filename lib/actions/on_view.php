@@ -7,7 +7,6 @@ if (!defined('_GNUBOARD_')) exit;
 $view = &$params[view];
 
 // 위키 오브젝트 로드
-$wikiParser = wiki_class_load("Parser");	
 $wikiArticle = wiki_class_load("Article");
 $wikiUtil = wiki_class_load("Util");
 // <nowiki>, <pre> 를 제외한 컨텐츠
@@ -51,6 +50,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 		
 		// 저장된 캐시가 없다면 parsing 후 cacheing
 		if(!$cached_content) {			
+			$wikiParser = wiki_class_load("Parser");	
 			$view[content] = $wikiParser->parse($view);
 			$wikiCache->update($wr_id, $view[content]);		
 		} else {	// 저장된 캐시가 있으면 사용
@@ -59,11 +59,13 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 		}
 	
 	} else {	// 캐시를 업데이트 해야 하는 경우
+		$wikiParser = wiki_class_load("Parser");	
 		$view[content] = $wikiParser->parse($view);
 		$wikiCache->update($wr_id, $view[content]);			
 	}
 	
 } else {	// 캐시 사용 안하는 경우
+	$wikiParser = wiki_class_load("Parser");	
 	$view[content] = $wikiParser->parse($view);
 }
 
