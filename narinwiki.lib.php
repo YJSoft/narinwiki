@@ -30,6 +30,16 @@ class NarinWikiLib {
 	}
 
 	/**
+	 * 문법분석(parsing) 모듈 대신 사용
+	 * 위키에서 parsing 해서 cache 해 놓은 내용을 읽어옴
+	 * @params (number) $wr_id 게시물 id
+	 */
+	public function getCache($wr_id) {
+		$row = sql_fetch("SELECT content FROM {$this->wiki[cache_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND wr_id = $wr_id");
+		return $row[content];
+	}
+
+	/**
 	 * 위키 폴더 내의 문서/폴더 목록 반환
 	 * @params (string) $folder 조회하고자 하는 폴더
 	 * @params (boolean) $witharticle true 면 폴더 목록과 함께 문서목록 반환, false 면 폴더 목록만 반환
