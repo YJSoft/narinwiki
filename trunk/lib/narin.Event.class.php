@@ -83,16 +83,16 @@ class NarinEvent extends NarinClass
 	 */
 	public function trigger($type, $params) {		
 		$params[_type_] = $type;
-		if(is_array($this->actions[$type])) {
-			$returnValue = array();
+		$returnValue = array();		
+		if(is_array($this->actions[$type])) {			
 			foreach($this->actions[$type] as $idx => $p) {
 				$ret = $p[object]->$p[handler]($params);
 				if(is_array($ret)) {
 					foreach($ret as $k=>$v) { $returnValue[$k] = $v; }
 				}
 			}
-			return $returnValue;
 		}
+		return $returnValue;		
 	}
 
 	/**
