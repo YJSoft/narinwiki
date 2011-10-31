@@ -58,18 +58,30 @@ class NarinHistory  extends NarinClass {
 		$wikiParser = wiki_class_load("Parser");
 		$wr_id = mysql_real_escape_string($wr_id);
 		
-		$sql_all = "SELECT id FROM {$this->wiki[history_table]} AS ht LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' ORDER BY ht.id DESC";	
+		$sql_all = "SELECT id FROM {$this->wiki[history_table]} AS ht 
+								LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
+								WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' 
+								ORDER BY ht.id DESC";	
 		$result = sql_query($sql_all);
 		$total_count = mysql_num_rows($result);
 		
 		$total_page  = ceil($total_count / $page_rows);
 		$from_record = ($page - 1) * $page_rows; // 시작 열을 구함
 
-		$sql = "SELECT ht.*, wt.wr_option, wt.mb_id FROM {$this->wiki[history_table]} AS ht LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' ORDER BY ht.id DESC LIMIT $from_record, $page_rows";			
+		$sql = "SELECT ht.*, wt.wr_option, wt.mb_id, mt.mb_name, mt.mb_nick FROM {$this->wiki[history_table]} AS ht 
+						LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
+						JOIN {$this->g4[member_table]} AS mt ON wt.mb_id = mt.mb_id
+						WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' 
+						ORDER BY ht.id DESC LIMIT $from_record, $page_rows";			
 		$list = sql_list($sql);
 							
 		for($i=0; $i<count($list); $i++)
 		{		
+			// 로그인 안한 상태로 작성했다면...
+			if(!$list[$i][mb_name]) {
+				$list[$i][mb_name] = $list[editor_mb_id];
+				$list[$i][mb_nick] = $list[editor_mb_id];
+			}
 			$list[$i][content] = nl2br(wiki_text($list[$i][content]));
       $list[$i][date] = date("Y-m-d h:i", strtotime($list[$i][reg_date]));
       if($list[$i][mb_id] == $this->member[mb_id] || $this->is_admin) {

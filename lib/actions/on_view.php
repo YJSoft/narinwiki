@@ -65,6 +65,12 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 	}
 	
 } else {	// 캐시 사용 안하는 경우
+	
+	// 캐시를 사용하지 않더라도 일단 캐시 
+	// 외부에서 parsing 사용하지 않더라도 쓸 수 있게...
+	$wikiCache = wiki_class_load("Cache");
+	$wikiCache->update($wr_id, $view[content]);
+		
 	$wikiParser = wiki_class_load("Parser");	
 	$view[content] = $wikiParser->parse($view);
 }

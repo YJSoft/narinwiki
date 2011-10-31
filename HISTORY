@@ -1,3 +1,8 @@
+  * 2011-11-xx  
+    * history.skin.php의 history 데이터에 mb_name, mb_nick 필드 추가
+    	* lib/narin.History.class.php
+    * ~~NOCACHE~~ 일 때도 cache 저장 실행 (외부에서 parser 없이 parsing 결과를 읽을 수 있도록)
+      * lib/actions/on_view.php
   * 2011-10-25
     * 임시저장 기능
     	* lib/actions/on_write_update.php
