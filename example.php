@@ -6,6 +6,7 @@
     g4/example.php
     g4/narin.lib.class.php
     g4/wiki
+    g4/skin/latest/narin_basic/latest.skin.php
   - 위키로 사용하는 bo_table : 'wiki'  
 */
 
@@ -13,7 +14,12 @@
 include_once "_common.php";
 
 // 나린위키 도움 라이브러리 클래스 include
-include_once "narin.lib.class.php";
+include_once "narinwiki.lib.php";
+
+
+// 나린위키 최근 업데이트 문서
+// $options = array("new_day"=>2); 2일 안에 업데이트 된 글을 굵게 표시
+echo narin_latest($skin_dir="narin_basic", $wiki_path="./wiki", $bo_table="wiki", $rows=5, $subject_len=40, $options=array("new_day"=>2));
 
 // 나린위키 라이브러리 객체 생성
 $narinLib = new NarinWikiLib($wiki_path="./wiki", $bo_table="wiki");
