@@ -4,7 +4,7 @@
 + 예제 사용법
   - 폴더구조 
     g4/example.php
-    g4/narin.lib.class.php
+    g4/narinwiki.lib.php
     g4/wiki
     g4/skin/latest/narin_basic/latest.skin.php
   - 위키로 사용하는 bo_table : 'wiki'  
@@ -23,6 +23,10 @@ echo narin_latest($skin_dir="narin_basic", $wiki_path="./wiki", $bo_table="wiki"
 
 // 나린위키 라이브러리 객체 생성
 $narinLib = new NarinWikiLib($wiki_path="./wiki", $bo_table="wiki");
+
+// $wr_id 가 1인 문서의 캐시된 HTML 을 가져옴
+// (parsing 대신 사용)
+$content = $narinLib->getCache($wr_id=1);
 
 // 폴더내의 폴더/문서 목록 얻기
 // $withArticle = false 라면, 폴더 목록만
