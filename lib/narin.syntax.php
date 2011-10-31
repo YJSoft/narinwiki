@@ -477,8 +477,13 @@ END;
   
   public function wiki_footnotes($matches, $params)
   {
-  	$idx = count($this->footnotes)+1;
-  	array_push($this->footnotes, trim($matches[1]));
+  	$footnote = trim($matches[1]);
+
+  	$key = array_search($footnote, $this->footnotes);
+  	if($key === false) {
+  		$idx = count($this->footnotes)+1;
+  		array_push($this->footnotes, $footnote);
+  	} else $idx = ($key+1);
   	return "<sup class=\"fn\"><a href=\"#footnote_{$idx}\" name=\"footnote_top_{$idx}\" id=\"footnote_top_{$idx}\">{$idx})</a></sup>";
   }      
 

@@ -1,4 +1,6 @@
-  * 2011-11-xx  
+  * 2011-10-31 
+    * 중복 주석에 대한 처리 추가
+      * lib/narin.syntax.php
     * history.skin.php의 history 데이터에 mb_name, mb_nick 필드 추가
     	* lib/narin.History.class.php
     * ~~NOCACHE~~ 일 때도 cache 저장 실행 (외부에서 parser 없이 parsing 결과를 읽을 수 있도록)
