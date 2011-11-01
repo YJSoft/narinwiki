@@ -1,4 +1,11 @@
 <?
+/**
+ * include 폴더 관리 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 
 if(!$is_wiki_admin ) {	alert("권한이 없습니다."); }

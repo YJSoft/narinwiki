@@ -1,4 +1,11 @@
 <?
+/**
+ * include head.sub 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 
 if($wiki[path] && file_exists($wiki[path]."/narin.config.php") ) {
@@ -17,7 +24,6 @@ if($wiki[path] && file_exists($wiki[path]."/narin.config.php") ) {
 ?>
 
 <link rel="stylesheet" href="<?=$wiki[path]?>/css.php?bo_table=<?=$bo_table?>" type="text/css" media="all">
-<link rel="stylesheet" href="<?=$wiki[path]?>/css.php?bo_table=<?=$bo_table?>&print=1" type="text/css" media="print">
 <script type="text/javascript">
 	var wiki_path = "<?=$wiki[path]?>";
 	var wiki_script = "<?=(basename($_SERVER["SCRIPT_NAME"]))?>";

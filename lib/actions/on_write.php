@@ -1,9 +1,13 @@
 <?
+/**
+ * 액션 스크립트 : 글 작성폼 보이기 전 처리
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined('_GNUBOARD_')) exit;
 
-/**
- * 글쓰기 폼 보여주기 전 처리
- */
 list($subject, $wr_doc) = wiki_doc_from_write($doc, $wr_id);
 
 if(!$write[is_owner] && !$is_wiki_admin) $return_array['is_file'] = false;

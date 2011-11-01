@@ -1,5 +1,11 @@
 <?
-if (!defined('_GNUBOARD_')) exit;
+/**
+ * 나린위키 네임스페이스(폴더) 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+
 
 class NarinNamespace extends NarinClass {
 	

@@ -1,6 +1,12 @@
 <?
-if (!defined('_GNUBOARD_')) exit;
+/**
+ * 썸네일 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 
+// easy php thumbnail 클래스를 이용함
 require_once $wiki[path]."/lib/Thumb/easyphpthumbnail.class.php";
 
 class NarinThumb extends NarinClass {

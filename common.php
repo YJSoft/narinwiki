@@ -1,5 +1,11 @@
 <?
-
+/**
+ * 공용 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if(!file_exists($wiki_path."/narin.config.php")) {
 	header("location:".$wiki_path."/install.php");
 	exit;

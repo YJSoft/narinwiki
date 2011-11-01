@@ -1,4 +1,10 @@
 <?
+/**
+ * 위키 관리 : nowiki 페이지 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 $pageid = "nowiki";
 
 include_once("_common.php");

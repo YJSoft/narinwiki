@@ -1,4 +1,10 @@
-<?php
+<?
+/**
+ * 나린위키 문법 분석(parsing) 실행 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 	
 define("EVENT_AFTER_PARSING_ALL", "EVT_PARSING_FINSISHING_ALL");
 define("EVENT_AFTER_PARSING_LINE", "EVT_PARSING_FINSISHING_LINE");

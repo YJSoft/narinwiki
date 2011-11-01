@@ -1,10 +1,13 @@
 <?
+/**
+ * 액션 스크립트 : 문서 삭제 (삭제된 후)
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined('_GNUBOARD_')) exit;
 
-/**
- * 문서 삭제 후 처리 (TAIL)
- * 문서가 삭제된 후 호출됨
- */
 $wikiArticle = wiki_class_load("Article");
 $article = $delete_article;
 

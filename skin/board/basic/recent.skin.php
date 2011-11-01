@@ -1,4 +1,11 @@
 <?
+/**
+ * 나린위키 스킨 : 최근 변경 내역 스킨
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined("_GNUBOARD_")) exit; //개별 페이지 접근 불가 
 
 /**********************************************

@@ -1,9 +1,13 @@
 <?
+/**
+ * 액션 스크립트 : 문서 보기 전 처리
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined('_GNUBOARD_')) exit;
 
-/**
- * 문서 보기 전처리
- */
 $view = &$params[view];
 
 // 위키 오브젝트 로드

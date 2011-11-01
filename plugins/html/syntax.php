@@ -1,5 +1,11 @@
 <?
-
+/**
+ * 나린위키 HTML 플러그인 : 문법 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 class NarinSyntaxHtml extends NarinSyntaxPlugin {
 
 	var $blocks = array();

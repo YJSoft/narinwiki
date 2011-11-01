@@ -1,4 +1,11 @@
 <?
+/**
+ * 문법 플러그인 : 나린위키 메인 문법 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 class NarinSyntax extends NarinSyntaxPlugin {
 	
 	var $id; 

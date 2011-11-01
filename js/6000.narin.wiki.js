@@ -1,4 +1,10 @@
-
+/**
+ * 나린위키 공용 자바 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 $(document).ready(function() {
 	$(".wiki_content img").removeAttr("onclick");
 	$(".wiki_content img").each(function() {

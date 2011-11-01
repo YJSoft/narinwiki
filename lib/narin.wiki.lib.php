@@ -1,4 +1,11 @@
 <?
+/**
+ * 나린위키 공용 라이브러리 모음
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+
 if (!defined('_GNUBOARD_')) exit;
 
 include_once $wiki[path]."/lib/narin.Class.class.php";

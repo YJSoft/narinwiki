@@ -1,10 +1,14 @@
 <?
+/**
+ * 액션 스크립트 : 댓글 작성/업데이트 후 처리
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 if (!defined('_GNUBOARD_')) exit;
 
-/**
- * 댓글 작성/업데이트 시 
- * 위키문서 링크 수정 (/ 로 시작하지 않는 문서에 대해서)
- */
+// 위키문서 링크 수정 (/ 로 시작하지 않는 문서에 대해서)
 $util = wiki_class_load("Util");
 $content = $util->wiki_fix_internal_link($wr_content);
 
