@@ -1,5 +1,11 @@
 <?
-
+/**
+ * 나린위키 문서잠금(Lock) 플러그인 : 액션 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 class NarinActionLock extends NarinActionPlugin {
 
 	var $id;

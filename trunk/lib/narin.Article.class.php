@@ -1,5 +1,10 @@
 <?
-if (!defined('_GNUBOARD_')) exit;
+/**
+ * 나린위키 문서 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 
 class NarinArticle extends NarinClass {
 	

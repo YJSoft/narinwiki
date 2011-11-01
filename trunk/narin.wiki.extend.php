@@ -1,5 +1,11 @@
 <?
-
+/**
+ * 그누보드용 확장 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 /* 현지 실행 스크립트 파일 명 */
 $scriptFile = basename($_SERVER["SCRIPT_NAME"]);
 

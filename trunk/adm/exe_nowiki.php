@@ -1,4 +1,10 @@
 <?
+/**
+ * 위키 관리 : nowiki 실행 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 include_once("_common.php");
 
 if(!$is_wiki_admin) alert("접근 금지");

@@ -1,4 +1,10 @@
 <?
+/**
+ * 위키 관리 : plugin 설정 실행 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 include_once("_common.php");
 
 

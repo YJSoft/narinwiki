@@ -1,4 +1,10 @@
-<?php
+<?
+/**
+ * 나린위키 이벤트 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 
 class NarinEvent extends NarinClass
 {

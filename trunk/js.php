@@ -1,4 +1,10 @@
 <?
+/**
+ * js 병합 & minify 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 include_once "_common.php";
 include_once $wiki[path]."/lib/Minifier/jsmin.php";
 

@@ -1,3 +1,10 @@
+/**
+ * 나린위키 에디터 툴바 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+  
 // 이모티콘 드랍 메뉴
 function narin_emoticons() {
 	var emos = {"8-)" : "icon_cool.gif",

@@ -1,4 +1,10 @@
 <?
+/**
+ * folder 보기 스크립트
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
 include_once("./_common.php");
 
 if(!$loc) $loc = "/";

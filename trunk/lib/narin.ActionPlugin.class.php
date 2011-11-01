@@ -1,5 +1,11 @@
 <?
-
+/**
+ * 액션 플러그인 클래스
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 class NarinActionPlugin extends NarinPlugin {
 		
 	/**
