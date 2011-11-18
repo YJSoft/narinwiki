@@ -48,8 +48,8 @@ class NarinCache extends NarinClass {
 	 * 모든 캐시 초기화
 	 */
 	public function clear() {
-		sql_query("TRUNCATE TABLE {$this->wiki['cache_table']}");
-		sql_query("UPDATE {$this->wiki['nsboard_table']} SET should_update_cache = 1 WHERE 1");		
+		sql_query("DELETE FROM {$this->wiki['cache_table']} WHERE bo_table = '{$this->wiki['bo_table']}'");
+		sql_query("UPDATE {$this->wiki['nsboard_table']} SET should_update_cache = 1 WHERE bo_table = '{$this->wiki['bo_table']}'");		
 	}
 
 }
