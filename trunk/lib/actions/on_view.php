@@ -13,6 +13,7 @@ $view = &$params[view];
 // 위키 오브젝트 로드
 $wikiArticle = wiki_class_load("Article");
 $wikiUtil = wiki_class_load("Util");
+
 // <nowiki>, <pre> 를 제외한 컨텐츠
 $no_nowiki_content = $wikiUtil->no_nowiki_content($view['wr_content']);
 
@@ -198,7 +199,7 @@ if($is_history) {
 	$return_array['good_href'] = "";
 	$return_array['comment_delete_href'] = "";
 	$return_array['doc_admin_href'] = "";
-	$return_array['use_comment''] = "";
+	$return_array['use_comment'] = "";
 }
 
 ?>
