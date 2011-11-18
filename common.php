@@ -5,13 +5,16 @@
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  * @author     byfun (http://byfun.com)
  */
- 
+
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
+
 if(!file_exists($wiki_path."/narin.config.php")) {
 	header("location:".$wiki_path."/install.php");
 	exit;
 }
 
-if ($_GET['wiki_path'] || $_POST['wiki_path'] || $_COOKIE['wiki_path']) {
+if (isset($_GET['wiki_path']) || isset($_POST['wiki_path']) || isset($_COOKIE['wiki_path'])) {
     unset($_GET['wiki_path']);
     unset($_POST['wiki_path']);
     unset($_COOKIE['wiki_path']);

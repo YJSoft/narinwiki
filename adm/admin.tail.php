@@ -8,7 +8,7 @@
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 ?>
 
-</div> <!--// #wiki_admin -->
+</div> <!--// wiki_admin -->
 
 <div id="wiki_admin_tail">
 	<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>

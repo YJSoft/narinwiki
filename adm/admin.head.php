@@ -14,9 +14,10 @@ $selected[$pageid] = " class='selected'";
 
 <div class="wiki_tab"> 
 	<ul class="clear"> 
-		<li<?=$selected[home]?>><a href="<?=$wiki[path]?>/adm/index.php?bo_table=<?=$wiki[bo_table]?>">기본설정</a></li> 
-		<li<?=$selected[plugin]?>><a href="<?=$wiki[path]?>/adm/plugin.php?bo_table=<?=$wiki[bo_table]?>">플러그인 설정</a></li> 
-		<li<?=$selected[nowiki]?>><a href="<?=$wiki[path]?>/adm/nowiki.php?bo_table=<?=$wiki[bo_table]?>">미등록문서</a></li> 		
+		<li<?=$selected['front']?>><a href="<?=$wiki[path]?>/adm/index.php?bo_table=<?=$wiki[bo_table]?>">위키관리</a></li>	
+		<li<?=$selected['basic']?>><a href="<?=$wiki[path]?>/adm/basic.php?bo_table=<?=$wiki[bo_table]?>">기본설정</a></li> 
+		<li<?=$selected['plugin']?>><a href="<?=$wiki[path]?>/adm/plugin.php?bo_table=<?=$wiki[bo_table]?>">플러그인 설정</a></li> 
+		<li<?=$selected['nowiki']?>><a href="<?=$wiki[path]?>/adm/nowiki.php?bo_table=<?=$wiki[bo_table]?>">미등록문서</a></li> 		
 	</ul> 
 </div> 
 
