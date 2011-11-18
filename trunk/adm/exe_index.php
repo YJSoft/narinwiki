@@ -1,21 +1,19 @@
 <?
 /**
- * À§Å° °ü¸® : index ½ÇÇà ½ºÅ©¸³Æ®
+ * ìœ„í‚¤ ê´€ë¦¬ : manage ì‹¤í–‰ ìŠ¤í¬ë¦½íŠ¸
  *
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  * @author     byfun (http://byfun.com)
  */
 include_once("_common.php");
 
-if($wiki_front_apply_exist_doc) {
-	$wikiArticle = wiki_class_load("Article");
-	$front = $wikiArticle->getFrontPage();
-	sql_query("UPDATE {$write_table} SET wr_subject = '$wiki_front' WHERE wr_id = $front[wr_id]");
+if($md == 'cache_clear') {
+	
+	$wikiCache = wiki_class_load("Cache");
+	$wikiCache->clear();
+	echo "1";
+	exit;
 }
-
-sql_query("UPDATE {$g4[board_table]} SET bo_subject = '$wiki_front' WHERE bo_table = '$bo_table'");
-$narin_config = wiki_class_load("Config");
-$narin_config->update("/setting", $_POST[setting]);
 
 header("location:{$wiki[path]}/adm/index.php?bo_table={$bo_table}");
 ?>
