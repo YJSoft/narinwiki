@@ -270,6 +270,9 @@ class NarinNamespace extends NarinClass {
 		return $list;
 	}
 	
+	/**
+	 * Return tree structure (in HTML)
+	 */
 	public function get_tree($parent = "/", $current="") {
 		$pname = basename($parent);
 		if(!$pname) $pname = $this->wiki['tree_top'];		
@@ -290,6 +293,9 @@ class NarinNamespace extends NarinClass {
 		else return $tree_html;
 	}
 	
+	/**
+	 * Build tree as array
+	 */
 	function _build_tree($path_list) { 
 		$path_tree = array(); 
 		foreach ($path_list as $idx=>$row) { 
@@ -302,6 +308,9 @@ class NarinNamespace extends NarinClass {
 		return $path_tree; 
 	} 
 	
+	/**
+	 * Build tree HTML with tree array
+	 */
 	function _build_list($tree, $prefix = '', $current = '') { 
 		$url = $this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc=';	
 		$ul = ''; 
@@ -309,7 +318,7 @@ class NarinNamespace extends NarinClass {
 			$li = ''; 
 			$folder = $prefix.$key;
 			if(preg_match("/^".preg_quote($folder, "/")."/", $current)) $class = ' class="open"';
-			else $class = '';
+			else $class = ' class="closed"';
 			$link = $url . '' . urlencode($folder);
 			$link = $url.$folder;
 			if (is_array($value)) { 
