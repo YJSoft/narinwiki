@@ -189,6 +189,9 @@
 	table#folder_list td.folder_up { background:url('img/icon_folder_up.gif') no-repeat left}
 	table#folder_list td.doc { background:url('img/icon_doc.gif') no-repeat left}	
 	
+	#wiki_folder_navi { width:200px; vertical-align:top; scroll:auto; border-right:1px solid #ccc; padding-right:5px;}
+	#wiki_folder_contents { padding-left:10px; }
+	
 /* history.skin.php **************/
 	#wiki_history .history_date { }
 	#wiki_history  td { vertical-align:middle; }

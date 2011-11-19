@@ -70,67 +70,75 @@ if($is_wiki_admin) $colspan++;
 </div> <!--// wiki_title_bar -->
 
 <div id="wiki_contents">
-	<? if($is_wiki_admin) { ?>
-	<input type="checkbox" name="checkall">
-	<? } ?>
-	<form name="frmflist" method="post">
-	<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>">
-	<input type="hidden" name="folder" value="<?=wiki_input_value($folder[loc])?>">
-	<input type="hidden" name="move_to_folder">
-	<table id="folder_list" cellspacing="0" cellpadding="0" border="0">
-	<? 
-	// 최상위 폴더가 아니면... 상위 폴더 이동 링크 보여줌
-	if($loc != "/") {?>
-		<tr>
-			<? if($is_wiki_admin) echo "<td></td>"; ?>
-			<td class="flist folder_up">
-				<a href="<?=$wiki[path]?>/folder.php?bo_table=<?=$wiki[bo_table]?>&loc=<?=$folder[up]?>">..</a>
-			</td>
-		</tr>	
-		<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>	
-	<?}
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tr><td id="wiki_folder_navi"><?=$tree?></td><td valign="top">
 	
-	for($i=0; $i<count($folder_list); $i++) {	?>
-		<tr>
-			<? if($is_wiki_admin) {				
-				if($folder_list[$i][type] == 'doc') {?>
-					<td width="20px">
-						<input type="checkbox" name="chk_wr_id[]" class="chk" value="<?=$folder_list[$i][wr_id]?>" style="margin-top:3px"/>
-					</td>
-				<?}
-				else echo '<td></td>';
-			}
-			?>
-			<td class="flist <?=$folder_list[$i][type]?>">
-				<a href="<?=$folder_list[$i][href]?>"><?=$folder_list[$i][name]?></a>
-			</td>		
-		</tr>
-		<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>
+	<div id="wiki_folder_contents">
+		<? if($is_wiki_admin) { ?>
+		<input type="checkbox" name="checkall">
 		<? } ?>
-	</table>
-	
-	<div style="display:none;">
-		<a href="#move_folder_layer" class="wiki_modal" id="a_move_folder">문서이동</a>
-		<div id="move_folder_layer" style="width:400px;height:100px;">
-			<div style="background-color:#3B3B3B; color:#fff; padding:5px;">
-			문서 이동
-			</div>
-			<div style="padding:10px;">
-				폴더 :
-				<select name="move_folder" id="move_folder">
-					<? for($i=0; $i<count($all_folders); $i++) {
-						echo "<option value=\"".wiki_input_value($all_folders[$i][path])."\">{$all_folders[$i][display]}</option>";
-					}?>
-				</select>
-			</div>
-			<div style="margin-top:10px;padding:5px;border-top:1px dotted #ccc;">
-				<span class="button"><a href="javascript:closeDialog();">닫기</a></span>
-				<span class="button black"><a href="javascript:select_move_do();">이동</a></span>
+		<form name="frmflist" method="post">
+		<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>">
+		<input type="hidden" name="folder" value="<?=wiki_input_value($folder[loc])?>">
+		<input type="hidden" name="move_to_folder">
+		<table id="folder_list" cellspacing="0" cellpadding="0" border="0">
+		<? 
+		// 최상위 폴더가 아니면... 상위 폴더 이동 링크 보여줌
+		if($loc != "/") {?>
+			<tr>
+				<? if($is_wiki_admin) echo "<td></td>"; ?>
+				<td class="flist folder_up">
+					<a href="<?=$wiki[path]?>/folder.php?bo_table=<?=$wiki[bo_table]?>&loc=<?=$folder[up]?>">..</a>
+				</td>
+			</tr>	
+			<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>	
+		<?}
+		
+		for($i=0; $i<count($folder_list); $i++) {	?>
+			<tr>
+				<? if($is_wiki_admin) {				
+					if($folder_list[$i][type] == 'doc') {?>
+						<td width="20px">
+							<input type="checkbox" name="chk_wr_id[]" class="chk" value="<?=$folder_list[$i][wr_id]?>" style="margin-top:3px"/>
+						</td>
+					<?}
+					else echo '<td></td>';
+				}
+				?>
+				<td class="flist <?=$folder_list[$i][type]?>">
+					<a href="<?=$folder_list[$i][href]?>"><?=$folder_list[$i][name]?></a>
+				</td>		
+			</tr>
+			<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>
+			<? } ?>
+		</table>
+		
+		<div style="display:none;">
+			<a href="#move_folder_layer" class="wiki_modal" id="a_move_folder">문서이동</a>
+			<div id="move_folder_layer" style="width:400px;height:100px;">
+				<div style="background-color:#3B3B3B; color:#fff; padding:5px;">
+				문서 이동
+				</div>
+				<div style="padding:10px;">
+					폴더 :
+					<select name="move_folder" id="move_folder">
+						<? for($i=0; $i<count($all_folders); $i++) {
+							echo "<option value=\"".wiki_input_value($all_folders[$i][path])."\">{$all_folders[$i][display]}</option>";
+						}?>
+					</select>
+				</div>
+				<div style="margin-top:10px;padding:5px;border-top:1px dotted #ccc;">
+					<span class="button"><a href="javascript:closeDialog();">닫기</a></span>
+					<span class="button black"><a href="javascript:select_move_do();">이동</a></span>
+				</div>
 			</div>
 		</div>
-	</div>
-	
-	</form>
+		
+		</form>
+	</div> <!--// wiki_folder_contents -->
+
+</td></tr></table>
 </div> <!--// wiki_contents -->
 
 <? 
@@ -174,6 +182,9 @@ if($is_wiki_admin) {
 		$('input[name="checkall"]').click(function() {
 		  $(".chk").attr('checked', $(this).attr('checked'));
 		});		
+		$(".narin_tree").treeview({
+			collapsed: true
+		});
 	});
 
 	$("#show_folderadmin").click(function(evt) {

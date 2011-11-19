@@ -49,9 +49,11 @@ if($is_wiki_admin) {
 	foreach($f as $vp => $rp)
 	{
 		array_push($all_folders, array("display"=>$vp, "path"=>$rp));
-	}
-	
+	}	
 }
+
+$tree = $wikiNS->get_tree("/", $n['ns']);
+
 include_once $wiki[path]."/head.php";
 include_once $wiki[inc_skin_path]."/folder.skin.php";
 include_once $wiki[path]."/tail.php";
