@@ -268,7 +268,63 @@ class NarinNamespace extends NarinClass {
 		$list = array_merge($folders, $files);
 		$this->cache[getList][$parent][$withArticle] = $list;
 		return $list;
-	}		
+	}
+	
+	public function get_tree($parent = "/", $current="") {
+		$pname = basename($parent);
+		if(!$pname) $pname = $this->wiki['tree_top'];		
+		$escapedParent = mysql_real_escape_string($parent);
+		$res = sql_query("SELECT ns, ns_access_level FROM {$this->wiki['ns_table']} WHERE ns LIKE '$escapedParent%' AND bo_table = '{$this->wiki['bo_table']}' ORDER BY ns");
+		$list = array();		
+		while($row = sql_fetch_array($res)) {
+			if($row['ns'] == '/' || $this->member['mb_level'] < $row['ns_access_level']) {
+				continue;
+			}
+			array_push($list, $row);
+		}
+		if(!preg_match("/\/$/", $parent)) $parent .= "/";
+		$tree = $this->_build_tree($list);
+		$tree_html = $this->_build_list($tree, "/", $current);
+		
+		if($parent == "/") return '<ul class="narin_tree filetree"><li class="open"><span class="root folder"><a href="folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($parent).'">'.$pname.'</a></span>'.$tree_html.'</li></ul>';
+		else return $tree_html;
+	}
+	
+	function _build_tree($path_list) { 
+		$path_tree = array(); 
+		foreach ($path_list as $idx=>$row) { 
+			$list = explode('/', trim($row['ns'], '/')); 
+			$last_dir = &$path_tree; 
+			foreach ($list as $dir) { 
+				$last_dir =& $last_dir[$dir]; 
+			} 
+		} 
+		return $path_tree; 
+	} 
+	
+	function _build_list($tree, $prefix = '', $current = '') { 
+		$url = $this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc=';	
+		$ul = ''; 
+		foreach ($tree as $key => $value) { 
+			$li = ''; 
+			$folder = $prefix.$key;
+			if(preg_match("/^".preg_quote($folder, "/")."/", $current)) $class = ' class="open"';
+			else $class = '';
+			$link = $url . '' . urlencode($folder);
+			$link = $url.$folder;
+			if (is_array($value)) { 
+				$li .= '<li'.$class.'><span class="folder"><a href="'.$link.'">'.$key.'</a></span>'; 
+				$sub = $this->_build_list($value, "$prefix$key/", $current); 
+				if($sub) $li .= $sub;
+				$ul .= $li.'</li>';
+			} else {
+				$ul .= '<li'.$class.'><span class="folder"><a href="'.$link.'">'.$key.'</a></span></li>'; 
+			} 
+		}
+		return strlen($ul) ? sprintf('<ul>%s</ul>', $ul) : ''; 
+	} 
+	
+			
 	
 	/**
 	 * Remove all empty namespaces
