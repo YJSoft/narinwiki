@@ -73,3 +73,4 @@
 .filetree li.expandable span.folder { background: url(tree/folder-closed.gif) 0 0 no-repeat; }
 .filetree span.file { background: url(tree/file.gif) 0 0 no-repeat; }
 .filetree span.root { background: url(tree/folder-home.gif) 0 0 no-repeat; }
+.filetree li.closed span.folder { background: url(tree/folder-closed.gif) 0 0 no-repeat; }
