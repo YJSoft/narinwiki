@@ -318,16 +318,17 @@ class NarinNamespace extends NarinClass {
 			$li = ''; 
 			$folder = $prefix.$key;
 			if(preg_match("/^".preg_quote($folder, "/")."/", $current)) $class = ' class="open"';
-			else $class = ' class="closed"';
+			else $class = '';
 			$link = $url . '' . urlencode($folder);
-			$link = $url.$folder;
 			if (is_array($value)) { 
 				$li .= '<li'.$class.'><span class="folder"><a href="'.$link.'">'.$key.'</a></span>'; 
 				$sub = $this->_build_list($value, "$prefix$key/", $current); 
 				if($sub) $li .= $sub;
 				$ul .= $li.'</li>';
 			} else {
-				$ul .= '<li'.$class.'><span class="folder"><a href="'.$link.'">'.$key.'</a></span></li>'; 
+				if($class != '') $closed = "";
+				else $closed = " closed_folder";
+				$ul .= '<li'.$class.'><span class="folder '.$closed.'"><a href="'.$link.'">'.$key.'</a></span></li>'; 
 			} 
 		}
 		return strlen($ul) ? sprintf('<ul>%s</ul>', $ul) : ''; 
