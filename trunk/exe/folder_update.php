@@ -37,9 +37,7 @@ if($ns[ns] != "/" && $wiki_loc != "/" && $ns[ns] != $wiki_loc) {
 $wikiNS->setTemplate($wiki_loc, $wiki_template);
 
 
-if($write[access_level] != $wiki_access_level) {
-	$wikiNS->updateAccessLevel($wiki_loc, $wiki_access_level);
-}
+$wikiNS->updateAccessLevel($wiki_loc, $wiki_access_level);
 
 header("location:{$wiki[path]}/folder.php?bo_table={$wiki[bo_table]}&loc=".urlencode(stripcslashes($wiki_loc)));
 

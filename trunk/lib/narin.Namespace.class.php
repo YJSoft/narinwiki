@@ -121,7 +121,7 @@ class NarinNamespace extends NarinClass {
 	{
 		if($ns) $ns = mysql_real_escape_string($ns);			
 		if($level) $level = mysql_real_escape_string($level);			
-		sql_query("UPDATE {$this->wiki[ns_table]} SET ns_access_level = '$level' WHERE bo_table = '{$this->wiki[bo_table]}' AND ns = '$ns'", false);		
+		sql_query("UPDATE {$this->wiki[ns_table]} SET ns_access_level = '$level' WHERE bo_table = '{$this->wiki[bo_table]}' AND ns LIKE '$ns%'");						
 	}
 	
 	

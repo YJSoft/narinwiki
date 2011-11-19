@@ -16,6 +16,7 @@ class NarinSyntax extends NarinSyntaxPlugin {
   
   var $list_level_types = array();    
   var $list_level = 0;
+  var $list_space = 0;
 
 	var $table_rowspan = array();	
 	var $table_opened = false;
@@ -543,7 +544,15 @@ END;
 		}
 		
 		$space = $space / 2;
-    $newlevel = ($close ? 0 : $space);
+    
+    if($this->list_space > $space) $newlevel = $this->list_level -1;
+    else if($this->list_space < $space) $newlevel = $this->list_level +1;
+    else $newlevel = $this->list_level;
+
+		$this->list_space = $space;
+		$newlevel = max(0, $newlevel);    
+    if($close) $newlevel = 0;
+    
 		$m_listtype = $listtype;
 			
 		

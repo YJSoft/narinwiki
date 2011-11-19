@@ -21,7 +21,7 @@ $folder[up] : 상위 폴더 e.g. /byfun/com
 $create_doc_href : 문서 생성 링크
 $folder_manage_href : 문서 관리 링크
 $wiki_admin_href : 위키 관리 링크
-
+$tree : 폴더 트리
 $folder_list : 폴더 내의 파일 목록 
    - 형식 
         array( 
@@ -181,8 +181,9 @@ if($is_wiki_admin) {
 	$(document).ready(function() {
 		$('input[name="checkall"]').click(function() {
 		  $(".chk").attr('checked', $(this).attr('checked'));
-		});		
+		});
 		$(".narin_tree").treeview({
+			persist: "location",
 			collapsed: true
 		});
 	});
