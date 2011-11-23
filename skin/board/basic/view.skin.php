@@ -62,7 +62,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 <!-- 내용 출력 -->
 <div id="wiki_contents" class="wiki_contents">
 
-	<div id="wiki_write_contents">		
+	<div id="wiki_write_contents" class="clear">		
 	<?=$view[content]?>
 	</div> <!--// wiki_write_contents -->
 	

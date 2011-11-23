@@ -159,7 +159,7 @@ if(wiki_script == 'write.php') {
 		$.nmTop().close();
 	}
 	
-	if(!wiki_is_locked) {				
+	if(typeof wiki_is_locked != 'undefined' && !wiki_is_locked) {
 		$(document).ready(function() {
 	
 				lc_link = $("<a></a>").attr('href', '#lock_msg').attr('id', 'confirm_lock_extend').attr('style', 'display:none');

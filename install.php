@@ -125,6 +125,8 @@ EOF;
 	$config_file .= "\$wiki[option_table] = \"{$db_prefix}narin_option\";\n";	
 	$config_file .= "\$wiki[cache_table] = \"{$db_prefix}narin_cache\";\n";		
 	$config_file .= "\$wiki[changes_table] = \"{$db_prefix}narin_changes\";\n";		
+	$config_file .= "\$wiki[media_table] = \"{$db_prefix}narin_media\";\n";		
+	$config_file .= "\$wiki[media_ns_table] = \"{$db_prefix}narin_media_namespace\";\n";			
 	$config_file .= "?>\n";
 	
 	$fp = @fopen("narin.config.php", "w");

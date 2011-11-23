@@ -264,37 +264,57 @@ function wiki_msg(msg, options) {
 	setTimeout(function() { msgLayer.fadeOut(function() { msgLayer.remove(); settings.callback(); });  }, settings.seconds);			
 }
 
+function objToString(o){
+	var parse = function(_o){    
+		var a = [], t;        
+		for(var p in _o){        
+			if(_o.hasOwnProperty(p)){            
+				t = _o[p];                
+				if(t && typeof t == "object"){                
+					a[a.length]= p + ":{ " + arguments.callee(t).join(", ") + "}";                    
+				}
+				else {                    
+					if(typeof t == "string"){                    
+					  a[a.length] = [ p+ ": \"" + t.toString() + "\"" ];
+					}
+					else{
+					  a[a.length] = [ p+ ": " + t.toString()];
+					}                    
+				}
+			}
+		}        
+		return a;        
+	}    
+	return "{" + parse(o).join(", ") + "}";    
+}
 
 (function($){
-     $.fn.extend({
-          center: function (options) {
-               var options =  $.extend({ // Default values
-                    inside:window, // element, center into window
-                    transition: 0, // millisecond, transition time
-                    minX:0, // pixel, minimum left element value
-                    minY:0, // pixel, minimum top element value
-                    withScrolling:true, // booleen, take care of the scrollbar (scrollTop)
-                    vertical:true, // booleen, center vertical
-                    horizontal:true // booleen, center horizontal
-               }, options);
-               return this.each(function() {
-                    var props = {position:'absolute'};
-                    if (options.vertical) {
-                         var top = ($(options.inside).height() - $(this).outerHeight()) / 2;
-                         if (options.withScrolling) top += $(options.inside).scrollTop() || 0;
-                         top = (top > options.minY ? top : options.minY);
-                         $.extend(props, {top: top+'px'});
-                    }
-                    if (options.horizontal) {
-                          var left = ($(options.inside).width() - $(this).outerWidth()) / 2;
-                          if (options.withScrolling) left += $(options.inside).scrollLeft() || 0;
-                          left = (left > options.minX ? left : options.minX);
-                          $.extend(props, {left: left+'px'});
-                    }
-                    if (options.transition > 0) $(this).animate(props, options.transition);
-                    else $(this).css(props);
-                    return $(this);
-               });
-          }
-     });
+	$.center = function($this) {
+		var win = $(window);
+		var top = (win.height() - $this.outerHeight()) / 2;
+		var left = (win.width() - $this.outerWidth()) / 2;
+		var pos = 'fixed';
+		if($.browser.msie) {
+			top += win.scrollTop() || 0;
+			top = (top > 0 ? top : 0);
+			left += win.scrollLeft() || 0;
+			left = (left > 0 ? left : 0);			
+			pos = 'absolute';		
+		}
+		$this.css({position:pos, top : top, left : left});				  			
+	};
+	
+	$.fn.center = function() {
+		return this.each(function() {
+			var ss = function() { $.center($(this)); };
+			$(window).resize(ss).scroll(ss);			 	    
+			ss();
+		});		
+	};
+	
+	$.fn.center_now = function() {
+		return this.each(function() {
+			$.center($(this));
+		});
+	};
 })(jQuery);

@@ -228,17 +228,17 @@ function wiki_set_option($name, $field, $value)
 	
 	if($field == null && $value == null) {
 		sql_query("DELETE FROM {$wiki[option_table]} WHERE name = '/{$wiki[bo_table]}/$eName'");
-		return;
+		return true;
 	}
 	
 	$opt = wiki_get_option($name);
 	
 	if($value == null && $opt) {		
-		unset($opt[$field]);
+		unset($opt[$field]);		
 		$json_string = mysql_real_escape_string(json_encode($opt));
 		$sql = "UPDATE {$wiki[option_table]} SET content = '$json_string' WHERE name = '/{$wiki[bo_table]}/$eName'";
 		sql_query($sql);
-		return;
+		return true;
 	} 
 	
 	if($opt) {	// 저장된 옵션이 있다면 수정
@@ -247,14 +247,14 @@ function wiki_set_option($name, $field, $value)
 		if(is_array($field) && is_array($value)) {
 			
 			// 필드와 값이 갯수가 같아야 함
-			if(count($field) != count($value)) return;
+			if(count($field) != count($value)) return false;
 			
 			for($i=0; $i<count($field); $i++) {
 				$opt[$field[$i]] = $value[$i];
 			}
 		} else if(!is_array($field) && !is_array($value)) {
 			$opt[$field] = $value;
-		} else return;
+		} else return false;
 				
 		$json_string = mysql_real_escape_string(json_encode($opt));
 		$sql = "UPDATE {$wiki[option_table]} SET content = '$json_string' WHERE name = '/{$wiki[bo_table]}/$eName'";
@@ -263,7 +263,7 @@ function wiki_set_option($name, $field, $value)
 		
 		if(is_array($field) && is_array($value)) {
 			// 필드와 값이 갯수가 같아야 함
-			if(count($field) != count($value)) return;
+			if(count($field) != count($value)) return false;
 
 			$data = array();
 
@@ -272,12 +272,13 @@ function wiki_set_option($name, $field, $value)
 			}
  		} else if(!is_array($field) && !is_array($value)) {
  			$data = array("$field"=>$value);
-		} else return;
+		} else return false;
 		
 		$json = mysql_real_escape_string(json_encode($data));			
 		$sql = "INSERT INTO	{$wiki[option_table]} VALUES ('/{$wiki[bo_table]}/$eName', '$json')";
 	}
 	sql_query($sql);
+	return true;
 }
 
 
@@ -442,11 +443,44 @@ function wiki_subval_sort($a,$subkey) {
 }
 
 /**
+ * 파일 사이즈 변환
+ */
+function wiki_file_size($size) {
+	$mod = 1024;
+	$units = explode(' ','B KB MB GB TB PB');
+	for ($i = 0; $size > $mod; $i++) {
+	    $size /= $mod;
+	}
+	return round($size, 2) . ' ' . $units[$i];
+}
+
+/**
  * EUC-KR 버전인가?
  */
 function wiki_is_euckr() {
 	global $g4;
 	return $g4[charset] == 'euc-kr';
+}
+
+/**
+ * JSON ENCODE
+ */
+function wiki_json_encode($arr) {
+	if(wiki_is_euckr()) wiki_utf8($arr);
+	return json_encode($arr);
+}
+
+/**
+ * 배열을 UTF-8로 변환
+ */
+function wiki_utf8(&$arr) {
+	if(!is_array($arr)) {
+		if(wiki_is_euckr()) $arr = iconv("CP949", "UTF-8", $arr);
+		return;
+	}
+	foreach($arr as $k => $v) {
+		wiki_utf8($arr[$k]);
+	}
 }
 
 /**
@@ -475,6 +509,23 @@ function wiki_not_found_page() {
 	header("HTTP/1.0 404 Not Found");
 	exit;
 }
+
+/**
+ * 배열을 stripslashes 함
+ */
+function wiki_unescape($arr) {
+	if(!is_array($arr)) {
+		return stripslashes($arr);
+	}
+	
+	foreach($arr as $k=>$v) {
+		if(is_array($v)) $arr[$k] = wiki_unescape($arr);
+		else $arr[$k] = stripslashes($v);
+	}
+	
+	return $arr;
+}
+
 
 /**
  * 디버그 용

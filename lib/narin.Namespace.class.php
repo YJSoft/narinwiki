@@ -327,7 +327,7 @@ class NarinNamespace extends NarinClass {
 				$ul .= $li.'</li>';
 			} else {
 				if($class != '') $closed = "";
-				else $closed = " closed_folder";
+				else $closed = " leaf_folder";
 				$ul .= '<li'.$class.'><span class="folder '.$closed.'"><a href="'.$link.'">'.$key.'</a></span></li>'; 
 			} 
 		}

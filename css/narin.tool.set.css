@@ -30,6 +30,7 @@
 .markItUp .narin_picture a {	background-image:url(tool_images/picture.png);}
 .markItUp .narin_file a {	background-image:url(tool_images/file.png);}
 .markItUp .narin_folder a {	background-image:url(tool_images/folder.png);}
+.markItUp .narin_media a {	background-image:url(tool_images/media_manager.png);}
 .markItUp .narin_quote a	{	background-image:url(tool_images/quotes.png);}
 .markItUp .narin_code a	{	background-image:url(tool_images/code.png);}
 .markItUp .narin_footnote a	{	background-image:url(tool_images/footnote.png);}
@@ -113,6 +114,7 @@
 		border:1px solid white;
 		padding:0px; margin:0px;
 		float:left;	}
+
 
 /* 검색창 레이어 */
 .markItUp .wiki_find_doc {
