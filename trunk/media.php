@@ -1,7 +1,5 @@
 <?
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-//ob_start();	
+ob_start();	
 include_once "_common.php";
 $g4['title'] = '나린위키 미디어 관리자';
 $loc = stripslashes($loc);
@@ -102,7 +100,8 @@ include_once "head.php";
 </div> <!--// media_manager_wrapper -->
 
 <style>
-	#media_manager_wrapper { padding:10px; }
+	html, body { background-color:#fff; }
+	#media_manager_wrapper { padding:10px; background-color:#fff;}
 	#file_list,#file_list th,#file_list td{border:0;}	
 	#file_list{width:100%;border-bottom:2px solid #dcdcdc;text-align:left}
 	#file_list caption{display:none}
@@ -577,14 +576,18 @@ include_once "head.php";
 	
 	
 	$(document).ready(function() {
-		mm.init();
+		if(!window.opener) {
+			alert('잘못된 접근입니다.');
+			window.location.href = wiki_path + '/narin.php?bo_table='+g4_bo_table;
+		}
+		else mm.init();
 	});	
 </script>
 
 <? include_once "tail.php"; ?>
 
 <?
-/*
+
 $content = ob_get_contents();
 ob_end_clean();
 
@@ -592,5 +595,5 @@ include_once $wiki[path]."/lib/Minifier/htmlmin.php";
 include_once $wiki[path]."/lib/Minifier/jsmin.php";
 include_once $wiki[path]."/lib/Minifier/cssmin.php";
 echo Minify_HTML::minify($content, $options=array("jsMinifier"=>"JSMin::minify", "cssMinifier"=>"CssMin::minify"));
-*/
+
 ?>

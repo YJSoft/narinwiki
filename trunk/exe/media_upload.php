@@ -29,9 +29,13 @@ $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
 $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
 $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
-if(!$loc) {
+if(!$loc || !$filename) {
 	die('{"jsonrpc" : "2.0", "error" : {"code": 901, "message": "잘못된 요청"}, "id" : "id"}');
 }
+
+$loc = wiki_ajax_data($loc);
+$filename = wiki_ajax_data($filename);
+
 $media = wiki_class_load('Media');
 $reg_file = $media->getFile(stripslashes($loc), stripslashes($filename));
 if($reg_file['id']) {

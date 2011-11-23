@@ -38,6 +38,9 @@ $(document).ready(function() {
 	// 글쓰기의 에디터 툴바
 	if(!is_comment) {
 		$(".wr_content").narinEditor('wiki_write');
+		$(".markItUp .narin_media").click(function() {
+			win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 'media manager', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
+		});
 	}
 		    
 });

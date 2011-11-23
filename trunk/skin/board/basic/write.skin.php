@@ -121,7 +121,11 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	</table>
 	
 	<table width="100%" class="write_table" border="0" cellspacing="0" cellpadding="0">        
-	<? if ($is_file) { ?>
+	<? 
+	// 미디어 관리자 기능추가로 파일을 사용하지 않습니다.
+	// 사용하시려면 다음 if 문의 '0 &&' 를 지워주세요.
+	if (0 && $is_file) { 
+	?>
 	<tr>
 		<th style="padding-top:10px; line-height:20px;">
 		    파일첨부 <br/>

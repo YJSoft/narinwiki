@@ -102,6 +102,32 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_changes` (
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_media` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bo_table` varchar(20) NOT NULL,
+  `ns` varchar(255) NOT NULL,
+  `source` varchar(255) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `filesize` int(11) NOT NULL,
+  `img_width` int(11) NOT NULL,
+  `img_height` smallint(6) NOT NULL,
+  `img_type` tinyint(4) NOT NULL,
+  `downloads` int(11) NOT NULL DEFAULT '0',
+  `mb_id` varchar(255) NOT NULL,
+  `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_media_namespace` (
+  `ns` varchar(255) NOT NULL,
+  `bo_table` varchar(20) NOT NULL,
+  `ns_access_level` tinyint(4) NOT NULL DEFAULT '0',
+  `ns_upload_level` tinyint(4) NOT NULL DEFAULT '2',
+  `ns_mkdir_level` tinyint(4) NOT NULL DEFAULT '9',
+  `has_child` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ns`,`bo_table`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 	  
 EOF;
 	
@@ -171,7 +197,7 @@ EOF;
 
 	기부는 온라인 결제 사이트인 페이팔을 이용해주세요 : <a href="http://narin.byfun.com/donation">기부하기</a><br/>
 	
-	무통장입금으로 해주실분은 <a href="mailto:byfun@byfun.com">byfun@byfun.com</a> 으로 메일 주시면 계좌 정보를 알려 드리도록 하겠습니다. <br/>
+	무통장입금으로 해주실분은 <a href="http://byfun.com/donation/narinwiki">이곳</a>에서 계좌 정보를 확인해주세요. <br/>
 	<br/>		
 	감사합니다. <br/>
 
