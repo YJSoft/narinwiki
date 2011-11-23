@@ -10,6 +10,8 @@ if(!defined("__NARIN_API__")) wiki_not_found_page();
 
 if(!$loc) wiki_ajax_error();
 
+$loc = wiki_ajax_data($loc);
+
 $media = wiki_class_load("Media");
 $ns = $media->getNS($loc);
 

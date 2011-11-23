@@ -208,12 +208,12 @@ mark_set.push({name:'외부문서', openWith:'[[![Url:!:http://]!] ', closeWith:
 mark_set.push({name:'주석', replaceWith:'(([![주석:]!]))', className:'narin_footnote' });
 if(!is_comment) {	
 	mark_set.push({separator:'---------------' });
+	// 미디어관리자 추가로 '그림', '파일' 기능을 사용하지 않스빈다.
+	// 사용하려면 다음 두줄의 주석을 지워주세요.
 	//mark_set.push({name:'그림', replaceWith:'{{image=[![이미지 인덱스:]!]?width=[![너비]!]&height=[![높이]!]}}', className:'narin_picture'});
 	//mark_set.push({name:'파일', replaceWith:'{{file=[![파일 인덱스:]!] [![파일명]!]}}', className:'narin_file'});
 	mark_set.push({name:'폴더', replaceWith:'{{folder=[![폴더:]!]}}', className:'narin_folder'});
-	mark_set.push({name:'미디어', beforeInsert : function(h) {
-	    win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 'media manager', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
-		}, className : 'narin_media'});	
+	mark_set.push({name:'미디어 관리자', className : 'narin_media'});	
 }
 mark_set.push({separator:'---------------' });	
 mark_set.push({name:'인용', openWith:'(!(> |!|>)!)', className:'narin_quote'});

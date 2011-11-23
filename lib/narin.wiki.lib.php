@@ -486,8 +486,8 @@ function wiki_utf8(&$arr) {
 /**
  * URL 로 넘어온 데이터를 euc-kr 인코딩으로 변환
  */
-function wiki_url_data($data) {
-	if(wiki_is_euckr() && mb_detect_encoding($data) == "UTF-8") {
+function wiki_ajax_data($data) {
+	if(wiki_is_euckr()) {
 		return iconv("UTF-8", "CP949", rawurldecode($data)); 
 	}
 	return $data;
