@@ -32,8 +32,16 @@ include_once "admin.head.php";
 	<td>스킨, 시작페이지, 상-하단 파일, 권한 등의 위키 기본 설정을 합니다.</td>
 </tr>
 <tr>
-	<td><a href="<?=$wiki['path']?>/adm/plugin.php?bo_table=<?=$bo_table?>">플러그인 설정</a></td>
+	<td><a href="<?=$wiki['path']?>/adm/media.php?bo_table=<?=$bo_table?>">미디어관리자</a></td>
+	<td>미디어관리자의 기능 설정을 합니다.</td>
+</tr>
+<tr>
+	<td><a href="<?=$wiki['path']?>/adm/plugin.php?bo_table=<?=$bo_table?>">플러그인</a></td>
 	<td>플러그인 사용여부, 설정, 설치, 제거 등의 플러그인 설정을 합니다.</td>
+</tr>
+<tr>
+	<td><a href="<?=$wiki['path']?>/adm/thumbnail.php?bo_table=<?=$bo_table?>">썸네일</a></td>
+	<td>위키에서 생성한 썸네일을 관리합니다.</td>
 </tr>
 <tr>
 	<td><a href="#cache_clear" id="cache_clear">캐시(Cache) 초기화 </a></td>

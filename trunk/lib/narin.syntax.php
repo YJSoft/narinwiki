@@ -105,7 +105,8 @@ class NarinSyntax extends NarinSyntaxPlugin {
     	"wiki_newpage"=>array("start_regx"=>"NEWPAGE", "end_regx"=>"(:(.*?))?((\?)(.*?))?"),
     	"wiki_search"=>array("start_regx"=>"SEARCH", "end_regx"=>""),
     	"wiki_image"=>array("start_regx"=>"image=", "end_regx"=>"((\?)(.*?))?"),
-    	"wiki_file"=>array("start_regx"=>"file=(\d)(\s+", "end_regx"=>")?")
+    	"wiki_file"=>array("start_regx"=>"file=(\d)(\s+", "end_regx"=>")?"),
+    	"wiki_media"=>array("start_regx"=>"media=", "end_regx"=>"((\?)(.*?))?(\|(.*?))?")
     );
         
     /*    
@@ -545,7 +546,7 @@ END;
 		
 		$space = $space / 2;
     
-    if($this->list_space > $space) $newlevel = $this->list_level -1;
+    if($this->list_space > $space) $newlevel = $space;
     else if($this->list_space < $space) $newlevel = $this->list_level +1;
     else $newlevel = $this->list_level;
 
@@ -847,8 +848,7 @@ EOF;
 	 * @format {{image=0,1,2-5?imgstyle=padding:2px;border:1px solid #ccc}} : style for image
 	*/
 	public function wiki_image($matches, $params)
-	{
-		
+	{		
 		$view = &$params[view];
 				
 		// [1] : id list
@@ -937,6 +937,78 @@ EOF;
 		}
 		return "{{".$matches[0]."}}";
 	}
+	
+	/**
+	 * 미디어 출력
+	 */
+	public function wiki_media($matches, $params) {
+		$media = wiki_class_load("Media");
+
+		// [0] : all string
+		// [1] : path
+		// [4] : parameters
+		// [6] : title		
+		
+		if(preg_match("/^(http)/", $matches[1])) {
+			if($matches[4]) parse_str(str_replace("&amp;", "&", $matches[4]));			
+			$use_thumb = false;		
+			if($width && $height) {
+					$width = intval($width);
+					$height= intval($height);
+					$use_thumb = true;
+			}			
+			if($use_thumb) $add = "width='$width' height='$height'";
+			else $add = "";
+			return "<a href='$matches[1]' class='wiki_image wiki_modal' style='$style' rel='$rn'><img src='$matches[1]' class='$align' style='$imgstyle' $add border='0'/></a>";
+		}		
+		
+		list($ns, $filename, $filepath) = wiki_page_name($matches[1]);
+		$fileinfo = $media->getFile($ns, $filename);
+		
+		if(!$fileinfo) return '<span class="no_media">[파일없음 : '.$matches[1].']</span>';
+		if($fileinfo['img_width'] > 0) {
+			return $this->_wiki_media_image($fileinfo, $matches[4], $matches[6], &$params);
+		} else {
+			return $this->_wiki_media_file($fileinfo, $matches[4], $matches[6], &$params);
+		}
+	}
+	
+	/**
+	 * 미디어 : 이미지 보여주기
+	 */
+	private function _wiki_media_image($fileinfo, $args, $title, $params) {
+		
+		if($args) parse_str(str_replace("&amp;", "&", $args));	
+		
+		if(!$title) $title = $fileinfo['source'];
+		
+		$use_thumb = false;		
+		if($width && $height) {
+				$width = intval($width);
+				$height= intval($height);
+				$use_thumb = true;
+		}
+					
+		$rn = rand(1, 999999);
+		$origin = $fileinfo['imgsrc'];
+		if($use_thumb) {	
+			$thumb = wiki_class_load("Thumb");										
+			$img = $thumb->getMediaThumb($ns=$fileinfo['ns'], $filename=$fileinfo['source'], $width, $height, $quality=90);
+		} else {
+			$img = $fileinfo['imgsrc'];
+		}
+		
+		return "<a href='$origin' class='wiki_image wiki_modal' style='$style' rel='$rn'><img src='$img' class='$align' style='$imgstyle' border='0' title='$title'/></a>";
+
+	}
+	
+	/**
+	 * 미디어 : 파일 보여주기
+	 */
+	private function _wiki_media_file($fileinfo, $args, $title, $params) {
+		if(!$title) $title = $fileinfo['source'];
+		return "<a href=\"{$fileinfo['href']}\" class=\"wikiFile\" style=\"$style\">$title</a>";
+	}	
 	
 	/**
 	 * 목차 출력 안함

@@ -104,10 +104,7 @@ class NarinThumb extends NarinClass {
 	 * 게시판 썸네일 생성 및 패스 리턴
 	 */
 	function getBoardThumb($wr_id, $thumb_width, $thumb_height, $img_idx=0, $quality=90, $use_crop=-1) {
-		
-		// 오래된 썸네일 삭제
-		if($bo_table) $this->clearThumb();
-				
+					
 		$bo_table = $this->wiki[bo_table];
 		$write_table = $this->g4[write_prefix] . $bo_table;
 		
@@ -141,13 +138,60 @@ class NarinThumb extends NarinClass {
 		$thumbLib = new easyphpthumbnail;
 		$thumbLib->Thumbwidth = $thumb_width;
 		$thumbLib->Thumbheight = $thumb_height;
-		$thumbLib->Quality = 100;
+		$thumbLib->Quality = $quality;
 		$thumbLib->Thumblocation = $this->thumb_path."/";
 		$thumbLib->Thumbfilename = $thumb_name;
 		$thumbLib->Createthumb($file, 'file');
 					
 		return $thumb_file;
 	}
+	
+	/**
+	 * 미디어 썸네일 생성 및 패스 리턴
+	 */
+	function getMediaThumb($ns, $filename, $thumb_width, $thumb_height, $quality=90) {
+			
+		$bo_table = $this->wiki['bo_table'];
+		$write_table = $this->g4['write_prefix'] . $bo_table;
+				
+		// 파일 정보 로드
+		$media = wiki_class_load("Media");
+		$fileinfo = $media->getFile($ns, $filename);
+		if(!$fileinfo) {
+			return;
+		}
+					
+		// 원본 이미지 파일 경로
+		$file = $fileinfo['path'];
+		
+		$pathinfo = pathinfo($file);
+		$extension = $pathinfo['extension'];
+		
+		// 확장자 검사 : 가능 이미지 아니면 원본 이미지 경로 반환
+		if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'png' && $extension != 'gif') {
+			return $file;
+		}
+		 	
+		// 원본 이미지 파일명
+		$filename = $fileinfo['source'];
+			
+		// 썸네일 파일 패스  (썸네일 파일 명 : 게시판아이디-파일인덱스-퀄리티)
+		$thumb_name = "media-".$bo_table."-".$fileinfo['id'] . "-". $quality ."_".$thumb_width."x".$thumb_height. "." . $extension;   
+		$thumb_file = $this->thumb_path."/".$thumb_name;
+		
+		// 썸네일이 이미 존재하면 리턴
+		if(file_exists($thumb_file)) return $thumb_file;
+			
+		$thumbLib = new easyphpthumbnail;
+		$thumbLib->Thumbwidth = $thumb_width;
+		$thumbLib->Thumbheight = $thumb_height;
+		$thumbLib->Quality = $quality;
+		$thumbLib->Thumblocation = $this->thumb_path."/";
+		$thumbLib->Thumbfilename = $thumb_name;
+		$thumbLib->Createthumb($file, 'file');
+					
+		return $thumb_file;
+	}	
 	
 }
 

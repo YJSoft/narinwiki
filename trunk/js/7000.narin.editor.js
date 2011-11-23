@@ -208,9 +208,12 @@ mark_set.push({name:'외부문서', openWith:'[[![Url:!:http://]!] ', closeWith:
 mark_set.push({name:'주석', replaceWith:'(([![주석:]!]))', className:'narin_footnote' });
 if(!is_comment) {	
 	mark_set.push({separator:'---------------' });
-	mark_set.push({name:'그림', replaceWith:'{{image=[![이미지 인덱스:]!]?width=[![너비]!]&height=[![높이]!]}}', className:'narin_picture'});
-	mark_set.push({name:'파일', replaceWith:'{{file=[![파일 인덱스:]!] [![파일명]!]}}', className:'narin_file'});
+	//mark_set.push({name:'그림', replaceWith:'{{image=[![이미지 인덱스:]!]?width=[![너비]!]&height=[![높이]!]}}', className:'narin_picture'});
+	//mark_set.push({name:'파일', replaceWith:'{{file=[![파일 인덱스:]!] [![파일명]!]}}', className:'narin_file'});
 	mark_set.push({name:'폴더', replaceWith:'{{folder=[![폴더:]!]}}', className:'narin_folder'});
+	mark_set.push({name:'미디어', beforeInsert : function(h) {
+	    win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 'media manager', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
+		}, className : 'narin_media'});	
 }
 mark_set.push({separator:'---------------' });	
 mark_set.push({name:'인용', openWith:'(!(> |!|>)!)', className:'narin_quote'});
@@ -243,6 +246,7 @@ if(!is_comment) {
 			{name:'캐시안함',  replaceWith : '~~NOCACHE~~', className:"meta_cache" }
 	  ]});
 }
+
 
 jQuery.fn.narinEditor = function(ns) {
 	
@@ -537,4 +541,24 @@ function pasteText(selection,text,opts){
     if(opts.nosel) selection.start = selection.end;
 
     setSelection(selection);
+}
+
+function markitup_set(opts) {
+	var opt = { target : '#wr_content' };
+	opt = $.extend(opt, opts);
+	$.markItUp(opt);
+}
+
+function win_pop_center(url, title, w, h, opts) {
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;    
+    var left = ((screen.width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((screen.height / 2) - (h / 2)) + dualScreenTop;
+    if(opts) opts = ',' + opts;
+    var newWindow = window.open(url, title, 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left + opts);
+
+    // Puts focus on the newWindow
+    if (window.focus) {
+        newWindow.focus();
+    }
 }

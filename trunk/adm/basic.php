@@ -12,10 +12,10 @@ include_once "admin.head.php";
 
 $wikiConfig = wiki_class_load("Config");
 $setting = $wikiConfig->setting;
-$skin = $setting[skin];
-$editLevel = $setting[edit_level];
-$historyLevel = $setting[history_access_level];
-$folderViewLevel = $setting[folder_view_level];
+$skin = $setting['skin'];
+$editLevel = $setting['edit_level'];
+$historyLevel = $setting['history_access_level'];
+$folderViewLevel = $setting['folder_view_level'];
 
 ?>
 <style type="text/css">
@@ -36,7 +36,7 @@ $folderViewLevel = $setting[folder_view_level];
 			<?
 			$arr = wiki_get_skins("board");
 			for ($i=0; $i<count($arr); $i++) {
-				$selected = ($arr[$i] == $skin[content] ? "selected" : "");
+				$selected = ($arr[$i] == $skin ? "selected" : "");
 				echo "<option value='$arr[$i]' $selected>$arr[$i]</option>\n";
 			}
 			?>
