@@ -123,7 +123,7 @@ if(wiki_script == 'write.php') {
 			clearTimeout(lock_alert_timer);
 			clearTimeout(lock_keep_alive_timer);			
 			alert('문서 잠금이 해제되었습니다.\\n문서를 저장했을 때 다른 사용자가 이 문서를 작성중이라면 저장되지 않습니다.\\n작성중이던 문서를 다른 곳에 복사하시고 저장하세요.');	
-			$.nmTop().close();
+			$.wiki_lightbox_close();
 		}, $expire_time);
 		
 	}	
@@ -152,18 +152,19 @@ if(wiki_script == 'write.php') {
 		clearTimeout(lock_expire_timer);
 		lock_alert();
 		lock_expire();
-		$.nmTop().close();		
+		$.wiki_lightbox_close();
 	}
 	
 	function close_lock_dialog() {		
-		$.nmTop().close();
+		$.wiki_lightbox_close();
 	}
 	
 	if(typeof wiki_is_locked != 'undefined' && !wiki_is_locked) {
 		$(document).ready(function() {
 	
 				lc_link = $("<a></a>").attr('href', '#lock_msg').attr('id', 'confirm_lock_extend').attr('style', 'display:none');
-				lc_dialog = $("<div></div>").attr('id', 'lock_msg').attr('style', 'display:none;').html([
+				lc_dialog = $("<div></div>").attr('style', 'display:none;').html([
+					"<div id='lock_msg'>",
 					"<div style='background-color:#3A3A3A;padding:5px;color:#fff;margin-bottom:10px;font-size:14pt;font-weight:bold;'>문서 잠금 연장</div>",
 					"<div style='line-height:170%'>",
 					"1분 뒤 문서 잠금이 해제됩니다. 문서를 다시 잠그시겠습니까?<br/>",
@@ -171,11 +172,13 @@ if(wiki_script == 'write.php') {
 					"다른 사람이 문서를 편집중이라면 문서를 저장할 수 없게됩니다.",
 					"</div>",
 					"<div style='text-align:center;margin-top:10px;padding-top:10px;border-top:1px dashed #ccc'><span class='button green'><a href='javascript:lock_extend();'>예</a></span>&nbsp;",
-					"<span class='button'><a href='javascript:close_lock_dialog();'>아니오</a></span></div>"			
+					"<span class='button'><a href='javascript:close_lock_dialog();'>아니오</a></span></div>",
+					"</div>"
 				].join(''));
 				$(document.body).append(lc_link);
 				$(document.body).append(lc_dialog);
-				lc_link.nm({closeOnClick : false, closeOnEscape : false, closeButton : '' });			
+				lc_link.wiki_lightbox({'hideOnOverlayClick' : false, 
+															 'enableEscapeButton' : false});	
 				lock_alert();			
 				lock_expire();	
 				lock_do();

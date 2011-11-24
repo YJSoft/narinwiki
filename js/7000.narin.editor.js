@@ -549,16 +549,15 @@ function markitup_set(opts) {
 	$.markItUp(opt);
 }
 
-function win_pop_center(url, title, w, h, opts) {
+function win_pop_center(loc, w, h, opts) {
     var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
     var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;    
     var left = ((screen.width / 2) - (w / 2)) + dualScreenLeft;
     var top = ((screen.height / 2) - (h / 2)) + dualScreenTop;
-    if(opts) opts = ',' + opts;
-    var newWindow = window.open(url, title, 'width=' + w + ', height=' + h + ', top=' + top + ', left=' + left + opts);
-
-    // Puts focus on the newWindow
-    if (window.focus) {
-        newWindow.focus();
-    }
+    
+    if(opts != undefined) opts = ',' + opts;
+    else opts = '';
+         
+    var newwin = window.open(''+loc, 'narin_popup', 'top=' + top + ',left=' + left +',width=' + w + ',height=' + h + opts);
+    if (window.focus) {newwin.focus();}
 }

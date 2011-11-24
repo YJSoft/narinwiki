@@ -346,15 +346,15 @@ function fwrite_submit(f)
 	
 	function wiki_read_tmpsave() {
 		$("#wr_content").val(tmp_saved);
-		$.nmTop().close();
+		$.wiki_lightbox_close();
 	}
 	
 	function wiki_close_tmpsave() {		
-		$.nmTop().close();
+		$.wiki_lightbox_close();
 	}
 	function wiki_delete_tmpsave() {
 		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_delete', wr_doc : wiki_doc}, function(data) {});
-		$.nmTop().close();
+		$.wiki_lightbox_close();
 	}		
 	
 	$(document).ready(function() {
@@ -376,12 +376,14 @@ function fwrite_submit(f)
 		evt.preventDefault();
 		$("#btn_tmpsave").hide();
 		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_write', wr_doc : wiki_doc, wr_content : $("#wr_content").val()}, function(data) {
-			msg = "저장하지 못했습니다.";
-			bgcolor = "#800000";
-			if(data == 1) {
+			json = $.parseJSON(data);
+			if(json.code == -1) {
+				bgcolor = "#800000";
+				msg = json.msg;
+			} else if(json.code == 1) {
 				msg = "저장하였습니다.";
 				bgcolor = "#333";
-			}
+			} else alert('오류');			
 			wiki_msg(msg, {bgcolor:bgcolor, seconds : 2000, callback : function() { $("#btn_tmpsave").show(); } });
 		});
 	});

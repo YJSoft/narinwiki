@@ -23,8 +23,8 @@ if(!$w || !file_exists($inc_file)) {
 include_once $inc_file;
 
 
-function wiki_ajax_error() {
-	echo wiki_json_encode(array('code'=>-1, 'msg'=>'파라미터 오류'));
+function wiki_ajax_error($msg = "파라미터 오류") {
+	echo wiki_json_encode(array('code'=>-1, 'msg'=>$msg));
 	exit;
 }
 

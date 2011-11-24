@@ -10,6 +10,28 @@ $media_setting = $wikiConfig->media_setting;
 $no_layout = true;
 include_once "head.php";
 ?>
+<style>
+	html, body { background-color:#fff; }
+	#media_manager_wrapper { padding:10px; background-color:#fff;}
+	#file_list,#file_list th,#file_list td{border:0;}	
+	#file_list{width:100%;border-bottom:2px solid #dcdcdc;text-align:left}
+	#file_list caption{display:none}
+	#file_list th{padding:7px 0 4px 4px;border-top:2px solid #dcdcdc;background-color:#f5f7f9;color:#666;font-family:'돋움',dotum;font-size:12px;font-weight:bold}
+	#file_list td{padding:6px 0 4px 4px;border-top:1px solid #e5e5e5;color:#4c4c4c;}
+	#narin_media_tree { width:200px; vertical-align:top;border-right:1px solid #ccc; padding-right:5px; }	
+	#buttons { float:right;}
+	#narin_media_content { height:400px; vertical-align:top; padding-left:10px; }
+	#narin_media_tree h1,
+	#narin_media_content h1 { font-size:14pt; padding:0 0 8px 0; margin:0 0 8px 0; border-bottom:1px solid #ccc; }	
+	#chmod_option { display:none; text-align:right; padding:5px; margin:5px; background-color:#efefef;}
+	#media_option { text-align:right; margin-bottom:5px; }	
+	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
+	.thumb { border:1px solid #ccc; padding:2px; }
+	.image_size { color:#888; padding-left:8px; font-size:90%;}
+	.plupload_header_content { display:none; }
+	#image_select_layer { }
+</style>
+
 <div id="media_manager_wrapper">
 	
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -69,57 +91,36 @@ include_once "head.php";
 </tr>
 </table>
 
-<div id="image_select_layer">
-	
-	<div style="padding:5px;background-color:#333;color:#fff;margin-bottom:8px;">이미지 삽입</div>
-	
-	<div style="padding:0 10px;line-height:160%;">
-	이미지 정렬 :
-	<input type="radio" name="media_image_align" id="mia_no" value="no" checked="checked"><label for="mia_no">안함</label>
-	<input type="radio" name="media_image_align" id="mia_left" value="left"><label for="mia_left">왼쪽</label>
-	<input type="radio" name="media_image_align" id="mia_center" value="center"><label for="mia_center">가운데</label>
-	<input type="radio" name="media_image_align" id="mia_right" value="right"><label for="mia_right">오른쪽</label>
-	<br/>
-	이미지 크기 : 
-	<input type="radio" name="media_image_size" id="mia_small" value="100" checked="checked"><label for="mia_small">작게</label>
-	<input type="radio" name="media_image_size" id="mia_medium" value="200"><label for="mia_medium">보통</label>
-	<input type="radio" name="media_image_size" id="mia_large" value="300"><label for="mia_large">크게</label>
-	<input type="radio" name="media_image_size" id="mia_origin" value="0"><label for="mia_origin">원본크기</label>
-	<br/>
-	제목 : <input type="text" style="boder:1px solid #ccc" name="media_image_title" id="mit" size="20">
+<div style="display:none">
+	<div id="image_select_layer">
+		
+		<div style="padding:5px;background-color:#333;color:#fff;margin-bottom:8px;">이미지 삽입</div>
+		
+		<div style="padding:0 10px;line-height:160%;">
+		이미지 정렬 :
+		<input type="radio" name="media_image_align" id="mia_no" value="no" checked="checked"><label for="mia_no">안함</label>
+		<input type="radio" name="media_image_align" id="mia_left" value="left"><label for="mia_left">왼쪽</label>
+		<input type="radio" name="media_image_align" id="mia_center" value="center"><label for="mia_center">가운데</label>
+		<input type="radio" name="media_image_align" id="mia_right" value="right"><label for="mia_right">오른쪽</label>
+		<br/>
+		이미지 크기 : 
+		<input type="radio" name="media_image_size" id="mia_small" value="100" checked="checked"><label for="mia_small">작게</label>
+		<input type="radio" name="media_image_size" id="mia_medium" value="200"><label for="mia_medium">보통</label>
+		<input type="radio" name="media_image_size" id="mia_large" value="300"><label for="mia_large">크게</label>
+		<input type="radio" name="media_image_size" id="mia_origin" value="0"><label for="mia_origin">원본크기</label>
+		<br/>
+		제목 : <input type="text" style="boder:1px solid #ccc" name="media_image_title" id="mit" size="20">
+		</div>
+		
+		<div style="margin-top:5px; padding-top:5px; border-top:1px solid #ccc;text-align:center">
+			<span class="button small"><a href="#close" class="close_button">닫기</a></span>
+			<span class="button red small"><a href="#apply" id="media_image_apply">적용</span>
+		</div>
+		<a href="#image_select_layer" id="show_img_layer" class="wiki_modal" style="display:none"></a>
 	</div>
-	
-	<div style="margin-top:5px; padding-top:5px; border-top:1px solid #ccc;text-align:center">
-		<span class="button small"><a href="#close" class="close_button">닫기</a></span>
-		<span class="button red small"><a href="#apply" id="media_image_apply">적용</span>
-	</div>
-	<a href="#image_select_layer" id="show_img_layer" class="wiki_modal" style="display:none"></a>
 </div>
 
-
 </div> <!--// media_manager_wrapper -->
-
-<style>
-	html, body { background-color:#fff; }
-	#media_manager_wrapper { padding:10px; background-color:#fff;}
-	#file_list,#file_list th,#file_list td{border:0;}	
-	#file_list{width:100%;border-bottom:2px solid #dcdcdc;text-align:left}
-	#file_list caption{display:none}
-	#file_list th{padding:7px 0 4px 4px;border-top:2px solid #dcdcdc;background-color:#f5f7f9;color:#666;font-family:'돋움',dotum;font-size:12px;font-weight:bold}
-	#file_list td{padding:6px 0 4px 4px;border-top:1px solid #e5e5e5;color:#4c4c4c;}
-	#narin_media_tree { width:200px; vertical-align:top;border-right:1px solid #ccc; padding-right:5px; }	
-	#buttons { float:right;}
-	#narin_media_content { height:400px; vertical-align:top; padding-left:10px; }
-	#narin_media_tree h1,
-	#narin_media_content h1 { font-size:14pt; padding:0 0 8px 0; margin:0 0 8px 0; border-bottom:1px solid #ccc; }	
-	#chmod_option { display:none; text-align:right; padding:5px; margin:5px; background-color:#efefef;}
-	#media_option { text-align:right; margin-bottom:5px; }	
-	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
-	.thumb { border:1px solid #ccc; padding:2px; }
-	.image_size { color:#888; padding-left:8px; font-size:90%;}
-	.plupload_header_content { display:none; }
-	#image_select_layer { display:none}
-</style>
 
 <style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
 <script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
@@ -162,7 +163,7 @@ include_once "head.php";
 	mm.init = function() {
 		mm.tree_load(mm.loc);
 				
-		$('.close_button').click(function() { $.nmTop().close(); });
+		$('.close_button').click(function(evt) { evt.preventDefault(); $.wiki_lightbox_close(); });
 
 		$('#media_image_apply').click(function() {
 
@@ -193,7 +194,7 @@ include_once "head.php";
 				if(!$("#media_opt_selection").is(':checked')) {
 					window.close();
 				}
-				else $.nmTop().close();																												
+				else $.wiki_lightbox_close();
 
 		});
 
@@ -205,8 +206,10 @@ include_once "head.php";
 
 		mm.msg = $("<div></div>")
 				.attr('style', 'display:none;position:absolute;padding:10px 30px;text-align:center;background-color:#333;color:#fff;z-index:999999')
-				.html('').appendTo($("body")).center();
-
+				.html('').appendTo($("body"));		
+		if(!$.browser.msie) {
+			mm.msg.center();
+		}
 		mm.upload_button.click(function(evt) {
 				evt.preventDefault();
 				if(mm.uploading) {
@@ -431,7 +434,7 @@ include_once "head.php";
 			file = mm.files[i];
 			if(file.img_width > 0) {
 				is_img = true;
-				img = $('<a></a>').attr('href', file.imgsrc).html('<img class="thumb" src="'+file.thumb+'"/>').nm();
+				img = $('<a></a>').attr('href', file.imgsrc).html('<img class="thumb" src="'+file.thumb+'"/>').wiki_lightbox();
 				img_info = '<span class="image_size">'+file.img_width+'x'+file.img_height+'</span>';
 			} else {
 				is_img = false;
@@ -581,6 +584,7 @@ include_once "head.php";
 			window.location.href = wiki_path + '/narin.php?bo_table='+g4_bo_table;
 		}
 		else mm.init();
+		window.focus();
 	});	
 </script>
 

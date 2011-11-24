@@ -11,16 +11,8 @@ $(document).ready(function() {
 		if($(this).parent().get(0).tagName != "A")
 			$(this).wrap("<a href='"+$(this).attr('src')+"' class='wiki_modal'></a>");
 	});
-
-	$.nmAnims({
-		fade: {
-			showBg: function(nm, clb) {
-				nm.elts.bg.fadeTo(250, 0.35, clb);
-			}
-    }
-  });		
-
-	$(".wiki_modal").nm();
+	
+	$(".wiki_modal").wiki_lightbox();
   
   $("#toc_fold").click(function(evt) {
   	evt.preventDefault();
@@ -39,11 +31,28 @@ $(document).ready(function() {
 	if(!is_comment) {
 		$(".wr_content").narinEditor('wiki_write');
 		$(".markItUp .narin_media").click(function() {
-			win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 'media manager', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
+			win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
 		});
 	}
 		    
 });
+
+
+
+$.wiki_lightbox_close = $.fancybox.close;
+$.fn.wiki_lightbox = function(opt) {
+	var settings = { 
+	  'centerOnScroll' : true,
+		'overlayOpacity' : 0.5,
+		'showCloseButton' : false,
+		'enableEscapeButton' : true,
+		'overlayColor' : '#222'
+	}		
+	opt = $.extend(settings, opt);
+	return this.each(function() {
+		$(this).fancybox(opt);
+	});
+};
 
 
 /**
@@ -216,23 +225,55 @@ function wiki_search(f)
 	return true;
 }
 
+
+
+
+$.center = function($this) {
+	var win = $(window);
+	var top = (win.height() - $this.outerHeight()) / 2;
+	var left = (win.width() - $this.outerWidth()) / 2;
+	var pos = 'fixed';
+	if($.browser.msie) {
+		top += win.scrollTop() || 0;
+		top = (top > 0 ? top : 0);
+		left += win.scrollLeft() || 0;
+		left = (left > 0 ? left : 0);			
+		pos = 'absolute';		
+	}
+	$this.css({position:pos, top : top, left : left});				  			
+};
+
+$.fn.center = function() {
+	return this.each(function() {
+		$this = $(this);
+		$(window).resize(function() { $.center($this); } ).scroll( function() { $.center($this); } );			 	    
+		$.center($(this));
+	});		
+};
+
+$.fn.center_now = function() {
+	return this.each(function() {
+		$.center($(this));
+	});
+};
+
+
+
 function wiki_dialog(title, msg, options)
 {
-	settings = { 
+	var settings = { 
 		msg_id : 'wiki_dialog', 
 		title_bgcolor : "#555", 
 		title_color : "#fff", 
-		closeOnClick : false,
-		closeOnEscape : false,		
-		buttons : '<span class="button"><a href="javascript:$.nmTop().close();">확인</a></span>',
+		buttons : '<span class="button"><a href="javascript:$.wiki_lightbox_close();">확인</a></span>',
 		onClose : function() {} 
 	};	
 	jQuery.extend(settings, options);	
 	
 	msgLayer = $("<div></div>")
 						.attr('style', 'display:none;')
-						.attr('id', settings.msg_id)
 						.html([
+							'<div id="'+settings.msg_id+'">',
 							'<div style="padding:5px 10px;background-color:'+settings.title_bgcolor+';color:'+settings.title_color+';font-weight:bold;">',
 							title,
 							'</div>',
@@ -242,28 +283,33 @@ function wiki_dialog(title, msg, options)
 							'<div style="margin-top:10px;border-top:1px dashed #ccc;padding-top:10px;text-align:center">',
 							settings.buttons,
 							'</div>',
-							'<a href="#'+settings.msg_id+'" id="btn_'+settings.msg_id+'" style="display:none"></a>'
+							'<a href="#'+settings.msg_id+'" id="btn_'+settings.msg_id+'" style="display:none"></a>',
+							'</div>'
 							].join(''));
-					$(document.body).prepend(msgLayer);
-					$("#btn_"+settings.msg_id).nm({closeOnClick : settings.closeOnClick, closeOnEscape : settings.closeOnClick, closeButton : '', callbacks : {
-							afterClose : function() {
-								msgLayer.remove();
-								settings.onClose();
-							}
-						} }).nmCall();
-	
+							
+	$(document.body).prepend(msgLayer);
+		
+	$("#btn_"+settings.msg_id).wiki_lightbox({
+		'hideOnOverlayClick' : false,
+		'enableEscapeButton' : false,
+		'onClosed'		: function() {
+				msgLayer.remove();
+				settings.onClose();
+		}
+	}).trigger('click');
+
 }
+
 
 function wiki_msg(msg, options) {
 	
-	settings = { msg_id : 'wiki_msg', seconds : 2500, bgcolor : "#555", color : "#fff", callback : function() {} };
+	var settings = { msg_id : 'wiki_msg', seconds : 2500, bgcolor : "#555", color : "#fff", callback : function() {} };
 	jQuery.extend(settings, options);
 	msgLayer = $("<div></div>")
 		.attr('style', 'display:none;position:absolute;padding:10px 30px;text-align:center;background-color:'+settings.bgcolor+';color:'+settings.color+';z-index:999999')
-		.html(msg);
-	$(document.body).prepend(msgLayer);
-	msgLayer.center();
-	msgLayer.fadeIn();
+		.html(msg).prependTo($('body'));
+	msgLayer.center().fadeIn();
+	//msgLayer.center_now();
 	setTimeout(function() { msgLayer.fadeOut(function() { msgLayer.remove(); settings.callback(); });  }, settings.seconds);			
 }
 
@@ -290,34 +336,3 @@ function objToString(o){
 	}    
 	return "{" + parse(o).join(", ") + "}";    
 }
-
-(function($){
-	$.center = function($this) {
-		var win = $(window);
-		var top = (win.height() - $this.outerHeight()) / 2;
-		var left = (win.width() - $this.outerWidth()) / 2;
-		var pos = 'fixed';
-		if($.browser.msie) {
-			top += win.scrollTop() || 0;
-			top = (top > 0 ? top : 0);
-			left += win.scrollLeft() || 0;
-			left = (left > 0 ? left : 0);			
-			pos = 'absolute';		
-		}
-		$this.css({position:pos, top : top, left : left});				  			
-	};
-	
-	$.fn.center = function() {
-		return this.each(function() {
-			var ss = function() { $.center($(this)); };
-			$(window).resize(ss).scroll(ss);			 	    
-			ss();
-		});		
-	};
-	
-	$.fn.center_now = function() {
-		return this.each(function() {
-			$.center($(this));
-		});
-	};
-})(jQuery);
