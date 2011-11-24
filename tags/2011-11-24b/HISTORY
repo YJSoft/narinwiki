@@ -1,0 +1,70 @@
+  * 2011-11-24b 
+    * 미디어 관리자 IE 버그 수정 
+    * 라이트박스 교체 (IE 버그 문제로) 
+    * 스크립트 교체로 스킨파일/lock 플러그인 업데이트 
+  * 2011-11-24
+    * 미디어 관리자 추가
+    * 폴더보기에서 tree view 추가
+    * 목록 문법 업데이트
+    * lock 플러그인 자바스크립트 오류 수정
+    * 관리자 기능 추가 (미디어 관리자의 썸네일 관리)
+  * 2011-11-18
+    * 관리자 기능 추가 (캐시 정리 기능) 및 인터페이스 수정
+    * ~~NOCACHE~~ 에서 cache 저장 실행 코드 수정
+  * 2011-11-01 
+    * 중복 주석에 대한 처리 추가
+      * lib/narin.syntax.php
+    * history.skin.php의 history 데이터에 mb_name, mb_nick 필드 추가
+    	* lib/narin.History.class.php
+    * ~~NOCACHE~~ 일 때도 cache 저장 실행 (외부에서 parser 없이 parsing 결과를 읽을 수 있도록)
+      * lib/actions/on_view.php
+  * 2011-10-25
+    * 임시저장 기능
+    	* lib/actions/on_write_update.php
+    	* skin/board/write.skin.php
+    	* exe/a.php
+  * 2011-10-22
+    * locking 기능 추가 (빌트인플러그인)
+    * 이벤트 업데이트
+    * js 파일명 변경
+  * 2011-10-19
+  	* EUC-KR 버전에서 사용 가능하도록 업데이트
+  * 2011-10-16b
+  	* 폴더명 변경시 오류 수정
+  		* lib/narin.Namespace.class.php
+  	* 폴더보기에서 최근 문서 링크 오류 수정
+  	  * folder.php
+  * 2011-10-16
+    * 에디터 목록 입력 UI 개선
+      * js/*.js
+    * 글자 크기 문법 추가 <size #pt></size>
+      * css/narin.tool.set.css
+      * css/tool_images/font-size.png (added)
+      * plugins/syntax.php
+    * 최근 변경 내역 보기 기능 추가
+    * 주의 : DB 업데이트로 인한 재설치 필요
+
+  * 2011-10-14
+    * 폴더보기에서 폴더목록 가나다 순으로 나오도록 수정
+      * lib/narin.Namespace.class.php
+      * lib/narin.wiki.lib.php
+        
+  * 2011-10-13
+    * 폴더보기에서 문서이동/삭제 스크립트 오류 수정 
+      * skin/board/basic/folder.skin.php 
+    * 폴더보기 파일목록 가나다 순으로 나오도록 수정
+      * lib/narin.Namespace.class.php
+  
+  * 2011-10-12b
+    - 내부문서 링크 절대경로 변경 오류 수정
+      * e.g. 글 작성시 자동으로 절대경로로 변경시켜줌 <nowiki>[[테스트문서]] ==> [[/폴더1/테스트문서]]</nowiki>
+      * lib/narin.Class.class.php
+    - <nowiki><color></nowiki> 태그 오류 수정
+      * plugins/syntax.php
+    - 버튼 클릭시 blur 처리
+      * js/50.narin.wiki.js
+  
+  * 2011-10-12 : 그누보드 커뮤니티에 배포
+
+
+나린위키(NarinWiki) 이력 ↑
