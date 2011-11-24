@@ -32,7 +32,10 @@ class NarinArticle extends NarinClass {
 		if($this->cache[getArticle][$ns][$docname]) return $this->cache[getArticle][$ns][$docname];
 		$e_ns = mysql_real_escape_string($ns);
 		$e_docname = mysql_real_escape_string($docname);
-		$sql = "SELECT *, wb.wr_subject AS doc FROM {$this->wiki[write_table]} AS wb LEFT JOIN {$this->wiki[nsboard_table]} AS nt ON wb.wr_id = nt.wr_id WHERE nt.bo_table = '{$this->wiki[bo_table]}' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'";
+		$sql = "SELECT *, wb.wr_subject AS doc 
+						FROM {$this->wiki[write_table]} AS wb 
+						LEFT JOIN {$this->wiki[nsboard_table]} AS nt ON wb.wr_id = nt.wr_id 
+						WHERE nt.bo_table = '{$this->wiki[bo_table]}' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'";
 		
 		$row = sql_fetch($sql);
 		$this->cache[getArticle][$ns][$docname] = &$row;
