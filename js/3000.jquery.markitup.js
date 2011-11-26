@@ -479,12 +479,20 @@
 					var data = options.previewParser( $$.val() );
 					writeInPreview( localize(data, 1) ); 
 				} else if (options.previewParserPath !== '') {
+					
+					// NARIN : updated for preview
+					var addData = '&bo_table='+g4_bo_table+'&doc='+encodeURIComponent(wiki_doc);
+					
 					$.ajax({
 						type: 'POST',
 						dataType: 'text',
 						global: false,
 						url: options.previewParserPath,
-						data: options.previewParserVar+'='+encodeURIComponent($$.val()),
+						
+						// NARIN : updated for preview
+						//data: options.previewParserVar+'='+encodeURIComponent($$.val()),
+						data: options.previewParserVar+'='+encodeURIComponent($$.val())+addData,
+					
 						success: function(data) {
 							writeInPreview( localize(data, 1) ); 
 						}
