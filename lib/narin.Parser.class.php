@@ -68,6 +68,7 @@ class NarinParser extends NarinClass
 		$syntax = new NarinSyntax();
 		$syntax->register($this);
 		array_push($this->plugins, $syntax);
+		
 		// syntax 플러그인 로드
 		$d = dir($path);		
 		while ($entry = $d->read()) {
@@ -95,7 +96,12 @@ class NarinParser extends NarinClass
 					
 				}
 			}
-		}		
+		}
+		
+		$this->addLineParser($id = $syntax->id."_wiki_par", 
+					$klass = $syntax, 
+					$regx = '^(.*?)$', 
+					$method = 'wiki_par');
 		
 	}
 
@@ -202,7 +208,6 @@ class NarinParser extends NarinClass
     	$regex = $p[regx];
     	$klass = $p[klass];
     	$func = $p[func];
-
       if (preg_match("/$regex/i", $line, $matches))
       {
         $called[$id] = true;               
