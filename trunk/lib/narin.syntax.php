@@ -67,8 +67,7 @@ class NarinSyntax extends NarinSyntaxPlugin {
       'wiki_box'=>'^\s{2,}(.*?)$',
       'wiki_quoting'=>'^((&gt;)+)(.*?)$',
       'wiki_sections'=>'^(={1,6})(.*?)(={1,6})$',
-      'wiki_hr'=>'^----$',
-      'wiki_par'=>'^(.*?)$'
+      'wiki_hr'=>'^----$'
     );    
     
     $word_regs = array(
