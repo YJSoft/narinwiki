@@ -245,6 +245,9 @@ if(!is_comment) {
 			{name:'댓글사용',  replaceWith : '~~COMMENT~~', className:"meta_comment" },
 			{name:'캐시안함',  replaceWith : '~~NOCACHE~~', className:"meta_cache" }
 	  ]});
+
+	mark_set.push( {separator:'---------------' } );
+	mark_set.push( {name:'미리보기', call:'preview', className:'preview'} );
 }
 
 
@@ -255,7 +258,9 @@ jQuery.fn.narinEditor = function(ns) {
 		
 		// 셋팅 네임스페이스
 		nameSpace: ns,
-	  markupSet:  mark_set
+	  markupSet:  mark_set,
+	  previewParserVar : 'content',
+		previewParserPath:  wiki_path+"/preview.php"
 	}
 	
 	this.markItUp(narinWikiSettings);	
