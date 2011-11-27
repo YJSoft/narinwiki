@@ -138,10 +138,23 @@ class NarinHistory  extends NarinClass {
 	 * @param (int) $wr_id 문서 id
 	 */
 	public function get($hid, $wr_id='') {
-		$wh = ($wr_id ? " AND wr_id='$wr_id'" : "");
-		$sql = "SELECT * FROM {$this->wiki[history_table]} WHERE bo_table='".$this->bo_table."' AND id = '$hid' $wh";
+		$wh = ($wr_id ? " AND ht.wr_id='$wr_id'" : "");
+		$sql = "SELECT * FROM {$this->wiki[history_table]} AS ht 
+						LEFT JOIN {$this->g4['member_table']} AS mt ON ht.editor_mb_id = mt.mb_id 
+					  WHERE ht.bo_table='".$this->bo_table."' AND ht.id = '$hid' $wh";
 		$row = sql_fetch($sql);		
 		return $row;
+	}
+	
+	/**
+	 * 현재 문서 이력 반환
+	 * @param (int) $wr_id 문서 id
+	 */
+	public function getCurrent($wr_id) {
+		$sql = "SELECT * FROM {$this->wiki[history_table]} AS ht
+						LEFT JOIN {$this->g4['member_table']} AS mt ON ht.editor_mb_id = mt.mb_id 
+		        WHERE ht.bo_table='".$this->bo_table."' AND ht.wr_id = '$wr_id' ORDER BY id DESC LIMIT 1";
+		return sql_fetch($sql);
 	}
 	
 	/**

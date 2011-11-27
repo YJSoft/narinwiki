@@ -8,10 +8,10 @@
 include_once("./_common.php");
 
 $wikiConfig = wiki_class_load("Config");
-$history_access_level = $wikiConfig->setting[history_access_level];
+$history_access_level = $wikiConfig->setting['history_access_level'];
 
 $wikiControl = wiki_class_load("Control");
-if($member[mb_level] < $history_access_level) {
+if($member['mb_level'] < $history_access_level) {
 	$wikiControl->error("문서 이력 보기 권한 없음", "문서 이력보기 권한이 없습니다.");	
 }
 
@@ -24,15 +24,17 @@ if(!$history) {
 	$wikiControl->error("문서 이력 에러", "요청하신 문서 이력에 대한 자료가 없습니다.");
 }
 
-$article = $wikiArticle->getArticleById($history[wr_id]);	
-$folder = $article[ns];
-$docname = $article[doc];
-$doc = wiki_doc($article[ns], $article[doc]);	
+$article = $wikiArticle->getArticleById($history['wr_id']);	
+
+$folder = $article['ns'];
+$docname = $article['doc'];
+$doc = wiki_doc($article['ns'], $article['doc']);	
 
 $wikiControl->acl($doc);
 
+$current = $wikiHistory->getCurrent($history['wr_id']);
 // 문서 작성자?
-$is_doc_owner = ( $article[mb_id] && $article[mb_id] == $member[mb_id] );
+$is_doc_owner = ( $article['mb_id'] && $article['mb_id'] == $member['mb_id'] );
 
 include_once "head.php";
 ?>
@@ -140,33 +142,33 @@ h1 { padding:0; margin:0; }
 			<th>문서명</th><td><?=$docname?></td>
 		</tr>
 		<tr>
-			<th>현재문서</th><td><?=$article[mb_id]?> (<?=$article[wr_datetime]?>)</td>
+			<th>현재문서</th><td><?=$current['editor_mb_id']?> (<?=$current['reg_date']?>)</td>
 		</tr>
 		<tr>
-			<th>이전문서</th><td><?=$history[editor_mb_id]?> (<?=$history[reg_date]?>)</td>
+			<th>이전문서</th><td><?=$history['editor_mb_id']?> (<?=$history['reg_date']?>)</td>
 		</tr>
 		<tr>
-			<th>변경내역</th><td><?=$history[summary]?></td>
+			<th>변경내역</th><td><?=$history['summary']?></td>
 		</tr>
 	</tbody>
 	</table>
 </div>
 
 <?
-require_once $wiki[path]."/lib/Diff/Diff.php";
-require_once $wiki[path]."/lib/Diff/Renderer/Html/Inline.php";
+require_once $wiki['path']."/lib/Diff/Diff.php";
+require_once $wiki['path']."/lib/Diff/Renderer/Html/SideBySide.php";
 $options = array(
 	//'ignoreWhitespace' => true,
 	//'ignoreCase' => true
 );
 if(wiki_is_euckr()) {
-	$history[content] = iconv("CP949", "UTF-8", $history[content]);
-	$article[wr_content] = iconv("CP949", "UTF-8", $article[wr_content]);
+	$history['content'] = iconv("CP949", "UTF-8", $history['content']);
+	$article['wr_content'] = iconv("CP949", "UTF-8", $article['wr_content']);
 }
-$history_content = explode("\n", $history[content]);
-$current_content = explode("\n", $article[wr_content]);
+$history_content = explode("\n", $history['content']);
+$current_content = explode("\n", $article['wr_content']);
 $diff = new Diff($history_content, $current_content, $options);
-$renderer = new Diff_Renderer_Html_Inline();
+$renderer = new Diff_Renderer_Html_SideBySide();
 $diffData = $diff->Render($renderer);
 
 if(wiki_is_euckr()) {
@@ -178,11 +180,11 @@ echo $diffData;
 
 <div class="clear" style="margin-top:10px">
 	<div style="float:left">
-		<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$bo_table?>">시작페이지</a></span>
-		<span class="button"><a href="<?=$wiki[path]?>/history.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서이력  목록</a></span>
-		<span class="button red"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서보기</a></span>
+		<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$bo_table?>">시작페이지</a></span>
+		<span class="button"><a href="<?=$wiki['path']?>/history.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서이력  목록</a></span>
+		<span class="button red"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서보기</a></span>
 		<? if($is_wiki_admin || $is_doc_owner) { ?>
-		<span class="button green"><a href="javascript:recover_history(<?=$article[wr_id]?>, <?=$hid?>);">이 문서로 복원</a></span>
+		<span class="button green"><a href="javascript:recover_history(<?=$article['wr_id']?>, <?=$hid?>);">이 문서로 복원</a></span>
 		<? } ?>
 	</div>
 	<div style="float:right">

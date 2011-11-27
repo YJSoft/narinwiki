@@ -62,8 +62,8 @@ class Diff_Renderer_Html_SideBySide extends Diff_Renderer_Html_Array
 		$html .= '<table class="Differences DifferencesSideBySide">';
 		$html .= '<thead>';
 		$html .= '<tr>';
-		$html .= '<th colspan="2">Old Version</th>';
-		$html .= '<th colspan="2">New Version</th>';
+		$html .= '<th colspan="2">이전문서</th>';
+		$html .= '<th colspan="2">현재문서</th>';
 		$html .= '</tr>';
 		$html .= '</thead>';
 		foreach($changes as $i => $blocks) {
