@@ -1,5 +1,15 @@
 <?
+/**
+ * 나린위키 미리보기
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
 include_once "_common.php";
+
+$doc = wiki_ajax_data($doc);
+$content = wiki_ajax_data($content);
 
 list($ns, $doc, $path) = wiki_page_name($doc, $strip=true);
 
