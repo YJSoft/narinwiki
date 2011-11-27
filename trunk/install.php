@@ -35,6 +35,16 @@ if($_POST[md] == "doit") {
       sql_query($sql);
 		}
 	}
+
+	// FROM 2011-11-27
+	if(wiki_db_table_exists($history_table)) {
+		$history_columns = wiki_db_table_columns($history_table);
+		if(!$history_columns['doc']) {
+			$sql = "ALTER TABLE $history_table ADD COLUMN doc VARCHAR(255) DEFAULT NULL AFTER reg_date";
+      sql_query($sql);
+		}
+	}	
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	
 	$query =<<<EOF
@@ -59,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_history` (
   `summary` varchar(255) DEFAULT NULL,
   `ip_addr` varchar(255) DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `doc` varchar(255) DEFAULT NULL,  
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
