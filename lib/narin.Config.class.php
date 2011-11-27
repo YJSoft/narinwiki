@@ -14,7 +14,7 @@ class NarinConfig {
 	protected $default_setting = array("skin"=>"basic", "head_file"=>"", "tail_file"=>"", "edit_level"=>5, "history_access_level"=>1, "folder_view_level"=>1);
 	protected $default_using_plugins = array("code", "html");
 	protected $default_media_manager = array("allow_extensions"=>"txt,docx,xlsx,pptx,hwp,doc,xls,ppt,pps,ppsx,pdf,odt,odp,odf,jpg,jpeg,gif,png,psd,ai,zip,rar,tar,gz,7z,wmv,avi,swf,flv,asf,mp3,wma,ogg",
-																					 "max_file_size"=>"100mb"
+																					 "max_file_size"=>"100mb", "small_size"=>100, "medium_size"=>200, "large_size"=>300
 																		 );
 	protected $reg;
 	
@@ -34,9 +34,11 @@ class NarinConfig {
 			array_shift($path);array_shift($path);array_shift($path);
 			$this->pathToArray($this->narinConfig, $path, $value);
 		}	
-		if(!$this->narinConfig['setting']) $this->narinConfig['setting'] = $this->default_setting;
+		$this->_extend($this->default_setting, $this->narinConfig['setting']);
+		$this->_extend($this->default_media_manager, $this->narinConfig['media_setting']);		
+		//if(!$this->narinConfig['setting']) $this->narinConfig['setting'] = $this->default_setting;
 		if(!$this->narinConfig['using_plugins']) $this->narinConfig['using_plugins'] = $this->default_using_plugins;
-		if(!$this->narinConfig['media_setting']) $this->narinConfig['media_setting'] = $this->default_media_manager;
+		//if(!$this->narinConfig['media_setting']) $this->narinConfig['media_setting'] = $this->default_media_manager;
 	}
 	
 	public function update($path, $value) {
@@ -72,6 +74,13 @@ class NarinConfig {
 		}
 		$array[$last] = $value;
 	}	
+	
+	function _extend($default, &$arr) {
+		foreach($default as $k=>$v) {
+			if(!isset($arr[$k])) $arr[$k] = $v;
+		}
+	}
+			
 }
 
 ?>
