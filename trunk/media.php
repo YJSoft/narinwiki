@@ -104,9 +104,9 @@ include_once "head.php";
 		<input type="radio" name="media_image_align" id="mia_right" value="right"><label for="mia_right">오른쪽</label>
 		<br/>
 		이미지 크기 : 
-		<input type="radio" name="media_image_size" id="mia_small" value="100" checked="checked"><label for="mia_small">작게</label>
-		<input type="radio" name="media_image_size" id="mia_medium" value="200"><label for="mia_medium">보통</label>
-		<input type="radio" name="media_image_size" id="mia_large" value="300"><label for="mia_large">크게</label>
+		<input type="radio" name="media_image_size" id="mia_small" value="<?=$media_setting['small_size']?>" checked="checked"><label for="mia_small">작게</label>
+		<input type="radio" name="media_image_size" id="mia_medium" value="<?=$media_setting['medium_size']?>"><label for="mia_medium">보통</label>
+		<input type="radio" name="media_image_size" id="mia_large" value="<?=$media_setting['large_size']?>"><label for="mia_large">크게</label>
 		<input type="radio" name="media_image_size" id="mia_origin" value="0"><label for="mia_origin">원본크기</label>
 		<br/>
 		제목 : <input type="text" style="boder:1px solid #ccc" name="media_image_title" id="mit" size="20">

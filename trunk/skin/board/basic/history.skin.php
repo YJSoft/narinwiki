@@ -20,7 +20,7 @@ $history = array("id"=>history_id,
 ********************************************/
 $colspan = 4;
 if($clear_href) $colspan++;
-$btn_width = 100;
+$btn_width = 140;
 if($clear_href) $btn_width = 220;
 ?>
 <h1>문서이력 : <?=$docname?></h1>

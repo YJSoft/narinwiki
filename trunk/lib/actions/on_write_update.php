@@ -20,6 +20,9 @@ if($wr_doc) {
 	$editor = ($member[mb_id] ? $member[mb_id] : $wr_name);
 	$wikiHistory->update($wr_id, $wr_content, $editor, $wr_history);
 	
+	// 새문서일 경우 이전 문서 이력과 연결 시켜 줌
+	if(!$w) $wikiHistory->setLinked($wr_id, $wr_doc);
+	
 	// 절대경로로 시작하지않는 내부문서 경로에 현재 폴더 경로 추가
 	list($ns, $docname, $fullname) = wiki_page_name($wr_doc, $strip=false);
 	$util = wiki_class_load("Util");

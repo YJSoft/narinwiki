@@ -22,7 +22,8 @@ $wikiArticle->deleteArticleById($wr_id);
 
 // 문서 이력 삭제
 $wikiHistory = wiki_class_load("History");
-$wikiHistory->clear($wr_id, $delete_all = true);
+$wikiHistory->setUnlinked($wr_id, $doc);
+//$wikiHistory->clear($wr_id, $delete_all = true);
 
 // 캐시 삭제				
 $wikiCache = wiki_class_load("Cache");

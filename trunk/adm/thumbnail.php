@@ -49,7 +49,7 @@ $filecount = 0;
 
 <script type="text/javascript">
 	function check_form(f) {
-		if(!confirm('썸네일을 초기화 하시겠습니까?')) return false;
+		if(!confirm('썸네일을 초기화 하시겠습니까?\n생성된 문서 캐시도 모두 삭제됩니다.')) return false;
 		return true;
 	}
 </script>

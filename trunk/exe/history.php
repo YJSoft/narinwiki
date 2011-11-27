@@ -18,7 +18,7 @@ if($w == 'r' || $w == 'da' || $w == 'ds') {
 	}
 }
 
-if(!$is_wiki_admin && ( !$member[mb_id] || $member[mb_id] != $wr[mb_id])) {
+if(!$is_wiki_admin && $w != 'r') {
 	echo "권한이 없습니다.";
 	exit;
 }
@@ -34,6 +34,11 @@ if($w != 'da' && $w != 'ds') {
 $wikiHistory = wiki_class_load("History");
 
 if($w == 'r') {
+	if(!$is_wiki_admin && ( !$member[mb_id] || $member[mb_id] != $wr[mb_id])) {
+		echo "권한이 없습니다.";
+		exit;
+	}
+
 	$content = mysql_real_escape_string($h[content]);
 	$sql = "UPDATE {$wiki[write_table]} SET wr_content = '{$content}' WHERE wr_id = {$wr_id}";
 	sql_query($sql);
