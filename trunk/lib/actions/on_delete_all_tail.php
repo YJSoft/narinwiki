@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 액션 스크립트 : 여러 문서 삭제 시 (삭제된 후)
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined('_GNUBOARD_')) exit;
@@ -28,7 +32,7 @@ $wikiChanges = wiki_class_load("Changes");
 	
 for ($i=count($wr_id_array)-1; $i>=0; $i--) 
 {
-	$write = sql_fetch(" select wr_id from {$this->wiki[write_table]} where wr_id = '{$wr_id_array[$i]}' ");
+	$write = sql_fetch(" select wr_id from ".$this->wiki['write_table']." where wr_id = '".$wr_id_array[$i]."' ");
 	if(!$write) {
 		$wikiCache->delete($wr_id_array[$i]);
 		
@@ -37,18 +41,18 @@ for ($i=count($wr_id_array)-1; $i>=0; $i--)
 		$wikiHistory->setUnlinked($wr_id_array[$i], $d_doc);
 		
 		$backlinks = $wikiArticle->getBackLinks($d_doc, $includeSelf = false);
-		$wikiChanges->update("DOC", $d_doc, "삭제", $member[mb_id]);				
+		$wikiChanges->update("DOC", $d_doc, "삭제", $member['mb_id']);				
 		for($k=0; $k<count($backlinks); $k++) {
-			$wikiArticle->shouldUpdateCache($backlinks[$k][wr_id], 1);
+			$wikiArticle->shouldUpdateCache($backlinks[$k]['wr_id'], 1);
 		}
 	}			
 }		
 
 if($folder) {
-	$bo_table = $wiki[bo_table];
+	$bo_table = $wiki['bo_table'];
 	$ns = $wikiNS->get($folder);
-	if(!$ns) goto_url("{$this->wiki[path]}/narin.php?bo_table=$bo_table");
-	else goto_url("{$this->wiki[path]}/folder.php?bo_table=$bo_table&loc=".urlencode($folder));
+	if(!$ns) goto_url($this->wiki['path']."/narin.php?bo_table=$bo_table");
+	else goto_url($this->wiki['path']."/folder.php?bo_table=$bo_table&loc=".urlencode($folder));
 	exit;
 }		
 

@@ -1,27 +1,40 @@
-<?
+ï»¿<?
 /**
- * ¾×¼Ç ÇÃ·¯±×ÀÎ Å¬·¡½º
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * ë‚˜ë¦°ìœ„í‚¤ ì•¡ì…˜ í”ŒëŸ¬ê·¸ì¸ í´ëž˜ìŠ¤
+ *
+ * ì•¡ì…˜ í”ŒëŸ¬ê·¸ì¸ì€ ì´ í´ëž˜ìŠ¤ë¥¼ ìƒì†ë°›ì•„ êµ¬í˜„í•´ì•¼ í•œë‹¤.
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
- 
+
 class NarinActionPlugin extends NarinPlugin {
-		
+
 	/**
-	 * »ý¼ºÀÚ
+	 * ìƒì„±ìž
 	 */
 	public function __construct() {
 		parent::__construct();
-	}		
-	
+	}
+
 	/**
-	 * ÇÏÀ§ Å¬·¡½º¿¡¼­ Áßº¹±¸ÇöÇØ¾ß ÇÔ
+	 *
+	 * ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬ ë“±ë¡
+	 * 
+	 * í•˜ìœ„ í´ëž˜ìŠ¤ì—ì„œ ì¤‘ë³µêµ¬í˜„í•´ì•¼ í•¨
+	 * 
+	 * @param NarinEvent $ctrl {@link NarinEvent} í´ëž˜ìŠ¤
 	 */
 	public function register($ctrl) {}
-		
+
 	/**
-	 * ÇÃ·¯±×ÀÎ À¯Çü
+	 *
+	 * í”ŒëŸ¬ê·¸ì¸ ìœ í˜• ë°˜í™˜
+	 * 
+	 * @return string "action"
 	 */
 	public function getType() {
 		return "action";

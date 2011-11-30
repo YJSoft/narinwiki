@@ -1,30 +1,31 @@
 <?
 /**
- * ³ª¸°À§Å° ¹®¼­ÀÌ·Â Å¬·¡½º
+ * ë‚˜ë¦°ìœ„í‚¤ ë¬¸ì„œì´ë ¥ í´ëž˜ìŠ¤
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 
-
 class NarinHistory  extends NarinClass {
-
-	protected $cache = array();
-			
+		
 	/**
-	 * Constructor
+	 * ìƒì„±ìž
 	 */
-	public function __construct() {		
-  	parent::__construct();
-  	$this->server = $_SERVER;
+	public function __construct() {
+		parent::__construct();
+		$this->server = $_SERVER;
 	}
 
 	/**
-	 * ¹®¼­ ÀÌ·Â ¾÷µ¥ÀÌÆ®
-	 * @param (int) $wr_id ¹®¼­ id
-	 * @param (string) $content ¹®¼­ ³»¿ë
-	 * @param (string) $mb_id ±Û ÀÛ¼ºÀÚ id ¶Ç´Â name (ºñ·Î±×ÀÎ½Ã)
-	 * @param (int) $summary ¹®¼­ ¿ä¾à
+	 *
+	 * ë¬¸ì„œ ì´ë ¥ ì—…ë°ì´íŠ¸
+	 *
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @param string $content ë¬¸ì„œ ë‚´ìš©
+	 * @param string $mb_id ê¸€ ìž‘ì„±ìž id ë˜ëŠ” name (ë¹„ë¡œê·¸ì¸ì‹œ)
+	 * @param int $summary ë¬¸ì„œ ìš”ì•½
 	 */
 	function update($wr_id, $content, $mb_id, $summary='')
 	{
@@ -33,122 +34,133 @@ class NarinHistory  extends NarinClass {
 		$content = mysql_real_escape_string($content);
 		$mb_id = mysql_real_escape_string($mb_id);
 		$summary = mysql_real_escape_string($summary);
-				
-		$sql = "INSERT INTO {$this->wiki[history_table]} 
+
+		$sql = "INSERT INTO {$this->wiki[history_table]}
 					(bo_table, wr_id, content, editor_mb_id, summary, ip_addr, reg_date) 
 					VALUES ('{$this->wiki[bo_table]}', '$wr_id', '$content', '$mb_id', '$summary', '{$_SERVER[REMOTE_ADDR]}', '{$this->g4[time_ymdhis]}')";
 		sql_query($sql);
-		
+
 		$wikiEvent = wiki_class_load("Event");
 		$wikiEvent->trigger("HISTORY_UPDATE", array("wr_id"=>$wr_id, "content"=>$content, "editor_mb_id"=>$mb_id, "summary"=>$summary));
 	}
 
 	/**
-	 * ¹®¼­ÀÌ·Â »èÁ¦
-	 * @param (int) $hid ¹®¼­¸ñ·Ï id
+	 *
+	 * ë¬¸ì„œì´ë ¥ ì‚­ì œ
+	 * @param int $hid ë¬¸ì„œëª©ë¡ id
 	 */
 	function delete($hid)
 	{
 		$hid = mysql_real_escape_string($hid);
 		$sql = "DELETE FROM {$this->wiki[history_table]} WHERE id = '$hid'";
 		sql_query($sql);
-		
+
 		$wikiEvent = wiki_class_load("Event");
-		$wikiEvent->trigger("HISTORY_DELETE", array("hid"=>$hid));		
+		$wikiEvent->trigger("HISTORY_DELETE", array("hid"=>$hid));
 	}
 
 	/**
-	 * ¹®¼­¿¡ ´ëÇÑ ¸ðµç ¹®¼­ ÀÌ·Â »èÁ¦
-	 * @param (int) $wr_id ¹®¼­ id
-	 * @param (boolean) $delete_all ¸ðµç ÀÌ·ÂÀ» »èÁ¦ ÇÒÁö, ÃÖ½Å ÀÌ·Â ÇÏ³ª´Â ³²°ÜµÑÁö
+	 *
+	 * ë¬¸ì„œì— ëŒ€í•œ ëª¨ë“  ë¬¸ì„œ ì´ë ¥ ì‚­ì œ
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @param boolean $delete_all	ëª¨ë“  ì´ë ¥ì„ ì‚­ì œ í• ì§€, ìµœì‹  ì´ë ¥ í•˜ë‚˜ëŠ” ë‚¨ê²¨ë‘˜ì§€
 	 */
 	function clear($wr_id, $delete_all = false)
 	{
 		$wr_id = mysql_real_escape_string($wr_id);
 		if($delete_all) sql_query("DELETE FROM {$this->wiki[history_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND wr_id = '$wr_id'");
 		else {
-			$h = sql_fetch("SELECT id FROM {$this->wiki[history_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND wr_id = '$wr_id'");		
+			$h = sql_fetch("SELECT id FROM {$this->wiki[history_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND wr_id = '$wr_id'");
 			$sql = "DELETE FROM {$this->wiki[history_table]} WHERE bo_table = '{$this->wiki[bo_table]}' AND wr_id = '$wr_id' AND id <> $h[id]";
 			sql_query($sql);
 		}
-		
+
 		$wikiEvent = wiki_class_load("Event");
-		$wikiEvent->trigger("HISTORY_DELETE_ALL", array("wr_id"=>$wr_id, "delete_all"=>$delete_all));			
+		$wikiEvent->trigger("HISTORY_DELETE_ALL", array("wr_id"=>$wr_id, "delete_all"=>$delete_all));
 	}
 
 	/**
-	 * ¹®¼­ÀÌ·Â ¸ñ·Ï ¹ÝÈ¯
-	 * @param (int) $wr_id ¹®¼­ id
-	 * @param (string) $doc ¹®¼­¸í(°æ·ÎÆ÷ÇÔ)
-	 * @param (int) $page ÆäÀÌÁö
-	 * @param (int) $page_rows ÇÑ ÆäÀÌÁö´ç º¸¿©ÁÙ ¸ñ·Ï ¼ö
+	 *
+	 * ë¬¸ì„œì´ë ¥ ëª©ë¡ ë°˜í™˜
+	 *
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @param string $doc ë¬¸ì„œëª…(ê²½ë¡œí¬í•¨)
+	 * @param int $page íŽ˜ì´ì§€
+	 * @param int $page_rows í•œ íŽ˜ì´ì§€ë‹¹ ë³´ì—¬ì¤„ ëª©ë¡ ìˆ˜
+	 * @return array ë¬¸ì„œì´ë ¥ ëª©ë¡
 	 */
 	function getHistory($wr_id, $doc, $page = 1, $page_rows = 20)
-	{			
+	{
 		$bo_table = $this->wiki[bo_table];
 		$wikiParser = wiki_class_load("Parser");
 		$wr_id = mysql_real_escape_string($wr_id);
-		
-		$sql_all = "SELECT id FROM {$this->wiki[history_table]} AS ht 
+
+		$sql_all = "SELECT id FROM {$this->wiki[history_table]} AS ht
 								LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
 								WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' 
 								ORDER BY ht.id DESC";	
 		$result = sql_query($sql_all);
 		$total_count = mysql_num_rows($result);
-		
-		$total_page  = ceil($total_count / $page_rows);
-		$from_record = ($page - 1) * $page_rows; // ½ÃÀÛ ¿­À» ±¸ÇÔ
 
-		$sql = "SELECT ht.*, wt.wr_option, wt.mb_id, mt.mb_name, mt.mb_nick FROM {$this->wiki[history_table]} AS ht 
+		$total_page  = ceil($total_count / $page_rows);
+		$from_record = ($page - 1) * $page_rows; // ì‹œìž‘ ì—´ì„ êµ¬í•¨
+
+		$sql = "SELECT ht.*, wt.wr_option, wt.mb_id, mt.mb_name, mt.mb_nick FROM {$this->wiki[history_table]} AS ht
 						LEFT JOIN {$this->wiki[write_table]} AS wt ON ht.wr_id = wt.wr_id 
 						JOIN {$this->g4[member_table]} AS mt ON wt.mb_id = mt.mb_id
 						WHERE ht.bo_table = '{$this->wiki[bo_table]}' AND ht.wr_id = '$wr_id' 
 						ORDER BY ht.id DESC LIMIT $from_record, $page_rows";			
 		$list = sql_list($sql);
-							
+			
 		for($i=0; $i<count($list); $i++)
-		{		
-			// ·Î±×ÀÎ ¾ÈÇÑ »óÅÂ·Î ÀÛ¼ºÇß´Ù¸é...
+		{
+			// ë¡œê·¸ì¸ ì•ˆí•œ ìƒíƒœë¡œ ìž‘ì„±í–ˆë‹¤ë©´...
 			if(!$list[$i][mb_name]) {
 				$list[$i][mb_name] = $list[editor_mb_id];
 				$list[$i][mb_nick] = $list[editor_mb_id];
 			}
 			$list[$i][content] = nl2br(wiki_text($list[$i][content]));
-      $list[$i][date] = date("Y-m-d h:i", strtotime($list[$i][reg_date]));
-      if($list[$i][mb_id] == $this->member[mb_id] || $this->is_admin) {
+			$list[$i][date] = date("Y-m-d h:i", strtotime($list[$i][reg_date]));
+			if($list[$i][mb_id] == $this->member[mb_id] || $this->is_admin) {
 				if($page != 1 || $i > 0) {
-      		$list[$i][recover_href] = "javascript:recover_history($wr_id, {$list[$i][id]});";
-      		if($this->is_admin) {
-      			$list[$i][delete_href] = "javascript:delete_history({$list[$i][id]});";
-      		}
-      	}
-      }
+					$list[$i][recover_href] = "javascript:recover_history($wr_id, {$list[$i][id]});";
+					if($this->is_admin) {
+						$list[$i][delete_href] = "javascript:delete_history({$list[$i][id]});";
+					}
+				}
+			}
 		}
 
 		$paging = get_paging(10, $page, $total_page, $this->wiki[path]."/history.php?bo_table=$bo_table&doc=".urlencode($doc)."&page=");
-		
+
 		$ret = array($list, $paging);
-		
+
 		return $ret;
 	}
 
 	/**
-	 * ¹®¼­ÀÌ·Â ¸®ÅÏ
-	 * @param (int) $hid ¹®¼­¸ñ·Ï id
-	 * @param (int) $wr_id ¹®¼­ id
+	 * 
+	 * ë¬¸ì„œì´ë ¥ ë¦¬í„´
+	 * 
+	 * @param int $hid ë¬¸ì„œëª©ë¡ id
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @return array ë¬¸ì„œì´ë ¥ ì •ë³´
 	 */
 	public function get($hid, $wr_id='') {
 		$wh = ($wr_id ? " AND ht.wr_id='$wr_id'" : "");
-		$sql = "SELECT * FROM {$this->wiki[history_table]} AS ht 
+		$sql = "SELECT * FROM {$this->wiki[history_table]} AS ht
 						LEFT JOIN {$this->g4['member_table']} AS mt ON ht.editor_mb_id = mt.mb_id 
 					  WHERE ht.bo_table='".$this->bo_table."' AND ht.id = '$hid' $wh";
-		$row = sql_fetch($sql);		
+		$row = sql_fetch($sql);
 		return $row;
 	}
-	
+
 	/**
-	 * ÇöÀç ¹®¼­ ÀÌ·Â ¹ÝÈ¯
-	 * @param (int) $wr_id ¹®¼­ id
+	 * 
+	 * í˜„ìž¬ ë¬¸ì„œ ì´ë ¥ ë°˜í™˜
+	 * 
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @return array í˜„ìž¬ë¬¸ì„œì— ëŒ€í•œ ì´ë ¥ ì •ë³´
 	 */
 	public function getCurrent($wr_id) {
 		$sql = "SELECT * FROM {$this->wiki[history_table]} AS ht
@@ -156,58 +168,70 @@ class NarinHistory  extends NarinClass {
 		        WHERE ht.bo_table='".$this->bo_table."' AND ht.wr_id = '$wr_id' ORDER BY id DESC LIMIT 1";
 		return sql_fetch($sql);
 	}
-	
+
 	/**
-	 * ¹®¼­ÀÌ·Â unlink (»èÁ¦µÈ ¹®¼­ ÀÌ·Â)
-	 * @param (int) $wr_id ¹®¼­ id
-	 * @param (string) $doc ¹®¼­¸í(°æ·ÎÆ÷ÇÔ)
+	 * 
+	 * ë¬¸ì„œì´ë ¥ unlink (ì‚­ì œëœ ë¬¸ì„œ ì´ë ¥)
+	 * 
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @param string $doc ë¬¸ì„œëª…(ê²½ë¡œí¬í•¨)
 	 */
-	public function setUnlinked($wr_id, $doc) {		
+	public function setUnlinked($wr_id, $doc) {
 		$wr_id = mysql_real_escape_string($wr_id);
-		$doc = mysql_real_escape_string($doc);	
+		$doc = mysql_real_escape_string($doc);
 		$sql = "UPDATE {$this->wiki['history_table']} SET wr_id = '-1', doc = '$doc' WHERE bo_table = '{$this->wiki['bo_table']}' AND wr_id = $wr_id";
 		sql_query($sql);
 	}
-	
+
 	/**
-	 * ¹®¼­ÀÌ·Â link (´Ù½Ã »ý¼ºµÈ ¹®¼­ ÀÌ·Â)
-	 * @param (int) $wr_id ¹®¼­ id
-	 * @param (string) $doc ¹®¼­¸í(°æ·ÎÆ÷ÇÔ)
+	 * 
+	 * ë¬¸ì„œì´ë ¥ link (ë‹¤ì‹œ ìƒì„±ëœ ë¬¸ì„œ ì´ë ¥)
+	 * 
+	 * @param int $wr_id ë¬¸ì„œ id
+	 * @param string $doc ë¬¸ì„œëª…(ê²½ë¡œí¬í•¨)
 	 */
-	public function setLinked($wr_id, $doc) {	
+	public function setLinked($wr_id, $doc) {
 		$wr_id = mysql_real_escape_string($wr_id);
-		$doc = mysql_real_escape_string($doc);						
+		$doc = mysql_real_escape_string($doc);
 		$sql = "UPDATE {$this->wiki['history_table']} SET wr_id = '$wr_id', doc = '' WHERE bo_table = '{$this->wiki['bo_table']}' AND doc = '$doc'";
 		sql_query($sql);
 	}
-		
+
 	/**
-	 * unlinked ¹®¼­ ÀÌ·Â ¸ñ·Ï ¹ÝÈ¯
+	 * 
+	 * unlinked ë¬¸ì„œ ì´ë ¥ ëª©ë¡ ë°˜í™˜
+	 * 
+	 * @return array unlinked ë¬¸ì„œ ì´ë ¥
 	 */
 	public function unlinkedHistory() {
 		$sql = "SELECT doc FROM {$this->wiki['history_table']} WHERE wr_id = -1 GROUP BY doc";
 		return sql_list($sql);
 	}
-	
+
 	/**
-	 * unlinked ¹®¼­ÀÌ·Â »èÁ¦
-	 * @param (string) $doc ¹®¼­¸í(°æ·ÎÆ÷ÇÔ)
+	 * 
+	 * unlinked ë¬¸ì„œì´ë ¥ ì‚­ì œ
+	 * 
+	 * @param string $doc ë¬¸ì„œëª…(ê²½ë¡œí¬í•¨)
 	 */
 	public function deleteUnlinked($doc) {
-		$doc = mysql_real_escape_string($doc);				
+		$doc = mysql_real_escape_string($doc);
 		sql_query("DELETE FROM {$this->wiki['history_table']} WHERE bo_table = '{$this->wiki['bo_table']}' AND wr_id = -1 AND doc = '$doc'");
 	}
-	
+
 	/**
-	 * ¸ðµç unlinked ¹®¼­ÀÌ·Â »èÁ¦
+	 * 
+	 * ëª¨ë“  unlinked ë¬¸ì„œì´ë ¥ ì‚­ì œ
 	 */
 	public function clearUnlinked() {
-		sql_query("DELETE FROM {$this->wiki['history_table']} WHERE bo_table = '{$this->wiki['bo_table']}' AND wr_id = -1");		
+		sql_query("DELETE FROM {$this->wiki['history_table']} WHERE bo_table = '{$this->wiki['bo_table']}' AND wr_id = -1");
 	}
-	
+
 	/**
-	 * ¹®¼­ÀÌ·Â Á¤¸®
-	 * @param (int) $day ÁÖ¾îÁø ³¯ ÀÌÀüÀÇ ¹®¼­ÀÌ·ÂÀ» ¸ðµÎ »èÁ¦ÇÕ´Ï´Ù.
+	 * 
+	 * ë¬¸ì„œì´ë ¥ ì •ë¦¬
+	 * 
+	 * @param int $day ì£¼ì–´ì§„ ë‚  ì´ì „ì˜ ë¬¸ì„œì´ë ¥ì„ ëª¨ë‘ ì‚­ì œ
 	 */
 	public function clearHistoryByDate($day) {
 		sql_query("DELETE FROM {$this->wiki['history_table']} WHERE bo_table = '{$this->wiki['bo_table']}' AND reg_date < DATE_SUB(NOW(), INTERVAL $day DAY)");

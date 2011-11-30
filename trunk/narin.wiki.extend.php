@@ -1,25 +1,29 @@
-<?
+ï»¿<?
 /**
- * ±×´©º¸µå¿ë È®Àå ½ºÅ©¸³Æ®
+ * 
+ * ê·¸ëˆ„ë³´ë“œìš© í™•ìž¥ ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
-/* ÇöÁö ½ÇÇà ½ºÅ©¸³Æ® ÆÄÀÏ ¸í */
-$scriptFile = basename($_SERVER["SCRIPT_NAME"]);
+/* í˜„ì§€ ì‹¤í–‰ ìŠ¤í¬ë¦½íŠ¸ íŒŒì¼ ëª… */
+$scriptFile = basename($_SERVER['SCRIPT_NAME']);
 
-/* À§Å° »ç¿ëÁßÀÎ °Ô½ÃÆÇÀÎ °æ¿ì */
-if($board[bo_1_subj] == "narinwiki" && $board[bo_1] != "") {
+/* ìœ„í‚¤ ì‚¬ìš©ì¤‘ì¸ ê²Œì‹œíŒì¸ ê²½ìš° */
+if($board['bo_1_subj'] == "narinwiki" && $board['bo_1'] != "") {
 	
 	if($url) {
 		header("location:$url");
 	}
 	
-	$wiki_path = $g4[path] . "/" . $board[bo_1];
+	$wiki_path = $g4['path'] . "/" . $board['bo_1'];
 	$wiki_config = $wiki_path."/narin.config.php";
 
-	// À§Å° ¼³Á¤ & ¶óÀÌºê·¯¸® ·Îµå
+	// ìœ„í‚¤ ì„¤ì • & ë¼ì´ë¸ŒëŸ¬ë¦¬ ë¡œë“œ
 	if(file_exists($wiki_config)) {
 		
 		define("__NARINWIKI__", TRUE);
@@ -30,15 +34,15 @@ if($board[bo_1_subj] == "narinwiki" && $board[bo_1] != "") {
 		
 		$wikiControl = wiki_class_load("Control");
 		
-		// ½ºÅ² °æ·Î º¯°æ
-		$board_skin_path = $wiki[inc_skin_path];
+		// ìŠ¤í‚¨ ê²½ë¡œ ë³€ê²½
+		$board_skin_path = $wiki['inc_skin_path'];
 		
-		// °Ô½ÃÆÇ ½ºÅ² & Çì´õ-Å×ÀÏ º¯°æ
-		$board[bo_include_head] = $wiki[path] . "/head.php";
-		$board[bo_include_tail] = $wiki[path] . "/tail.php";				
+		// ê²Œì‹œíŒ ìŠ¤í‚¨ & í—¤ë”-í…Œì¼ ë³€ê²½
+		$board[bo_include_head] = $wiki['path'] . "/head.php";
+		$board[bo_include_tail] = $wiki['path'] . "/tail.php";				
 		
-		// À§Å°¸¦ ÀüÃ¼ °Ë»ö¿¡ ³ëÃâ ¾ÈµÇµµ·Ï ÇÔ
-		// À§Å° ÀÚÃ¼ ±ÇÇÑ, ÆÄ½Ì ¹®Á¦ µî...
+		// ìœ„í‚¤ë¥¼ ì „ì²´ ê²€ìƒ‰ì— ë…¸ì¶œ ì•ˆë˜ë„ë¡ í•¨
+		// ìœ„í‚¤ ìžì²´ ê¶Œí•œ, íŒŒì‹± ë¬¸ì œ ë“±...
 		$board[bo_use_search] = 0;
 				
 		$wikiControl->board($scriptFile);		

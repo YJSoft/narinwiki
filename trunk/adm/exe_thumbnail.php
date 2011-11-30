@@ -1,10 +1,15 @@
 <?
 /**
+ * 
  * 위키 관리 : thumbnail 실행 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage admin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
+
 include_once("_common.php");
 
 $dir = $wiki['path'].'/data/'.$bo_table.'/thumb/';
@@ -17,7 +22,7 @@ if(file_exists($dir)) {
 $wikiCache = wiki_class_load("Cache");
 $wikiCache->clear();
 	
-header("location:{$wiki[path]}/adm/thumbnail.php?bo_table={$bo_table}");
+header("location:".$wiki['path']."/adm/thumbnail.php?bo_table=$bo_table");
 ?>
 
 

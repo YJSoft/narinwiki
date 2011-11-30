@@ -1,8 +1,12 @@
-<?
+ï»¿<?
 /**
- * include skin ½ºÅ©¸³Æ®
+ * 
+ * include skin ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 ?>

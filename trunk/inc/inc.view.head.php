@@ -1,16 +1,20 @@
 <?
 /**
+ * 
  * include skin 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 
 extract($wikiEvent->trigger("VIEW_HEAD", array("folder"=>$ns, 
-																				"docname"=>$docname, 
-																				"doc"=>$doc,
-																				"wr_id"=>$wr_id, 
-																				"view"=>&$view)));
+												"docname"=>$docname, 
+												"doc"=>$doc,
+												"wr_id"=>$wr_id, 
+												"view"=>&$view)));
 ?>

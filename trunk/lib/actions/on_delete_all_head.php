@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 액션 스크립트 : 여러 문서 삭제 시 (삭제되기 전)
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined('_GNUBOARD_')) exit;
@@ -13,8 +17,8 @@ if (!defined('_GNUBOARD_')) exit;
  */	
 $delete_all_docs = array();
 
-$wr_id = $params[wr_id];
-$chk_wr_id = $params[chk_wr_id];
+$wr_id = $params['wr_id'];
+$chk_wr_id = $params['chk_wr_id'];
 
 $tmp_array = array();
 if ($wr_id) // 건별삭제
@@ -26,10 +30,10 @@ $wikiArticle = wiki_class_load("Article");
 for($i=0; $i<count($tmp_array); $i++) {
 	$wr = $wikiArticle->getArticleById($tmp_array[$i]);
 	if($wr) {
-		$delete_all_docs[$wr[wr_id]] = wiki_doc($wr[ns], $wr[doc]);
+		$delete_all_docs[$wr['wr_id']] = wiki_doc($wr['ns'], $wr['doc']);
 	}
 }
 
-$shared[delete_all_docs] = $delete_all_docs;
+$shared['delete_all_docs'] = $delete_all_docs;
 
 ?>

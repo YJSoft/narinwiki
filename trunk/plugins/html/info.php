@@ -1,14 +1,19 @@
 <?
 /**
+ * 
  * 나린위키 HTML 플러그인 : 플러그인 정보 클래스
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage plugin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 class NarinPluginInfoHtml extends NarinPluginInfo {
 
 	/**
+	 * 
 	 * 생성자
 	 */		  	
 	public function __construct() {
@@ -17,7 +22,10 @@ class NarinPluginInfoHtml extends NarinPluginInfo {
 	}	  	
 
 	/**
+	 * 
 	 * 플러그인 설명
+	 * 
+	 * @return string 플러그인설명
 	 */
 	public function description()
 	{
@@ -25,7 +33,8 @@ class NarinPluginInfoHtml extends NarinPluginInfo {
 	}
 		
 	/**
-	 * 플러그인 설정
+	 * 
+	 * @see lib/NarinPluginInfo::getSetting()
 	 */
 	public function getSetting() {
 		return array(

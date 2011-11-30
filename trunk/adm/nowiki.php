@@ -1,25 +1,30 @@
 <?
 /**
+ * 
  * 위키 관리 : nowiki 페이지 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage admin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
+
 $pageid = "nowiki";
 
 include_once("_common.php");
 include_once "admin.head.php";
 
-$sql = "SELECT wr_id, wr_subject FROM {$wiki[write_table]} WHERE wr_id NOT IN ( SELECT wr_id FROM {$wiki[nsboard_table]} ) AND wr_is_comment <> 1";
+$sql = "SELECT wr_id, wr_subject FROM ".$wiki['write_table']." WHERE wr_id NOT IN ( SELECT wr_id FROM {$wiki[nsboard_table]} ) AND wr_is_comment <> 1";
 $list = sql_list($sql);
 
-$sql = "SELECT * FROM {$wiki[ns_table]} WHERE bo_table = '{$wiki[bo_table]}'";
+$sql = "SELECT * FROM ".$wiki['ns_table']." WHERE bo_table = '".$wiki['bo_table']."'";
 $ns_list = sql_list($sql);
 $ns_options = "";
 foreach($ns_list as $idx => $ns)
 {
-	$v = wiki_input_value($ns[ns]);
-	$ns_options .= "<option value=\"{$v}\">{$ns[ns]}</option>";
+	$v = wiki_input_value($ns['ns']);
+	$ns_options .= "<option value=\"$v\">".$ns['ns']."</option>";
 }
 if(!$ns_options) $ns_options = "<option value=\"/\">/</option>";
 ?>
@@ -46,7 +51,7 @@ if(!$ns_options) $ns_options = "<option value=\"/\">/</option>";
 </tr>
 <? foreach($list as $idx => $wr) { 
 		$name_error = "";
-		if(!wiki_check_doc_name($wr[wr_subject])) {
+		if(!wiki_check_doc_name($wr['wr_subject'])) {
 			$name_error = " class='name_error'";
 		}
 ?>
@@ -55,7 +60,7 @@ if(!$ns_options) $ns_options = "<option value=\"/\">/</option>";
 		<input type="checkbox" name="chk[]" class="chk" value="<?=$idx?>"/>
 	</td>
 	<td<?=$style?>>
-		<input type="text" name="wr_subject[<?=$idx?>]" value="<?=wiki_input_value($wr[wr_subject])?>" style="width:100%;" <?=$name_error?>/>
+		<input type="text" name="wr_subject[<?=$idx?>]" value="<?=wiki_input_value($wr['wr_subject'])?>" style="width:100%;" <?=$name_error?>/>
 		<input type="hidden" name="wr_id[<?=$idx?>]" value="<?=$wr[wr_id]?>"/>
 	</td>	
 	<td style="padding-left:5px">
@@ -118,10 +123,10 @@ function submit_check(f)
   }
   
   <?
-  if ($g4[https_url])
-      echo "f.action='$g4[https_url]/$wiki[path]/adm/exe_nowiki.php'";
+  if ($g4['https_url'])
+      echo "f.action='".$g4['https_url']."/".$wiki['path']."/adm/exe_nowiki.php'";
   else
-  		echo "f.action='$wiki[path]/adm/exe_nowiki.php'";
+  		echo "f.action='".$wiki['path']."/adm/exe_nowiki.php'";
   ?>   
     
   return true;

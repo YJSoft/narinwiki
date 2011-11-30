@@ -1,13 +1,18 @@
 <?
 /**
+ * 
  * 문서 관리 실행 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
+
 include_once "./_common.php";
 
-list($ns, $docname, $fulldoc) = wiki_validate_doc($doc, $strip=true);
+list($ns, $docname, $fulldoc) = wiki_validate_doc(stripslashes($doc));
 
 $wikiArticle = wiki_class_load("Article");
 $write = $wikiArticle->getArticle($ns, $docname);
@@ -15,13 +20,13 @@ if(!$write) {
 	alert("존재하지 않는 문서입니다.");
 	exit;
 }
-if( !$is_wiki_admin && ($member[mb_id] && $member[mb_id] != $write[mb_id]) )
+if( !$is_wiki_admin && ($member['mb_id'] && $member['mb_id'] != $write['mb_id']) )
 {	
 	alert("권한이 없습니다");
 	exit;
 }
 
-if(!$w || !$doc || !$wiki_folder_switch || !$wiki_doc ||!$write || !$wiki_access_level || (!$is_wiki_admin && $member[mb_id] != $write[mb_id]))
+if(!$w || !$doc || !$wiki_folder_switch || !$wiki_doc ||!$write || !$wiki_access_level || (!$is_wiki_admin && $member['mb_id'] != $write['mb_id']))
 {
 	alert("잘못된 접근입니다.");
 	exit;	
@@ -46,11 +51,11 @@ $toDoc = ($wiki_folder == "" ? "/" : $wiki_folder."/") . $wiki_doc;
 wiki_validate_doc($toDoc);
 
 if($write[ns] != $wiki_folder || $write[doc] != $wiki_doc) {
-	$wikiArticle->moveDoc($fulldoc, $toDoc, $write[wr_id]);
+	$wikiArticle->moveDoc($fulldoc, $toDoc, $write['wr_id']);
 }
 
 $wikiArticle->updateLevel($toDoc, $wiki_access_level, $wiki_edit_level);
 
-header("location:{$wiki[path]}/narin.php?bo_table={$wiki[bo_table]}&doc=".urlencode(stripcslashes($toDoc)));
+header("location:".$wiki['path']."/narin.php?bo_table=".$wiki['bo_table']."&doc=".urlencode(stripcslashes($toDoc)));
 
 ?>

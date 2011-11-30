@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 미디어 파일 등록
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if(!defined("__NARIN_API__")) wiki_not_found_page();
@@ -34,8 +38,8 @@ if($f['img_width']) {
 } else $f['thumb'] = "";
 
 preg_match("/\.([a-zA-Z0-9]{2,4})$/", $f['source'], $m);
-if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.$m[1].'.png')) {		
-	$f['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.$m[1].'.png';			
+if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
+	$f['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
 } else $f['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/_blank.png';
 
 $f['code'] = 1;

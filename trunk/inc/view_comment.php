@@ -1,13 +1,17 @@
-<?
+ï»¿<?
 /**
- * include skin ½ºÅ©¸³Æ®
+ * 
+ * include skin ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage inc
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
-$board_skin_path = $wiki[inc_skin_path];
-include_once $g4[bbs_path]."/view_comment.php";
-$board_skin_path = $wiki[skin_path];
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
+$board_skin_path = $wiki['inc_skin_path'];
+include_once $g4['bbs_path']."/view_comment.php";
+$board_skin_path = $wiki['skin_path'];
 ?>

@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 미디어 폴더 권한 변경
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if(!defined("__NARIN_API__")) wiki_not_found_page();

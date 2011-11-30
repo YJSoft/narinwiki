@@ -1,9 +1,35 @@
 <?
 /**
+ * 
  * 나린위키 스킨 : 문서이력 스킨
- *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * 
+ * 문서이력보기 스킨 페이지
+ * 
+ * <b>사용가능한 변수</b>
+ * - $folder : 폴더 경로
+ * - $docname : 문서명
+ * - $doc : 폴더 경로 + 문서명
+ * - $history : 문서이력 목록
+ * - $member : 로그인 정보 ($member['mb_id'], $member['mb_level'], $member['mb_nick'] ...)
+ * - $is_admin : 그누보드 관리자 인가
+ * - $is_wiki_admin : 위키 관리자인가
+ * 
+ * <code> 
+ * // $history 변수 형식
+ * array(
+ *   array("id"=>문서이력id,
+ *         "wr_id"=>문서id,
+ *         "content"=>내용,
+ *         "recover_href"=>이 문서이력으로 복원하는 URL,
+ *         "date"=>등록시간)
+ * )
+ * </code>
+ * 
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; //개별 페이지 접근 불가 

@@ -11,7 +11,7 @@ include_once "_common.php";
 $doc = wiki_ajax_data($doc);
 $content = wiki_ajax_data($content);
 
-list($ns, $doc, $path) = wiki_page_name($doc, $strip=true);
+list($ns, $doc, $path) = wiki_page_name(stripslashes($doc));
 
 $wr = array('mb_id'=>$member['mb_id'],
 					  'mb_level'=>$member['mb_level'],

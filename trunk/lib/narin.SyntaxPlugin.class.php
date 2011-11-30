@@ -1,26 +1,32 @@
-<?
+ï»¿<?
 /**
- * ¹®¹ý ÇÃ·¯±×ÀÎ Å¬·¡½º
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * ë¬¸ë²• í”ŒëŸ¬ê·¸ì¸ í´ëž˜ìŠ¤
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 
 class NarinSyntaxPlugin extends NarinPlugin {
-	
+
 	/**
-	 * Constructor
+	 * ìƒì„±ìž
 	 */
 	public function __construct() {
 		parent::__construct();
-	}	
-	
+	}
+
 	public function getType() {
 		return "syntax";
 	}
 
 	/**
-	 * ÇÏÀ§ Å¬·¡½º¿¡¼­ Áßº¹±¸ÇöÇØ¾ß ÇÔ
+	 *
+	 * í•˜ìœ„ í´ëž˜ìŠ¤ì—ì„œ ì¤‘ë³µêµ¬í˜„í•´ì•¼ í•¨
+	 *
+	 * @param NarinParser $parser íŒŒì„œ ì¸ìŠ¤í„´ìŠ¤
 	 */
 	public function register($parser) {}
 }
