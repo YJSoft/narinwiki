@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 나린위키 스킨 : 검색 스킨
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
@@ -19,8 +23,8 @@ if($is_nogood) $colspan++;
 		위키 검색	
 	</div>
 	
-	<form action="<?=$wiki[path]?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
-	<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
+	<form action="<?=$wiki['path']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
+	<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>"/>
 	<input type="text" class="search_text txt" name="stx" size="20" value="<?=wiki_input_value(stripcslashes($stx))?>"/>
 	<span class="button purple"><input type="submit" value="검색"></span>
 	</form>		
@@ -72,7 +76,7 @@ if($is_nogood) $colspan++;
 <div class="wikiToolbar clear">
 	
 	<div class="wikiLeftTools">
-  	<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>
+  	<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
 	</div> <!--// wikiLeftTools -->	
 	
 	<div class="wikiRightTools">		  	  	  	  		

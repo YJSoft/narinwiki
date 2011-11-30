@@ -1,19 +1,24 @@
-<?
+ï»¿<?
 /**
- * include skin ½ºÅ©¸³Æ®
+ * 
+ * include skin ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 
-extract($wikiEvent->trigger("WRITE_COMMENT_UPDATE", array("w"=>$w, 
-																			"wr_id"=>$wr_id, 
-																			"wr_doc"=>stripcslashes($wr_doc),
-																			"wr_name"=>stripcslashes($wr_name), 
-																			"wr_email"=>stripcslashes($wr_email), 
-																			"wr_content"=>stripcslashes($wr_content),
-																			"comment_id"=>$comment_id)));	
+extract($wikiEvent->trigger("WRITE_COMMENT_UPDATE", 
+							array("w"=>$w, 
+									"wr_id"=>$wr_id, 
+									"wr_doc"=>stripcslashes($wr_doc),
+									"wr_name"=>stripcslashes($wr_name), 
+									"wr_email"=>stripcslashes($wr_email), 
+									"wr_content"=>stripcslashes($wr_content),
+									"comment_id"=>$comment_id)));	
 
 ?>

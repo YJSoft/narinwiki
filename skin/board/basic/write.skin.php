@@ -1,9 +1,14 @@
 <?
 /**
+ * 
  * 나린위키 스킨 : 문서 작성 스킨
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author sir.co.kr
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
@@ -138,7 +143,7 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	        var flen = 0;
 	        function add_file(delete_code)
 	        {
-	            var upload_count = <?=(int)$board[bo_upload_count]?>;
+	            var upload_count = <?=(int)$board['bo_upload_count']?>;
 	            if (upload_count && flen >= upload_count)
 	            {
 	                alert("이 게시판은 "+upload_count+"개 까지만 파일 업로드가 가능합니다.");
@@ -209,19 +214,19 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	
 	<tr>
 		<td colspan="2" style="text-align:center">
-			<? if($member[mb_id]) { ?>
+			<? if($member['mb_id']) { ?>
 			<span class="button green"><a href="#tmpsave" id="btn_tmpsave">임시저장</a></span>&nbsp;
 			<? } ?>
 			<span class="button red"><input type=submit id="btn_submit" value="완료" border=0 accesskey='s'></span>&nbsp;
 	    <span class="button"><a href="javascript:history.go(-1);" id="btn_back">뒤로</a></span>&nbsp;
-	    <span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>" id="btn_list">시작페이지</a></span></td>
+	    <span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>" id="btn_list">시작페이지</a></span></td>
 	  </td>
 	 </tr>
 	</table>
 
 </form>
 
-<script type="text/javascript" src="<?="$g4[path]/js/jquery.kcaptcha.js"?>"></script>
+<script type="text/javascript" src="<?=$g4['path']?>/js/jquery.kcaptcha.js"></script>
 <script type="text/javascript">
 <?
 // 관리자라면 분류 선택에 '공지' 옵션을 추가함
@@ -248,7 +253,7 @@ with (document.fwrite)
 
     if (typeof(ca_name) != "undefined")
         if (w.value == "u")
-            ca_name.value = "<?=$write[ca_name]?>";
+            ca_name.value = "<?=$write['ca_name']?>";
 }
 
 function html_auto_br(obj) 
@@ -291,7 +296,7 @@ function fwrite_submit(f)
     var subject = "";
     var content = "";
     $.ajax({
-        url: "<?=$wiki[path]?>/exe/ajax.filter.php",
+        url: "<?=$wiki['path']?>/exe/ajax.filter.php",
         type: "POST",
         data: {
             "subject": f.wr_subject.value,
@@ -329,10 +334,10 @@ function fwrite_submit(f)
     document.getElementById('btn_list').disabled = true;
 
     <?
-    if ($g4[https_url])
-        echo "f.action = '$g4[https_url]/$g4[bbs]/write_update.php';";
+    if ($g4['https_url'])
+        echo "f.action = '".$g4['https_url']."/".$g4['bbs']."/write_update.php';";
     else
-        echo "f.action = '$g4[bbs_path]/write_update.php';";
+        echo "f.action = '".$g4['bbs_path']."/write_update.php';";
     ?>   
 		
 		$(window).unbind('beforeunload');    
@@ -340,7 +345,7 @@ function fwrite_submit(f)
     return true;
 }
 </script>
-<? if($member[mb_id]) { ?>
+<? if($member['mb_id']) { ?>
 <script type="text/javascript">
 	var tmp_saved;
 	
@@ -389,5 +394,5 @@ function fwrite_submit(f)
 	});
 </script>
 <?}?>
-<script type="text/javascript" src="<?="$g4[path]/js/board.js"?>"></script>
+<script type="text/javascript" src="<?=$g4['path']?>/js/board.js"?>"></script>
 <script type="text/javascript"> window.onload=function() { drawFont(); } </script>

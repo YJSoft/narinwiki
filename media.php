@@ -25,11 +25,13 @@ include_once "head.php";
 	#narin_media_content h1 { font-size:14pt; padding:0 0 8px 0; margin:0 0 8px 0; border-bottom:1px solid #ccc; }	
 	#chmod_option { display:none; text-align:right; padding:5px; margin:5px; background-color:#efefef;}
 	#media_option { text-align:right; margin-bottom:5px; }	
+	#media_search { }
+	#media_search #stx { float:right;border:1px solid #ccc; }
+	#media_search .button { float:right; margin-top:2px;}
 	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
 	.thumb { border:1px solid #ccc; padding:2px; }
 	.image_size { color:#888; padding-left:8px; font-size:90%;}
 	.plupload_header_content { display:none; }
-	#image_select_layer { }
 </style>
 
 <div id="media_manager_wrapper">
@@ -68,7 +70,10 @@ include_once "head.php";
 		</div>
 		<div id="narin_media_upload"></div>
 		<div id="media_msg"></div>		
-	
+		<div id="media_search" class="clear">			
+			<span class="button blue small"><input type="button" name="sbtn" id="sbtn" value="검색"></span>			
+			<input type="text" name="stx" id="stx"/>
+		</div>
 		<table id="file_list" width="100%" cellspacing="0" cellpadding="0" border="0">
 		<colgroup>			
 			<col>
@@ -77,13 +82,16 @@ include_once "head.php";
 			<col width="160px">
 			<col width="20px">
 		</colgroup>
+		<thead>
 		<tr>
-			<th scope="col">파일명</th>
+			<th scope="col"><a href="#order_name" id="order_name" class="ordering" code="source">파일명</a></th>
 			<th scope="col">&nbsp;</th>			
-			<th scope="col">크기</th>
-			<th scope="col">날짜</th>			
+			<th scope="col"><a href="#order_bytes" id="order_bytes" class="ordering" code="bytes">크기</a></th>
+			<th scope="col"><a href="#order_date" id="order_date" class="ordering" code="reg_date">날짜</a></th>			
 			<th scope="col">&nbsp;</th>
 		</tr>
+		</thead>
+		<tbody></tbody>			
 		</table>	
 	
 	
@@ -122,6 +130,7 @@ include_once "head.php";
 
 </div> <!--// media_manager_wrapper -->
 
+
 <style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
 <script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
 <script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
@@ -138,6 +147,8 @@ include_once "head.php";
 		rmdir_button : $('#rmdir'),
 		chmod_button : $('#chmod'),	
 		folder_label : $('#folder_label'),
+		stx : $('#stx'),
+		sbtn : $('#sbtn'),
 		img_select_layer : $('#image_select_layer'),
 		file_select_layer : $('#file_select_layer'),
 		table : $('#file_list'),
@@ -157,12 +168,38 @@ include_once "head.php";
 		msg_timer_stack : null,
 		filename : '',
 		is_upload_visible : false,
+		order_field : 'reg_date',	//source, bytes, reg_date
+		order : 'desc',
 		uploading_count : 0
 	};
 	
 	mm.init = function() {
 		mm.tree_load(mm.loc);
-				
+						
+		mm.sbtn.click(function(evt) {
+			evt.preventDefault();
+			mm.filter();
+		});		
+		
+		mm.stx.keypress(function(evt) {
+			 if(evt.which == 13) {
+			 	mm.filter();
+			 }
+		});							
+						
+		$('.ordering').click(function(evt) {
+			evt.preventDefault();
+			field = $(this).attr('code');
+			if(field != mm.order_field) {
+				mm.order = 'desc';
+			} else {
+				mm.order = (mm.order == 'desc' ? 'asc' : 'desc');
+			}
+			mm.order_field = field;
+			mm.ordering();
+			mm.render();
+		});								
+						
 		$('.close_button').click(function(evt) { evt.preventDefault(); $.wiki_lightbox_close(); });
 
 		$('#media_image_apply').click(function() {
@@ -406,8 +443,35 @@ include_once "head.php";
 			mm.render();
 		});
 	};
-			
+	
+	mm.filter = function() {
+		var stx = $.trim(mm.stx.val());
+		mm.table.find('.flist').show();
+		if(stx == '') {			
+			return;
+		}
+		mm.table.find('.flist').each(function() {
+			var regx = new RegExp(stx,"gi");
+			if(!regx.test($(this).find('.fname').data('source'))) {
+				$(this).hide();
+			}
+		});
+	};
+
+	mm.ordering = function() {
+		var m = ( mm.order == 'desc' ? -1 : 1);
+		var k = function(v) {
+			if(mm.order_field == 'bytes') return parseInt(v[mm.order_field]);
+			else return v[mm.order_field];
+		};
+		mm.files.sort(function(a, b) {			
+				return ( (k(a) < k(b)) ? -1 :
+							   (k(a) > k(b)) ? 1 : 0 ) * m;				
+		});	
+	};
+				
 	mm.load = function(callback) {
+		mm.stx.val('');
 		mm.table.find('.flist').remove();
 		mm.show_msg('파일 목록을 읽어오고 있습니다...');
 		$.get(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_list&loc='+encodeURIComponent(mm.loc), function(data) {
@@ -423,13 +487,17 @@ include_once "head.php";
 			}
 			mm.files = json.files;
 			mm.set_ns_level(json.access_level, json.upload_level, json.mkdir_level, json.parent_mkdir_level);			
+			mm.ordering();
 			mm.render();
 			mm.hide_msg();
 		});			
 	};
 
 	mm.render = function() {
-		mm.table.find('.flist').remove();
+		
+		//mm.files.sort(mm.sort_by(mm.order_field, mm.order));
+		mm.stx.val('');
+		mm.table.find('tbody .flist').remove();
 		for(i=0; i<mm.files.length; i++) {
 			file = mm.files[i];
 			if(file.img_width > 0) {
@@ -452,6 +520,7 @@ include_once "head.php";
 			$('<td></td>').attr('style', 'padding-left:28px;background:url("'+file.ext_icon+'") no-repeat left center;')
 										.append($('<a></a>').attr('href', 'javascript:;')
 																				.addClass('fname').data('file_path', file_path).data('is_img', is_img)
+																				.data('source', file.source)
 																				.data('img_width', file.img_width).data('img_height', file.img_height)
 																				.html(file.source)
 																				.click(function(evt) {
@@ -464,10 +533,10 @@ include_once "head.php";
 			$('<td></td>').html(file.filesize).appendTo(tr);
 			$('<td></td>').html(file.reg_date).appendTo(tr);
 			$('<td></td>').html(cmd_del).appendTo(tr);
-			mm.table.append(tr);
+			mm.table.find('tbody').append(tr);
 		}
 		if(mm.files.length == 0) {
-			mm.table.append('<tr class="flist"><td colspan="5">파일이 없습니다.</td></tr>');
+			mm.table.find('tbody').append('<tr class="flist"><td colspan="5">파일이 없습니다.</td></tr>');
 		}
 	};
 	

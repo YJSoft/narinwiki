@@ -1,9 +1,14 @@
 <?
 /**
+ * 
  * 나린위키 스킨 : 댓글 보기 스킨
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author sir.co.kr
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가

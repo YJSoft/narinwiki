@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 미디어 파일 목록
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if(!defined("__NARIN_API__")) wiki_not_found_page();
@@ -38,10 +42,11 @@ foreach($files as $k=>$file) {
 		$files[$k]['thumb'] = $thumb_path;
 	} else $files[$k]['thumb'] = "";
 	preg_match("/\.([a-zA-Z0-9]{2,4})$/", $file['source'], $m);
-	if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.$m[1].'.png')) {		
-		$files[$k]['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.$m[1].'.png';			
+	if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
+		$files[$k]['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
 	} else $files[$k]['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/_blank.png';
 	$files[$k]['filesize'] = wiki_file_size($file['filesize']);
+	$files[$k]['bytes'] = $file['filesize'];
 }
 
 $ploc = wiki_get_parent_path($loc);

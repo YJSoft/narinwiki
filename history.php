@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * history 보기 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 include_once("./_common.php");
 
@@ -16,10 +20,10 @@ if($member['mb_level'] < $history_access_level) {
 }
 
 
-if(!$doc) $doc = "/".$wiki[front];
+if(!$doc) $doc = "/".$wiki['front'];
 if(!$page) $page = 1;
 
-list($ns, $docname, $doc) = wiki_validate_doc($doc);
+list($ns, $docname, $doc) = wiki_validate_doc(stripslashes($doc));
 
 $wikiArticle = wiki_class_load("Article");
 $view = $wikiArticle->getArticle($ns, $docname);
@@ -44,8 +48,8 @@ if(!$view) {
 	list($history, $paging) = $wikiHistory->getHistory($view['wr_id'], stripcslashes($doc), $page, $rows=15);	
 		
 	if($is_wiki_admin) {
-		$clear_href = "javascript:clear_history({$view['wr_id']});";
-		$delete_selected_href = "javascript:delete_selected_history({$view['wr_id']});";
+		$clear_href = "javascript:clear_history(".$view['wr_id'].");";
+		$delete_selected_href = "javascript:delete_selected_history(".$view['wr_id'].");";
 	} else {
 		$clear_href = "";
 		$delete_selected_href = "";

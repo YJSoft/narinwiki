@@ -1,96 +1,116 @@
 <?
 /**
+ *
  * 나린위키 이벤트 클래스
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * 나린위키 시스템 이벤트 처리를 담당한다. 액션 플러그인을 로드하고, 핸들러를 등록하고 이벤트 trigger를 처리한다.
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 
 class NarinEvent extends NarinClass
 {
-	var $actions = array();
-	
 	/**
+	 * 
+	 * @var array 이벤트 핸들러를 저장할 배열
+	 */
+	protected $actions = array();
+
+	/**
+	 * 
 	 * 생성자
 	 */
 	public function __construct() {
-		parent::__construct();					
-		$this->loadPlugins();		
-	}	
-	
+		parent::__construct();
+		$this->loadPlugins();
+	}
+
 	/**
+	 * 
 	 * 플러그인 로드
+	 * 
+	 * 시스템 기본 플러그인인 lib/narin.action.php 을 먼저 로드한 뒤,
+	 * plugins/ 에 있는 action.php 파일들을 로드한다.
 	 */
 	protected function loadPlugins()
 	{
 		include_once $this->wiki[path]."/lib/narin.Plugin.class.php";
 		include_once $this->wiki[path]."/lib/narin.ActionPlugin.class.php";
-				
+
 		$path = $this->wiki[path]."/plugins";
 		$use_plugins = array();
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
-		
+
 		// 기본 액션 로드
 		include_once "narin.action.php";
 		$action = new NarinAction();
 		$action->register($this);
-		
+
 		// Action 플러그인 로드
-		
-		$d = dir($path);		
+
+		$d = dir($path);
 		while ($entry = $d->read()) {
-			
+				
 			$pluginPath = $path ."/". $entry;
-			
+				
 			if(is_dir($pluginPath) && substr($entry, 0, 1) != ".") {
-			
+					
 				if(!$use_plugins[$entry]) continue;
-			
-				$classFile = $pluginPath ."/action.php";				
+					
+				$classFile = $pluginPath ."/action.php";
 
 				if(file_exists($classFile)) {
-			
+						
 					$realClassName = "NarinAction".ucfirst($entry);
 
 					include_once $classFile;
-			
+						
 					if(class_exists($realClassName)) {
 
 						$p = new $realClassName();
 						array_push($this->actions, $p);
-						if(!is_a($p, "NarinActionPlugin")) continue;				
+						if(!is_a($p, "NarinActionPlugin")) continue;
 						$p->register($this);
 					}
-					
+						
 				} // if(file_exts...
-				
+
 			} // if(is_dir(....
-			
-		} // while
 				
+		} // while
+
 	}
 
 
 	/**
-	* 이벤트 핸들러 추가
-	*
-	* @param $event (string) 이벤트명
-	* @param $obj   (object) 이벤트를 처리할 객체 (class instance)
-	* @param $handler (string) $obj 내에 구현된 이벤트 핸들러
-	*/
+	 * 
+	 * 이벤트 핸들러 추가
+	 *
+	 * @param string $event 이벤트명
+	 * @param object $obj {@link NarinActionPlugin} 객체
+	 * @param string $handler $obj 내에 구현된 이벤트 핸들러
+	 */
 	public function addHandler($event, $obj, $handler)
 	{
 		$this->actions[$event][] = array("object"=>$obj, "handler"=>$handler);
 	}
-	
+
 	/**
-	 * 액션 실행
-	 * @params 문자열		$type 이벤트 타입
+	 * 
+	 * 이벤트 핸들러 실행
+	 * 
+	 * @see http://narin.byfun.com/bbs/board.php?bo_table=wiki&wr_id=22
+	 * @param string $type 이벤트 타입 (WRITE_UPDATE, DELETE_TAIL, COMMENT_UPDATE 등..)
+	 * @param array $params 이 매소드를 호출하는 곳에서 넘겨주는 파라미터 array
+	 * @return array 리턴되는 배열 event_trigger()를 호출한 곳에서 extract()해서 global 하게 사용할 수 있도록 처리한다. (연관배열이어야 함)
 	 */
-	public function trigger($type, $params) {		
+	public function trigger($type, $params) {
 		$params[_type_] = $type;
-		$returnValue = array();		
-		if(is_array($this->actions[$type])) {			
+		$returnValue = array();
+		if(is_array($this->actions[$type])) {
 			foreach($this->actions[$type] as $idx => $p) {
 				$ret = $p[object]->$p[handler]($params);
 				if(is_array($ret)) {
@@ -98,14 +118,7 @@ class NarinEvent extends NarinClass
 				}
 			}
 		}
-		return $returnValue;		
-	}
-
-	/**
-	 * 연관배열인가?
-	 */
-	function is_assoc ($arr) {
-  	return (is_array($arr) && count(array_filter(array_keys($arr),'is_string')) == count($arr));
+		return $returnValue;
 	}
 
 }

@@ -1,12 +1,16 @@
-<?
+﻿<?
 /**
- * js ���� & minify ��ũ��Ʈ
+ * 
+ * js 병합 & minify 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 include_once "_common.php";
-include_once $wiki[path]."/lib/Minifier/jsmin.php";
+include_once $wiki['path']."/lib/Minifier/jsmin.php";
 
 $offset = 60 * 60 * 24 * 7; // Cache for 1 weeks
 $modified = 0;
@@ -15,13 +19,13 @@ if(substr($_SERVER['HTTP_USER_AGENT'], 25, 8) == "MSIE 6.0"){ $is_ie6 = true; }
 
 $included = "";
 
-// js ���� ���� ����
+// js 파일 내용 버퍼
 $script = "";
 
-// js ���� �ε�
-$script .= get_files_contents($wiki[path]."/js", "js");
-$script .= get_files_contents($wiki[skin_path], "js");
-if(file_exists($wiki[path]."/data/$bo_table/js"))  $script .= get_files_contents($wiki[path]."/data/$bo_table/js", "js");	// for plugin
+// js 폴더 로딩
+$script .= get_files_contents($wiki['path']."/js", "js");
+$script .= get_files_contents($wiki['skin_path'], "js");
+if(file_exists($wiki['path']."/data/$bo_table/js"))  $script .= get_files_contents($wiki['path']."/data/$bo_table/js", "js");	// for plugin
 
 $js_modified = wiki_get_option("js_modified");
 if($js_modified) {
@@ -43,7 +47,13 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 	echo JSMin::minify($script);    
 }
 
-
+/**
+ * 
+ * JS 파일 읽어오기
+ * 
+ * @param array $files 추가할 파일 경로 배열
+ * @return string 병합된 파일 내용
+ */
 function get_files_contents_array($files) {
 	global $modified;
 	$str = "";
@@ -57,6 +67,14 @@ function get_files_contents_array($files) {
 	return $str;
 }
 
+/**
+ * 
+ * JS 파일 읽어오기
+ * 
+ * @param string $path 폴더 경로
+ * @param string $extension 확장자
+ * @return string 병합된 파일 내용
+ */
 function get_files_contents($path, $extension) {
 	global $modified, $is_ie6, $included;
 	$str = "";

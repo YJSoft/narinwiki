@@ -1,14 +1,18 @@
 <?
 /**
+ * 
  * 액션 스크립트 : 문서 보기 전 처리
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined('_GNUBOARD_')) exit;
 
-$view = &$params[view];
+$view = &$params['view'];
 
 // 위키 오브젝트 로드
 $wikiArticle = wiki_class_load("Article");
@@ -20,7 +24,7 @@ $no_nowiki_content = $wikiUtil->no_nowiki_content($view['wr_content']);
 // 편집 권한
 $default_edit_level = $wikiConfig->setting['edit_level'];
 
-$article = $wikiArticle->getArticle($folder, $docname, __FILE__, __LINE__);
+$article = $wikiArticle->getArticle($folder, $docname);
 
 // 문서 작성자?
 $is_doc_owner = ( $view['mb_id'] && $view['mb_id'] == $member['mb_id'] );

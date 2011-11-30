@@ -1,65 +1,44 @@
-<?
+﻿<?
 /**
- * ������Ű �ֻ��� Ŭ����
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * 나린위키 최상위 클래스
+ *
+ * 최상위 클래스로 모든 나린위키 클래스가 이 클래스를 상속받는다.
+ * 클래스들에서 주로쓰는 맴버 변수들을 정의한다.
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 
 if (!defined('_GNUBOARD_')) exit;
 
 class NarinClass {
 	
-	protected $wiki;
-	protected $g4;
-	protected $member;
-	protected $get;
-	protected $post;
-	protected $sess;
-	protected $is_member;
-	protected $is_guest;
-	protected $is_admin;
-	protected $is_wiki_admin;
-	protected $config;
-	protected $urlencode;
-	protected $bo_table;
-	protected $folder;
-	protected $doc;
-	protected $docname;
-	protected $board;
-	protected $wiki_config;
-	protected $user_ip;
-
 	/**
-	 * Constructor
+	 * 
+	 * @var NarinConfig 나린위키 환경설정 클래스
+	 */
+	protected $wiki_config;
+	 
+	/**
+	 * 생성자
 	 */
 	public function __construct() {
-  	
-  	global $wiki, $g4, $member, $_GET, $_POST, $_SESSION, $_SERVER, $doc, $wr_doc, $board, $write, $view, $write_table, $is_member, $is_admin, $is_guest, $is_wiki_admin, $config, $urlencode;
-  	
-		$this->wiki = &$wiki;
-		$this->g4 = &$g4;
-		$this->member = &$member;
-		$this->get = &$_GET;
-		$this->post = &$_POST;
-		$this->sess = &$_SESSION;		
-		$this->is_member = &$is_member;
-		$this->is_wiki_admin = &$is_wiki_admin;
-		$this->is_admin = $is_admin;
-		$this->is_guest = $is_guest;
-		$this->config = &$config;
-		$this->urlencode = &$urlencode;
-		$this->write = &$write;
-		$this->board = &$board;
-		$this->bo_table = &$wiki[bo_table];	
-		if(!$doc && $wr_doc) $doc = $wr_doc;
-		list($ns, $docname, $full) = wiki_page_name($doc, $strip=true);
-		$this->docname = $docname;
-		$this->doc = $full;
-		$this->folder = $ns;				
 		$this->wiki_config = &wiki_class_load("Config");
-		$this->user_ip = $_SERVER[REMOTE_ADDR];
 	}
+	
+	/**
+	 * 
+	 * 프로퍼티(property) 함수
+	 * @param string $key 프로퍼티 필드
+	 * @return mixed {@link NarinConfig}의 narinGlobal[$key] 값
+	 */
+	public function __get($key)
+	{
+	    return $this->wiki_config->getGlobal($key);
+	}		
 	
 }
 

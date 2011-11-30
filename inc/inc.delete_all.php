@@ -1,12 +1,19 @@
-<?
+ï»¿<?
 /**
- * include skin ½ºÅ©¸³Æ®
+ * 
+ * include skin ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
-if (!defined("_GNUBOARD_")) exit; // °³º° ÆäÀÌÁö Á¢±Ù ºÒ°¡ 
+if (!defined("_GNUBOARD_")) exit; // ê°œë³„ íŽ˜ì´ì§€ ì ‘ê·¼ ë¶ˆê°€ 
 
-extract($wikiEvent->trigger("DELETE_ALL", array("wr_id"=>$wr_id, "folder"=>$folder, "chk_wr_id"=>$_POST[chk_wr_id])));
+extract($wikiEvent->trigger("DELETE_ALL", 
+							array("wr_id"=>$wr_id, 
+									"folder"=>$folder, 
+									"chk_wr_id"=>$_POST[chk_wr_id])));
 ?>

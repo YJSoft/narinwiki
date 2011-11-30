@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 위키 관리 head 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage admin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 

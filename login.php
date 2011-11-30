@@ -1,10 +1,14 @@
-<?
+ï»¿<?
 /**
- * login ¸®´ÙÀÌ·ºÆ® ½ºÅ©¸³Æ®
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * login íŽ˜ì´ì§€ë¡œ í¬ì›Œë”©
+ *
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 include_once("./_common.php");
-header("location:{$g4[bbs_path]}/login.php?url=$url");
+header("location:".$g4['bbs_path']."/login.php?url=$url");
 ?>

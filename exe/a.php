@@ -1,13 +1,17 @@
 <?
-define("__NARIN_API__", true);
-
 /**
  * ajax 실행 스크립트
+ * 
+ * ajax 콜이 있으면 response/{$w}.php 파일을 include 하여 응답함
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
- 
+
+define("__NARIN_API__", true); 
 include_once "./_common.php";
 
 //wiki_only_ajax();

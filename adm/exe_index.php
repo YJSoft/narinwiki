@@ -2,8 +2,11 @@
 /**
  * 위키 관리 : manage 실행 스크립트
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage admin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 include_once("_common.php");
 
@@ -15,7 +18,7 @@ if($md == 'cache_clear') {
 	exit;
 }
 
-header("location:{$wiki[path]}/adm/index.php?bo_table={$bo_table}");
+header("location:".$wiki['path']."/adm/index.php?bo_table=$bo_table");
 ?>
 
 

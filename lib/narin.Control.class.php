@@ -1,18 +1,24 @@
 <?
 /**
+ *
  * 나린위키 흐름 제어(control) 클래스
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
 
-
 class NarinControl extends NarinClass {
-
+	
+	/**
+	 * 
+	 * @var array 전역 변수 모음
+	 */
 	var $g;
 	
 	/**
-	 * Constructor
+	 * 생성자
 	 */
 	public function __construct() {
 		parent::__construct();	
@@ -27,62 +33,85 @@ class NarinControl extends NarinClass {
 			"config"=>$this->config);				
 	}
 
+	/**
+	 * 
+	 * 문서에 대한 접근 제어
+	 * 
+	 * @param string $doc 문서 경로
+	 */
 	public function acl($doc) {
 		$member = $this->member;
 		
-		list($ns, $docname, $doc) = wiki_page_name($doc, $strip=false);	
+		list($ns, $docname, $doc) = wiki_page_name($doc);	
 		
 		$wikiArticle = wiki_class_load("Article");
 		
-		$article = $wikiArticle->getArticle($ns, $docname, __FILE__, __LINE__);										
-			
-		if($article && $article[access_level] > $member[mb_level] ) {
+		$article = $wikiArticle->getArticle($ns, $docname);										
+	
+		if($article && $article['access_level'] > $member['mb_level'] ) {
 			$this->notAllowedDocument($ns, $docname, $doc);
 		}
 		
 		$wikiNamespace = wiki_class_load("Namespace");
 		$n = $wikiNamespace->get($ns);
 		
-		if($n[ns_access_level] > $member[mb_level]) {
+		if($n['ns_access_level'] > $member['mb_level']) {
 			$this->notAllowedFolder($ns);
 		}			
 	}
 
-	
-
 	/**
-	 * Create new page
+	 * 
+	 * 존재하지 않는 문서에 대한 접근 처리
+	 * 
+	 * @param string $ns 폴더경로
+	 * @param string $docname 문서명
+	 * @param string $doc 경로를 포함한 문서명
 	 */  
 	function noDocument($ns, $docname, $doc) {
-		$write_href = $this->g4[path]."/bbs/write.php?bo_table=".$this->wiki[bo_table]."&doc=".urlencode($doc);
+		$write_href = $this->g4['path']."/bbs/write.php?bo_table=".$this->wiki['bo_table']."&doc=".urlencode($doc);
 		$this->includePage(
-						$this->wiki[inc_skin_path] . "/nodoc.skin.php", 
+						$this->wiki['inc_skin_path'] . "/nodoc.skin.php", 
 						true, 
 						array("folder"=>$ns, "docname"=>$docname, "doc"=>$doc, "write_href"=>$write_href)
 					);
 	}
 	
 	/**
-	 * Not allowed page
-	 */  
+	 * 
+	 * 권한 없는 문서에 대한 접근 처리
+	 * 
+	 * @param string $ns 폴더경로
+	 * @param string $docname 문서명
+	 * @param string $doc 경로를 포함한 문서명
+	 */
 	function notAllowedDocument($ns, $docname, $doc) {
 		$this->error("권한 없음", "$docname 문서에 대한 접근 권한이 없습니다.");
 	}
 	
 	/**
-	 * Not allowed folder
-	 */  
+	 * 
+	 * 권한 없는 폴더에 대한 접근 처리
+	 * 
+	 * @param string $ns 폴더경로
+	 */
 	function notAllowedFolder($ns) {
 		$this->error("권한 없음", "$ns 폴더에 대한 접근 권한이 없습니다.");
 	}
 	
 	/**
-	 * Error page
+	 * 
+	 * 에러 페이지 보여주기
+	 * 
+	 * <wiki>/skin/board/error.skin.php 로 메시지 출력
+	 * 
+	 * @param string $title 에러 제목
+	 * @param string $msg 에러 내용
 	 */
 	function error($title, $msg)
 	{
 		$this->includePage(
-					$this->wiki[inc_skin_path] . "/error.skin.php",
+					$this->wiki['inc_skin_path'] . "/error.skin.php",
 					true, 
 					array("title"=>$title, "msg"=>$msg)
 				);
@@ -90,20 +119,30 @@ class NarinControl extends NarinClass {
 	}	
 	
 	/**
-	 * View page
-	 */  
+	 * 
+	 * 문서 보기
+	 * 
+	 * @param string $doc 경로를 포함한 문서명
+	 * @param int $wr_id 문서 id
+	 */ 
 	function viewDocument($doc, $wr_id) {		
-		$path = $this->g4[path]."/bbs/board.php";		
-		chdir($this->g4[path]."/bbs");
-		$write = sql_fetch(" select * from {$this->wiki[write_table]} where wr_id = '$wr_id' ");
+		$path = $this->g4['path']."/bbs/board.php";		
+		chdir($this->g4['path']."/bbs");
+		$write = sql_fetch(" select * from ".$this->wiki['write_table']." where wr_id = '$wr_id' ");
 		$this->includePage($path, false, array("wr_id"=>$wr_id, "write"=>$write));
 	}
 			
-
 	/**
-	 *
-	 **/
+	 * 
+	 * 그누보드 extend 처리
+	 * 
+	 * <g4>/extends/narin.wiki.extend.php 에서 호출하며,
+	 * 요청되는 스크립트 파일에 따라 위키에서 필요한 처리를 수행
+	 * 
+	 * @param string $scriptFile 스크립트 파일 (write.php, board.php, write_update.php ...)
+	 */
 	function board($scriptFile) {
+		
 		global $wiki, $bo_table,  $wr_id, $board, $doc;
 					
 		// view
@@ -111,39 +150,39 @@ class NarinControl extends NarinClass {
 			$wikiArticle = wiki_class_load("Article");
 			$view = $wikiArticle->getArticleById($wr_id);
 			$doc = ($view[ns] == "/" ? "" : $view[ns]."/") . $view[doc];
-			header("location:{$this->wiki[path]}/narin.php?bo_table={$board[bo_table]}&doc=".urlencode($doc));
+			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']."&doc=".urlencode($doc));
 			exit;			
 		}
 		
 		// list
 		if($scriptFile == "board.php" && !$wr_id) {
-			header("location:{$this->wiki[path]}/narin.php?bo_table={$board[bo_table]}");
+			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']);
 			exit;
 			}
 						
 		// 에디터에게 글 작성 권한을 주기 위해...
-		if($wr_id && $this->member[mb_id] && $this->member[mb_id] != $this->write[mb_id]) {
+		if($wr_id && $this->member['mb_id'] && $this->member['mb_id'] != $this->write['mb_id']) {
 			$wikiArticle = wiki_class_load("Article");			
 			$wikiConfig = wiki_class_load("Config");
 
-			$default_edit_level = $wikiConfig->setting[edit_level];
+			$default_edit_level = $wikiConfig->setting['edit_level'];
 			$article = $wikiArticle->getArticleById($wr_id);
-			$edit_level = ( $article[edit_level] ? $article[edit_level] : $default_edit_level);				
+			$edit_level = ( $article['edit_level'] ? $article['edit_level'] : $default_edit_level);				
 			
-			$is_doc_editor = ($this->member[mb_level] >= $edit_level );
+			$is_doc_editor = ($this->member['mb_level'] >= $edit_level );
 			if($scriptFile == "write.php" || $scriptFile == "write_update.php") {
 				if($is_doc_editor) {					
-					$this->write[mb_id] = $this->member[mb_id];			
-					$this->write[is_editor] = true;		
+					$this->write['mb_id'] = $this->member['mb_id'];			
+					$this->write['is_editor'] = true;		
 				}
 			}
-		} else if($wr_id && $this->member[mb_id] && $this->member[mb_id] == $this->write[mb_id]) {
-			$this->write[is_owner] = true;
+		} else if($wr_id && $this->member['mb_id'] && $this->member['mb_id'] == $this->write['mb_id']) {
+			$this->write['is_owner'] = true;
 		}
 				
 		// write
 		if($scriptFile == "write.php" && !$doc && !$wr_id ) {
-			header("location:{$this->wiki[path]}/narin.php?bo_table={$board[bo_table]}");
+			header("location:{$this->wiki['path']}/narin.php?bo_table={$board['bo_table']}");
 			exit;			
 		}		
 
@@ -152,16 +191,23 @@ class NarinControl extends NarinClass {
 		if($scriptFile == "write_update.php") {
 			if($w == "u" && $wr_id) {
 				$thumb = wiki_class_load("Thumb");				
-				$thumb->deleteThumb($this->wiki[bo_table]."-".$wr_id . "-");
+				$thumb->deleteThumb($this->wiki['bo_table']."-".$wr_id . "-");
 			}
 		}		
 		
 		
 		
 	}
-	
+
 	/**
-	 * Process after updating post
+	 * 
+	 * 문서가 저장된 후 처리
+	 * 
+	 * @todo lib/actions/on_write_update.php 에서 처리하면 될듯 혹은.. 중복인가???
+	 * 
+	 * @param string $w 그누보드의 $w 값
+	 * @param int $wr_id 게시물 id
+	 * @param string $wr_doc 경로를 포함한 문서명
 	 */
 	function write_update($w, $wr_id, $wr_doc) {
 		
@@ -175,7 +221,11 @@ class NarinControl extends NarinClass {
 	}
 	
 	/**
-	 * Process after deleting post
+	 * 
+	 * 문서가 삭제된 후 처리
+	 * 
+	 * @todo lib/actions/on_delete.php 에서 처리하면 될듯.. 이것도 중복인가???
+	 * @param $wr_id 문서 id
 	 */
 	function delete($wr_id) {		
 		$article = wiki_class_load("Article");
@@ -183,18 +233,23 @@ class NarinControl extends NarinClass {
 	}	
 
 	/**
-	 * Include page
+	 * 
+	 * 페이지 include 매소드
+	 * 
+	 * @param string $include_path include 할 파일 경로
+	 * @param string $layout layout 을 사용할지 말지
+	 * @param string $params
 	 */
 	function includePage($include_path, $layout=false, $params=array()) {
 		
 		foreach ( $GLOBALS as $key => $value ) { $$key = $value; }	
 		
 		if(is_array($params)) foreach ( $params as $key => $value ) { $$key = $value; }	
-		list($ns, $docname, $doc) = wiki_page_name($doc, $strip=false);
+		list($ns, $docname, $doc) = wiki_page_name($doc);
 		
-		if($layout) include_once $this->wiki[path] . "/head.php";		
+		if($layout) include_once $this->wiki['path'] . "/head.php";		
 		include $include_path;		
-		if($layout) include_once $this->wiki[path] . "/tail.php";				
+		if($layout) include_once $this->wiki['path'] . "/tail.php";				
 		
 	}
 	

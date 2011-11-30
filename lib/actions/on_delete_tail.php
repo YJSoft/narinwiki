@@ -1,9 +1,13 @@
 <?
 /**
+ * 
  * 액션 스크립트 : 문서 삭제 (삭제된 후)
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage event
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined('_GNUBOARD_')) exit;
@@ -11,11 +15,11 @@ if (!defined('_GNUBOARD_')) exit;
 $wikiArticle = wiki_class_load("Article");
 $article = $delete_article;
 
-$doc = wiki_doc($article[ns], $article[doc]);
+$doc = wiki_doc($article['ns'], $article['doc']);
 
 $backlinks = $wikiArticle->getBackLinks($doc, $includeSelf = false);
 for($i=0; $i<count($backlinks); $i++) {
-	$wikiArticle->shouldUpdateCache($backlinks[$i][wr_id], 1);
+	$wikiArticle->shouldUpdateCache($backlinks[$i]['wr_id'], 1);
 }
 
 $wikiArticle->deleteArticleById($wr_id);
@@ -31,7 +35,7 @@ $wikiCache->delete($wr_id);
 
 // 최근 변경 내역 업데이트
 $wikiChanges = wiki_class_load("Changes");
-$wikiChanges->update("DOC", $doc, "삭제", ($member[mb_id] ? $member[mb_id] : $write[wr_name]));
+$wikiChanges->update("DOC", $doc, "삭제", ($member['mb_id'] ? $member['mb_id'] : $write[wr_name]));
 
 
 ?>

@@ -1,9 +1,23 @@
 <?
 /**
+ * 
  * 나린위키 스킨 : 최근 변경 내역 스킨
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * 최근변경 내역 보여주는 스킨 페이지
+ *
+ * <b>사용 가능한 변수</b>
+ * - $list : 최근 변경 내역 목록
+ * - $paging : 페이징
+ * - $clear_href : 관리자 일 경우
+ * - $member : 로그인 정보 ($member['mb_id'], $member['mb_level'], $member['mb_nick'] ...)
+ * - $is_admin : 그누보드 관리자 인가
+ * - $is_wiki_admin : 위키 관리자인가
+ *
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
  
 if (!defined("_GNUBOARD_")) exit; //개별 페이지 접근 불가 
