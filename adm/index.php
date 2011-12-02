@@ -49,12 +49,8 @@ include_once "admin.head.php";
 	<td>삭제된 문서의 문서이력, 문서이력을 관리합니다.</td>
 </tr>
 <tr>
-	<td><a href="<?=$wiki['path']?>/adm/thumbnail.php?bo_table=<?=$bo_table?>">썸네일</a></td>
-	<td>위키에서 생성한 썸네일을 관리합니다.</td>
-</tr>
-<tr>
-	<td><a href="#cache_clear" id="cache_clear">캐시(Cache) 초기화 </a></td>
-	<td>저장된 모든 캐시(Cache)를 삭제하고, 위키 문서가 열릴 때 다시 생성되도록 설정합니다.</td>
+	<td><a href="<?=$wiki['path']?>/adm/cache.php?bo_table=<?=$bo_table?>">캐시/썸네일</a></td>
+	<td>캐시(Cache)와 썸네일(Thumbnail)을 관리합니다.</td>
 </tr>
 <tr>
 	<td><a href="<?=$wiki['path']?>/adm/nowiki.php?bo_table=<?=$bo_table?>">미등록문서</a></td>
@@ -62,18 +58,6 @@ include_once "admin.head.php";
 </tr>
 </table>
 
-<script type="text/javascript">
-$("#cache_clear").click(function(evt) {
-	evt.preventDefault();
-	if(confirm('캐시를 초기화 하겠습니까?')) {
-		$.post('<?=$wiki['path']?>/adm/exe_index.php?bo_table=<?=$bo_table?>&md=cache_clear', function(data) {
-			if(data == '1') alert('초기화 완료');
-			else alert('초기화 실패\n'+data);
-		});
-	}
-});
-
-</script>
 <?
 include_once "admin.tail.php";
 ?>

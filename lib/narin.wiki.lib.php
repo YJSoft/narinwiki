@@ -641,6 +641,31 @@ function wiki_is_euckr() {
 }
 
 /**
+ *
+ * 폴더의 총 파일크기를 알아옴
+ *
+ * @param string 폴더 경로
+ * @return array 파일크기와 개수를 담은 배열 array(파일크기, 파일사이즈)
+ */
+function wiki_dir_filesize($path){
+	
+	if(!file_exists($path)) return array(0, 0);
+	if(is_file($path)) {
+		return array(filesize($path), 1);
+	}
+	
+	$file_count = 0;
+	$file_size = 0;
+	foreach(glob($path."/*") as $fn) {
+		list($fsize, $fcount) = wiki_dir_filesize($fn);
+		$file_size += $fsize;
+		$file_count += $fcount;		
+	}
+	
+	return array($file_size, $file_count);
+}
+
+/**
  * 
  * json_encode wrapper 함수
  * 
