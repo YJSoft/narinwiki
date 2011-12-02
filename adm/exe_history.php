@@ -31,6 +31,13 @@ if($md == 'ehbd' && $expire) {
 	$wikiHistory->clearHistoryByDate($expire);
 }
 
+// 변경내역 정리 by day
+if($md == 'ecbd' && $expire) {
+	$wikiChanges = wiki_class_load("Changes");
+	$wikiChanges->clearChangesByDate($expire);
+}
+
+
 header("location:".$wiki['path']."/adm/history.php?bo_table=$bo_table");
 ?>
 

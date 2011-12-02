@@ -79,6 +79,26 @@ $unlinkedList = $wikiHistory->unlinkedHistory();
 		</td>
 	</tr>
 	
+	<tr>
+		<th scope="row">
+			변경내역 정리
+		</th>
+		<td>       
+			<div>
+				<select id="changes_expire_day">
+					<option value="0">선택</option>
+					<option value="7">1주일</option>
+					<option value="30">1달</option>
+					<option value="90">3달</option>
+					<option value="180">6개월</option>
+					<option value="365">1년</option>
+					<option value="730">2년</option>
+					<option value="1095">3년</option>
+				</select> 이전의 변경내역을 <a href="javascript:del_expired_changes_by_day();">모두 삭제</a>합니다.
+			</div>
+		</td>
+	</tr>	
+	
 </tbody>
 </table>
 </div>
@@ -99,6 +119,12 @@ $unlinkedList = $wikiHistory->unlinkedHistory();
 		if(!confirm('정리하시겠습니까?')) return;
 		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=ehbd&expire='+ex;
 	}
+	function del_expired_changes_by_day() {		
+		var ex = $("#changes_expire_day").val();
+		if(ex == 0) { alert('값을 선택하세요'); return; }
+		if(!confirm('정리하시겠습니까?')) return;
+		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=ecbd&expire='+ex;
+	}	
 
 </script>
 <?

@@ -85,11 +85,20 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 	
 	<div id="wiki_after_contents">
-	  작성일 : <?=date("y-m-d H:i", strtotime($view['wr_datetime']))?>
+	  업데이트 : <?=date("Y-m-d H:i", strtotime($view['update_date']))?>
 	 / 작성자 : <?=$view['name']?><? if ($is_ip_view) { echo "&nbsp;($ip)"; }?>
 	 / 조회 : <?=number_format($view['wr_hit'])?>
 	  <? if ($is_good) { ?> / 추천 : <?=number_format($view['wr_good'])?><? } ?>
-  	<? if ($is_nogood) { ?> / 비추천 : <?=number_format($view['wr_nogood'])?><? } ?>				
+  	<? if ($is_nogood) { ?> / 비추천 : <?=number_format($view['wr_nogood'])?><? } ?>
+  	<div id="contributors">
+  		<? 
+  		$limit = count($contributors);
+  		echo "공헌자 : ";
+  		for($i=0; $i<$limit; $i++) {
+  			echo $contributors[$i]['editor'];
+  			if($i<$limit-1) echo ", ";
+  		} ?>
+  	</div>
 	</div> <!--// wiki_after_contents -->
 	
 </div> <!--// wiki_contents -->

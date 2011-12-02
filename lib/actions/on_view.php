@@ -26,6 +26,9 @@ $default_edit_level = $wikiConfig->setting['edit_level'];
 
 $article = $wikiArticle->getArticle($folder, $docname);
 
+// 최근 업데이트된 시간
+$view['update_date'] = $article['update_date'];
+
 // 문서 작성자?
 $is_doc_owner = ( $view['mb_id'] && $view['mb_id'] == $member['mb_id'] );
 
@@ -193,6 +196,10 @@ if( $is_doc_owner || $is_wiki_admin || $member['mb_level'] >= $history_access_le
 // 네비게이션
 $navigation = wiki_navigation($doc);
 $return_array['navigation'] = $navigation;
+
+// 공헌자
+$return_array['contributors'] = $article['contributors'];
+
 
 // 문서이력 보기라면 버튼 감춤
 if($is_history) {

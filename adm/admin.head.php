@@ -22,7 +22,7 @@ $selected[$pageid] = " class='selected'";
 		<li<?=$selected['basic']?>><a href="<?=$wiki['path']?>/adm/basic.php?bo_table=<?=$wiki['bo_table']?>">기본설정</a></li> 
 		<li<?=$selected['media']?>><a href="<?=$wiki['path']?>/adm/media.php?bo_table=<?=$wiki['bo_table']?>">미디어관리자</a></li> 
 		<li<?=$selected['plugin']?>><a href="<?=$wiki['path']?>/adm/plugin.php?bo_table=<?=$wiki['bo_table']?>">플러그인</a></li> 
-		<li<?=$selected['history']?>><a href="<?=$wiki['path']?>/adm/history.php?bo_table=<?=$wiki['bo_table']?>">문서이력</a></li> 
+		<li<?=$selected['history']?>><a href="<?=$wiki['path']?>/adm/history.php?bo_table=<?=$wiki['bo_table']?>">문서이력/변경내역</a></li> 
 		<li<?=$selected['cache']?>><a href="<?=$wiki['path']?>/adm/cache.php?bo_table=<?=$wiki['bo_table']?>">캐시/썸네일</a></li> 
 		<li<?=$selected['nowiki']?>><a href="<?=$wiki['path']?>/adm/nowiki.php?bo_table=<?=$wiki['bo_table']?>">미등록문서</a></li> 		
 	</ul> 

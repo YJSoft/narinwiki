@@ -109,6 +109,18 @@ class NarinChanges extends NarinClass {
 		$wikiEvent = wiki_class_load("Event");
 		$wikiEvent->trigger("CHANGES_DELETE_ALL", array());			
 	}
+	
+	/**
+	 * 
+	 * 변경내역 정리
+	 * 
+	 * @param int $day 주어진 날 이전의 변경내역을 모두 삭제
+	 */
+	public function clearChangesByDate($day) {
+		sql_query("DELETE FROM ".$this->wiki['changes_table']." 
+					WHERE bo_table = '".$this->wiki['bo_table']."' AND reg_date < DATE_SUB(NOW(), INTERVAL $day DAY)");
+	}	
+	
 }
 
 ?>

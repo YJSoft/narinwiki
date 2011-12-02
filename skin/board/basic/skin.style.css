@@ -60,7 +60,7 @@
 		#wiki_back_links { display:none; }
 		
 		#wiki_comment { margin-top:10px; }	
-		#wiki_after_contents { margin-top:10px; text-align:right; color:silver; font-size:9pt}
+		#wiki_after_contents { margin-top:10px; text-align:right; color:#888; font-size:9pt}
 		#wiki_signature { margin-top:10px; padding-top:8px; }	
 		
 		.wikiToolbar { position:relative;margin-top:10px; padding:5px; border-top:1px dotted #c9c9c9; }
