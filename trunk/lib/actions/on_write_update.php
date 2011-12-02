@@ -13,15 +13,23 @@
 if (!defined('_GNUBOARD_')) exit;
 				
 if($wr_doc) {
-	
-	$wikiControl = wiki_class_load("Control");
-	$wikiHistory = wiki_class_load("History");	
-		
-	// 위키 트리 구조에 글 등록	
-	$wikiControl->write_update($w, $wr_id, $wr_doc);
-	
+
 	// 문서이력 업데이트
 	$editor = ($member['mb_id'] ? $member['mb_id'] : $wr_name);
+		
+	// 위키 트리 구조에 글 등록	
+	$wikiArticle = wiki_class_load("Article");
+	
+	if($w == '') { // 새글 작성 시
+		$wikiArticle->addArticle($wr_doc, $wr_id);
+	} else if($w == 'u') {	// 업데이트 시
+		$wikiArticle->updateArticle($wr_doc, $wr_id);
+	}			
+	
+	// 공헌자 추가
+	$wikiArticle->addContributor($wr_id, $editor);
+	
+	$wikiHistory = wiki_class_load("History");		
 	$wikiHistory->update($wr_id, $wr_content, $editor, $wr_history);
 	
 	// 새문서일 경우 이전 문서 이력과 연결 시켜 줌
@@ -39,7 +47,6 @@ if($wr_doc) {
 	}
 
 	// 캐쉬 업데이트 필드 셋팅
-	$wikiArticle = wiki_class_load("Article");
 	$wikiArticle->shouldUpdateCache($wr_id, 1);
 	$backlinks = $wikiArticle->getBackLinks($fullname, $includeSelf = true);
 	for($i=0; $i<count($backlinks); $i++) {
@@ -49,6 +56,11 @@ if($wr_doc) {
 	// 최근 변경 내역 업데이트
 	$wikiChanges = wiki_class_load("Changes");
 	$status = "새문서";
+	
+	if($w == "u") {
+		$thumb = wiki_class_load("Thumb");				
+		$thumb->deleteThumb($wiki['bo_table']."-".$wr_id . "-");
+	}	
 	
 	if($w == 'u') $status = "편집";	
 	$wikiChanges->update("DOC", $fullname, $status, ($member['mb_id'] ? $member['mb_id'] : $wr_name));				

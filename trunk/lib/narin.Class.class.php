@@ -32,7 +32,7 @@ class NarinClass {
 	 * @var NarinConfig 나린위키 환경설정 클래스
 	 */
 	protected $wiki_config;
-	 
+	
 	/**
 	 * 생성자
 	 */
@@ -46,11 +46,11 @@ class NarinClass {
 	 * @param string $key 프로퍼티 필드
 	 * @return mixed {@link NarinConfig}의 narinGlobal[$key] 값
 	 */
-	public function __get($key)
+	public function &__get($key)
 	{
 	    return $this->wiki_config->getGlobal($key);
-	}		
-	
+	}
+
 }
 
 ?>

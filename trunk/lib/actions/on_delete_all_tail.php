@@ -33,7 +33,10 @@ $wikiChanges = wiki_class_load("Changes");
 for ($i=count($wr_id_array)-1; $i>=0; $i--) 
 {
 	$write = sql_fetch(" select wr_id from ".$this->wiki['write_table']." where wr_id = '".$wr_id_array[$i]."' ");
+	
 	if(!$write) {
+	
+		$wikiArticle->deleteArticleById($wr_id_array[$i]);				
 		$wikiCache->delete($wr_id_array[$i]);
 		
 		$d_doc = $delete_all_docs[$wr_id_array[$i]];

@@ -143,6 +143,17 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_media_namespace` (
   `has_child` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ns`,`bo_table`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_contributor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bo_table` varchar(20) NOT NULL,
+  `wr_id` int(11) NOT NULL,
+  `editor` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_item` (`bo_table`,`wr_id`,`editor`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
 	  
 EOF;
 
@@ -151,6 +162,17 @@ EOF;
 		if (trim($f[$i]) == "") continue;
 		sql_query($f[$i], false);
 	}
+
+
+
+	// UPDATE DB PROCESS //////////////////////////////////////////////////////////////////////////
+
+	$history_table = $db_prefix."narin_history";
+
+	// FROM 2011-12-xx
+	sql_query("ALTER TABLE  $history_table ORDER BY `reg_date` DESC");
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	$config_file = "<?\n";
 	$config_file .= "unset(\$wiki);\n";

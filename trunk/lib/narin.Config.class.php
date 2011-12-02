@@ -204,7 +204,7 @@ class NarinConfig {
 	 * 
 	 * @param string $key 프로퍼티 필드명
 	 */
-	public function getGlobal($key)
+	public function & getGlobal($key)
 	{
 		return $this->narinGlobal[$key];
 	}

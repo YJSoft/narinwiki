@@ -97,13 +97,30 @@ class NarinArticle extends NarinClass {
 	{
 		$e_ns = mysql_real_escape_string($ns);
 		$e_docname = mysql_real_escape_string($docname);
-		$sql = "SELECT *, wb.wr_subject AS doc
+		$sql = "SELECT wb.*, nt.*, wb.wr_subject AS doc, ht.reg_date AS update_date
 						FROM ".$this->wiki['write_table']." AS wb 
 						LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
+						LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
 						WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'";
-
-		$row = sql_fetch($sql);
-		return $row;
+		$write = sql_fetch($sql);		
+		$write['contributors'] = $this->getContributor($write['wr_id']);
+		return $write;
+	}
+	
+	/**
+	 * 
+	 * 공헌자 목록 반환
+	 * 
+	 * @param int $wr_id 문서 id
+	 * @return array 공헌자 목록
+	 */	
+	public function getContributor($wr_id) {
+		$sql = "SELECT ct.editor, mt.mb_id, mt.mb_name, mt.mb_nick FROM ". $this->wiki['contrib_table'] . " AS ct
+						LEFT JOIN " . $this->g4['member_table'] . " AS mt
+							ON ct.editor = mt.mb_id
+						WHERE bo_table = '" . $this->wiki['bo_table'] . "' AND wr_id = " . $wr_id . "
+						ORDER BY id ASC";
+		return wiki_sql_list($sql);		
 	}
 	
 	/**
@@ -116,12 +133,13 @@ class NarinArticle extends NarinClass {
 	public function getArticleById($wr_id)
 	{
 		$wr_id = mysql_real_escape_string($wr_id);
-		$sql = "SELECT *, wb.wr_subject AS doc FROM ".$this->wiki['write_table']." AS wb 
+		$sql = "SELECT wb.*, nt.*, wb.wr_subject AS doc, ht.reg_date AS update_date FROM ".$this->wiki['write_table']." AS wb 
 				LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
+				LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
 				WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND wb.wr_id = '$wr_id'";
-
-		$row = sql_fetch($sql);
-		return $row;
+		$write = sql_fetch($sql);
+		$write['contributors'] = $this->getContributor($wr_id);		
+		return $write;
 	}
 	
 
@@ -216,7 +234,10 @@ class NarinArticle extends NarinClass {
 
 		$sql = "DELETE FROM ".$this->wiki['nsboard_table']." WHERE bo_table = '".$this->wiki['bo_table']."' AND wr_id = '$wr_id'";
 		sql_query($sql);
-
+		
+		$sql = "DELETE FROM ".$this->wiki['contrib_table']." WHERE bo_table = '".$this->wiki['bo_table']."' AND wr_id = '$wr_id'";
+		sql_query($sql);
+		
 		$this->namespace->checkAndRemove($write['ns']);
 	}
 		
@@ -267,6 +288,23 @@ class NarinArticle extends NarinClass {
 		sql_query($sql);
 	}
 
+	/**
+	 * 
+	 * 공헌자 추가하기
+	 *
+	 * @param int $wr_id 문서 id
+	 * @param string $editor 작성자 id 또는 이름
+	 */
+	public function addContributor($wr_id, $editor)
+	{
+		$editor = mysql_real_escape_string($editor);
+		$sql = "INSERT INTO ". $this->wiki['contrib_table'] . "
+						SET bo_table = '" . $this->wiki['bo_table'] . "', 
+								wr_id = $wr_id, 
+								editor = '$editor'";
+		sql_query($sql, false);
+	}
+		
 	/**
 	 * 
 	 * 문서 이동

@@ -23,7 +23,6 @@
  *  
  * </code>
  *
- * @todo 뭔가 필요 없는 기능들이 있음..
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
@@ -177,10 +176,11 @@ class NarinControl extends NarinClass {
 		if($scriptFile == "board.php" && !$wr_id) {
 			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']);
 			exit;
-			}
+		}	
 						
 		// 에디터에게 글 작성 권한을 주기 위해...
 		if($wr_id && $this->member['mb_id'] && $this->member['mb_id'] != $this->write['mb_id']) {
+			
 			$wikiArticle = wiki_class_load("Article");			
 			$wikiConfig = wiki_class_load("Config");
 
@@ -203,54 +203,9 @@ class NarinControl extends NarinClass {
 		if($scriptFile == "write.php" && !$doc && !$wr_id ) {
 			header("location:{$this->wiki['path']}/narin.php?bo_table={$board['bo_table']}");
 			exit;			
-		}		
-
-		
-		// write_update (delete thumbnails)
-		if($scriptFile == "write_update.php") {
-			if($w == "u" && $wr_id) {
-				$thumb = wiki_class_load("Thumb");				
-				$thumb->deleteThumb($this->wiki['bo_table']."-".$wr_id . "-");
-			}
-		}		
-		
-		
-		
-	}
-
-	/**
-	 * 
-	 * 문서가 저장된 후 처리
-	 * 
-	 * @todo lib/actions/on_write_update.php 에서 처리하면 될듯 혹은.. 중복인가???
-	 * 
-	 * @param string $w 그누보드의 $w 값
-	 * @param int $wr_id 게시물 id
-	 * @param string $wr_doc 경로를 포함한 문서명
-	 */
-	function write_update($w, $wr_id, $wr_doc) {
-		
-		$article = wiki_class_load("Article");
-		
-		if($w == '') { // 새글 작성 시
-			$article->addArticle($wr_doc, $wr_id);					
-		} else if($w == 'u') {	// 업데이트 시
-			$article->updateArticle($wr_doc, $wr_id);
-		}			
+		}						
 	}
 	
-	/**
-	 * 
-	 * 문서가 삭제된 후 처리
-	 * 
-	 * @todo lib/actions/on_delete.php 에서 처리하면 될듯.. 이것도 중복인가???
-	 * @param $wr_id 문서 id
-	 */
-	function delete($wr_id) {		
-		$article = wiki_class_load("Article");
-		$article->deleteArticleById($wr_id);
-	}	
-
 	/**
 	 * 
 	 * 페이지 include 매소드

@@ -45,7 +45,7 @@ include_once "admin.head.php";
 	<td>플러그인 사용여부, 설정, 설치, 제거 등의 플러그인 설정을 합니다.</td>
 </tr>
 <tr>
-	<td><a href="<?=$wiki['path']?>/adm/history.php?bo_table=<?=$bo_table?>">문서이력</a></td>
+	<td><a href="<?=$wiki['path']?>/adm/history.php?bo_table=<?=$bo_table?>">문서이력/변경내역</a></td>
 	<td>삭제된 문서의 문서이력, 문서이력을 관리합니다.</td>
 </tr>
 <tr>
