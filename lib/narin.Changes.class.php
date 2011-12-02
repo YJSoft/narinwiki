@@ -1,9 +1,7 @@
 ﻿<?
 /**
  *
- * 나린위키 변경내역 클래스
- *
- * 문서/폴더의  생성, 편집, 삭제, 변경 등에 대한 기록을 남기기 위한 클래스
+ * 나린위키 변경내역 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,6 +9,41 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 변경내역 클래스
+ *
+ * 문서/폴더의  생성, 편집, 삭제, 변경 등에 대한 기록을 남기기 위한 클래스
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiChanges = wiki_class_load("Changes");
+ * 
+ * // "/narin/플러그인" 문서가 새로 생성되었음을 기록하기
+ * $wikiChanges->update('DOC', '/narin/플러그인', '새문서', $member['mb_id']);
+ * 
+ * // "/narin/플러그인" 문서가 편집되었음을 기록하기
+ * $wikiChanges->update('DOC', '/narin/플러그인', '편집', $member['mb_id']);
+ * 
+ * // "/narin/플러그인" 문서가 삭제되었음을 기록하기
+ * $wikiChanges->update('DOC', '/narin/플러그인', '삭제', $member['mb_id']); 
+ * 
+ * // "/narin" 폴더가 "/narinwiki" 로 이름이 변경 되었음을 기록하기
+ * $wikiChanges->update('FOLDER', '/narin', '이름변경(이전)', $member['mb_id']); 
+ * $wikiChanges->update('FOLDER', '/narinwiki', '이름변경(이후)', $member['mb_id']);
+ * 
+ * // 변경내역 id = 100 삭제하기
+ * $wikiChanges->delete(100); 
+ *
+ * // 모든 변경내역 삭제
+ * $wikiChanges->clear();  
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinChanges extends NarinClass {
 		
 	/**

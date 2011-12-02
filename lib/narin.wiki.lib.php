@@ -2,6 +2,8 @@
 /**
  * 
  * 나린위키 공용 라이브러리 모음
+ * 
+ * 나린위키의 이곳저곳에서 사용하는 함수들입니다.
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -266,7 +268,7 @@ function wiki_get_parent_path($path)
  * @param string $sql 쿼리문자열
  * @return array 쿼리결과 배열
  */
-function sql_list($sql) {	
+function wiki_sql_list($sql) {	
 	$result = sql_query($sql);
 	$list = array();	
 	while ($row = sql_fetch_array($result))
@@ -448,7 +450,7 @@ function wiki_html($content) {
  * 현재 board 스킨만 있음.
  * 
  * @uses $skins = wiki_get_skins("board");
- * @todo board 왜에 다른 스킨이 필요할까?
+ * @todo board 외에 다른 스킨이 필요할까?
  * @param string $skin 스킨 유형
  * @return array 스킨 목록 배열 (just 이름)
  */
@@ -765,6 +767,7 @@ function wiki_print($str)
  */
 function wiki_print_memory($s)
 {
-	wiki_print($s ." : " . (memory_get_usage()/1024/1024));
+	global $is_admin;
+	if($is_admin) wiki_print($s ." : " . wiki_file_size(memory_get_usage()) . " (peak=" . wiki_file_size(memory_get_peak_usage()).")");
 }
 ?>

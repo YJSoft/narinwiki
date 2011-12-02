@@ -1,6 +1,17 @@
 <?
 /**
- * 나린위키 메인 액션 플러그인 스크립트
+ * 
+ * 나린위키 시스템 액션 플러그인 스크립트
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
+ */
+
+/**
+ * 
+ * 나린위키 시스템 액션 플러그인
  *
  * 나린위키 시스템 액션 플러그인으로 그누보드의 글 등록시, 편집시, 삭제시 등의 이벤트에 대한 처리를 담당한다.
  * lib/actions 안에 실제로 이벤트 처리 루틴이 있으며,
@@ -9,9 +20,7 @@
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
- * @filesource
  */
-
 class NarinAction extends NarinActionPlugin {
 
 	/**

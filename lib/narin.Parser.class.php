@@ -1,6 +1,7 @@
 <?
 /**
- * 나린위키 문법 분석(parsing) 실행 클래스
+ * 
+ * 나린위키 문법 분석(parsing) 실행 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,25 +12,120 @@
 define("EVENT_AFTER_PARSING_ALL", "EVT_PARSING_FINSISHING_ALL");
 define("EVENT_AFTER_PARSING_LINE", "EVT_PARSING_FINSISHING_LINE");
 
+/**
+ * 
+ * 나린위키 문법 분석(parsing) 실행 클래스
+ * 
+ * <b>사용예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiParser = wiki_class_load("Parser");
+ * 
+ * // 위키 문법 -> HTML 파싱
+ * // $view 또는 $write : 그누보드 게시물 배열
+ * $html = $wikiParser->parse($view);
+ * </code>
+ * 
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinParser extends NarinClass
 {
-	protected $id = "wiki_parser";
+	/**
+	 * 
+	 * @var array nowiki 내용 임시 저장 배열
+	 */
 	protected $nowikis = array();
+	
+	/**
+	 * 
+	 * @var array pre 내용 임시 저장 배열
+	 */	
 	protected $pres = array();
+
+	/**
+	 * 
+	 * @var array block 파서 등록 배열
+	 */	
 	protected $blockParsers = array();
+	
+	/**
+	 * 
+	 * @var array variable 파서 등록 배열
+	 */	
 	protected $variableParsers = array();
+	
+	/**
+	 * 
+	 * @var array line 파서 등록 배열
+	 */	
 	protected $lineParsers = array();
+	
+	/**
+	 * 
+	 * @var array word 파서 등록 배열
+	 */	
 	protected $wordParsers = array();
+	
+	/**
+	 * 
+	 * @var array event 핸들러 등록 배열
+	 */	
 	protected $events = array();
+	
+	/**
+	 * 
+	 * @var array 플러그인 등록 배열
+	 */	
 	protected $plugins = array();
+	
+	/**
+	 * 
+	 * @var array 현재 실행중인 block 파서 포인터
+	 */	
 	protected $currentBlockParser = null;
+	
+	/**
+	 * 
+	 * @var array 현재 실행중인 word 파서 포인터
+	 */	
 	protected $currentWordParser = null;
+	
+	/**
+	 * 
+	 * @var array 현재 분석중인 게시물 배열 (그누보드의 view)
+	 */	
 	protected $view = null;
+	
+	/**
+	 * 
+	 * @var array 출력 버퍼
+	 */	
 	protected $output = array();
+	
+	/**
+	 * 
+	 * @var array 제거할 태그
+	 */	
 	protected $ele = array("/~~NOCACHE~~/");
 
+	/**
+	 * 
+	 * @var boolean 다음 라인 파서를 실행하지 않음
+	 */	
 	public $stop = false;
+	
+	/**
+	 * 
+	 * @var boolean 모든 파싱을 중단
+	 */		
 	public $stop_all = false;
+	
+	/**
+	 * 
+	 * @var int 현재 분석중인 line
+	 */		
 	public $current_row = 0;
 
 
@@ -66,10 +162,10 @@ class NarinParser extends NarinClass
 	 */
 	protected function loadPlugins()
 	{
-		include_once $this->wiki[path]."/lib/narin.Plugin.class.php";
-		include_once $this->wiki[path]."/lib/narin.SyntaxPlugin.class.php";
+		include_once $this->wiki['path']."/lib/narin.Plugin.class.php";
+		include_once $this->wiki['path']."/lib/narin.SyntaxPlugin.class.php";
 
-		$path = $this->wiki[path]."/plugins";
+		$path = $this->wiki['path']."/plugins";
 		$use_plugins = array();
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 
@@ -119,7 +215,7 @@ class NarinParser extends NarinClass
 	 *
 	 * 문법 분석
 	 *
-	 * @param array $view 그누보드 write_table 의 한 row
+	 * @param array &$view 그누보드 write_table 의 한 row
 	 * @return string HTML
 	 */
 	public function parse(&$view)
@@ -131,7 +227,7 @@ class NarinParser extends NarinClass
 			
 		$this->view = &$view;
 			
-		$text = $this->_wikiTxt($view[wr_content]);
+		$text = $this->_wikiTxt($view['wr_content']);
 		$this->output = array();
 
 		// nowiki 와 nowiki_block 저장
@@ -141,7 +237,7 @@ class NarinParser extends NarinClass
 		// block parser 실행
 		foreach($this->blockParsers as $id => $p) {
 			$this->currentBlockParser = $p;
-			$text = preg_replace_callback('/'.$p[start_regx].'(.*?)'.$p[end_regx].'/si', array($this, "do_block_parser"), $text);
+			$text = preg_replace_callback('/'.$p['start_regx'].'(.*?)'.$p['end_regx'].'/si', array($this, "do_block_parser"), $text);
 		}
 
 
@@ -201,9 +297,9 @@ class NarinParser extends NarinClass
 
 			foreach ($this->wordParsers as $k => $p)
 			{
-				$regex = $p[regx];
-				$klass = $p[klass];
-				$func = $p[func];
+				$regex = $p['regx'];
+				$klass = $p['klass'];
+				$func = $p['func'];
 				$this->currentWordParser = $p;
 				$line = preg_replace_callback("/$regex/i",array($this, "do_word_parser"),$line);
 				if ($this->stop)
@@ -218,9 +314,9 @@ class NarinParser extends NarinClass
 			// 라인 핸들
 			foreach ($this->lineParsers as $id => $p)
 			{
-				$regex = $p[regx];
-				$klass = $p[klass];
-				$func = $p[func];
+				$regex = $p['regx'];
+				$klass = $p['klass'];
+				$func = $p['func'];
 				if (preg_match("/$regex/i", $line, $matches))
 				{
 					$called[$id] = true;
@@ -252,15 +348,15 @@ class NarinParser extends NarinClass
 	protected function parse_variable($matches)
 	{
 		$loc = wiki_input_value($this->folder);
-		$path = $this->wiki[path];
+		$path = $this->wiki['path'];
 
 		foreach ($this->variableParsers as $id => $p)
 		{
-			$regex = $p[start_regx]."(.*?)".$p[end_regx]."$";
+			$regex = $p['start_regx']."(.*?)".$p['end_regx']."$";
 			if (preg_match("/$regex/i", $matches[2], $m))
 			{
-				if(method_exists($p[klass], $p[func])) {
-					return $p[klass]->$p[func]($m, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view) );
+				if(method_exists($p['klass'], $p['func'])) {
+					return $p['klass']->$p['func']($m, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view) );
 				}
 			}
 		}
@@ -293,7 +389,7 @@ class NarinParser extends NarinClass
 	 */
 	protected function trigger_event($eventType, $params=array()) {
 		foreach($this->events[$eventType] as $handler) {
-			$handler[klass]->$handler[func]($params);
+			$handler['klass']->$handler['func']($params);
 		}
 	}
 
@@ -371,7 +467,7 @@ class NarinParser extends NarinClass
 	protected function do_block_parser($matches)
 	{
 		$p = $this->currentBlockParser;
-		return $p[klass]->$p[func]($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
+		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
 	}
 
 	/**
@@ -384,7 +480,7 @@ class NarinParser extends NarinClass
 	protected function do_word_parser($matches)
 	{
 		$p = $this->currentWordParser;
-		return $p[klass]->$p[func]($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
+		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
 	}
 
 
@@ -456,7 +552,7 @@ class NarinParser extends NarinClass
 		}
 		$target = array("icon_cool.gif", "icon_eek.gif", "icon_sad.gif", "icon_smile.gif", "icon_smile2.gif", "icon_doubt.gif", "icon_doubt2.gif", "icon_confused.gif", "icon_biggrin.gif", "icon_razz.gif", "icon_surprised.gif", "icon_silenced.gif", "icon_neutral.gif", "icon_wink.gif", "icon_fun.gif", "icon_question.gif", "icon_exclaim.gif", "icon_lol.gif", "fixme.gif", "delete.gif", );
 		foreach($target as $k => $v) {
-			$target[$k] = "<img src=\"{$this->wiki[path]}/imgs/smileys/$v\" class=\"middle\" alt=\"\\0\" title=\"\\0\"/>";
+			$target[$k] = "<img src=\"".$this->wiki['path']."/imgs/smileys/$v\" class=\"middle\" alt=\"\\0\" title=\"\\0\"/>";
 		}
 		$content = preg_replace($source, $target, $content);
 		return $content;

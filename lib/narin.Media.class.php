@@ -1,8 +1,7 @@
 <?
 /**
+ * 
  * 나린위키 미디어 클래스
- *
- * 미디어 관리자에 필요한 기능을 수행하는 클래스.
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -10,6 +9,72 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 미디어 클래스
+ *
+ * 미디어 관리자에 필요한 기능을 수행하는 클래스.
+ * 
+ * <b>특징</b>
+ * - 미디어 관리자의 폴더는 위키 문서의 폴더와는 별개로 구성된다. 
+ * - 한 폴더에 같은 이름의 파일이 존재할 수 없다.
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiMedia = wiki_class_load("Media");
+ * 
+ * // 미디어 폴더 추가하기
+ * // "/images/example/plugin" 폴더를 만드는데
+ * // 기존에 있던 "/images" 폴더의 권한과 동일하도록 만든다.
+ * // 이때, "/images/example" 폴더도 같이 만들어진다.
+ * $wikiMedia->addNamespace("/images/example/plugin", "/images");
+ * 
+ * // 파일 등록하기
+ * // data 폴더에 "p0291248dsa.jpg" 로 저장되어있는 "bag.jpg" 파일을
+ * // "/images/example" 폴더에 등록하는 방법
+ * $wikiMedia->addFile("/images/example", "bag.jpg", "p0291248dsa.jpg");
+ * 
+ * // "/images/example/bag.jpg" 파일 삭제하기
+ * $wikiMedia->deleteFile("/images/example", "bag.jpg"); 
+ * 
+ * // "/images/example" 폴더 삭제하기
+ * // 폴더에 하위 폴더가 있거나, 등록된 파일이 있으면 삭제되지 않음
+ * $wikiMedia->deleteFolder("/images/example"); 
+ *  
+ * // DB에 등록되어 있지 않은 파일을 data 폴더에서 삭제하기
+ * // (uploading 중 취소된 파일은 data 폴더에 남아있고, db에는 등록되지 않을 수 있음)
+ * $wikiMedia->deleteUnusedFile("p0291248dsa.jpg");
+ * 
+ * // DB에 등록된 파일 정보 읽어오기
+ * $wikiMedia->getFile("/images/example", "bag.jpg");
+ * 
+ * // 폴더내 파일 목록 가져오기 ({@link getList()} 참조)
+ * $files = $wikiMedia->getList("/images/example");
+ * 
+ * // 폴더 정보 가져오기
+ * $folder_info = $wikiMedia->getNS("/images/example");
+ * 
+ * // 폴더 권한 설정
+ * // 접근 : 2, 업로드 : 5, 폴더생성/삭제 : 9
+ * $wikiMedia->updateLevel("/images", 2, 5, 9);
+ * 
+ * // 폴더 트리구조 HTML 가져오기
+ * // 루트폴더를 "/" 로 하고 현재 폴더를 "/images/example" 로 설정해서
+ * // tree html 구성
+ * $tree_html = $wikiMedia->get_tree("/", "/images/example");
+ * 
+ * // 하위 폴더가 있는지 검사
+ * $wikiMedia->hasSubFolder("/images");
+ * 
+ * // 다운로드 카운트 업데이트 +1
+ * $wikiMedia->updateDownloadCount(파일아이디);
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinMedia extends NarinClass {
 
 	/**

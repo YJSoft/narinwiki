@@ -1,7 +1,7 @@
 <?
 /**
  *
- * 나린위키 흐름 제어(control) 클래스
+ * 나린위키 흐름 제어(control) 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -9,6 +9,25 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 흐름 제어(control) 클래스
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiControl = wiki_class_load("Control");
+ * 
+ * // 에러 메시지 보여주기
+ * $wikiControl->error("문서없음", "존재하지 않는 문서입니다. <a href='javascript:history.go(-1);'>뒤로</a>");
+ *  
+ * </code>
+ *
+ * @todo 뭔가 필요 없는 기능들이 있음..
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinControl extends NarinClass {
 	
 	/**

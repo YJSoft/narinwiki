@@ -1,11 +1,7 @@
 ﻿<?
 /**
- * 나린위키 환경설정(config) 클래스
- *
- * $option_table의 /config를 root 로 하는 레지스트리를 사용하여
- * 환경설정 정보를 저장하고 읽어오는 역할,
- *
- * 모든 클래스의 property 를 제공하는 역할($narinGlobal 맴버 참조)을 하는 클래스
+ * 
+ * 나린위키 환경설정(config) 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -13,6 +9,47 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 환경설정(config) 클래스
+ *
+ * $wiki['option_table']의 /config를 root 로 하는 레지스트리(이하 나린 레지스트리)를 사용하여  환경설정 정보를 저장하고 읽어오는 역할과
+ * 모든 클래스의 property 를 제공하는 역할($narinGlobal 맴버 참조)을 하는 클래스이다.
+ *
+ * 나린 레지스트리에 등록된 내용은 나린위키가 로딩 되면서 매번 읽어오기 때문에 불필요한 내용은 등록하지 않는 것이 좋다.
+ * 
+ * {@link wiki_set_option()}, {@link wiki_get_option()} 함수를 이용해서 $wiki['option_table'] 에 필요한 정보를 저장하고 불러 올 수 있으므로,
+ * 필요하다면 {@link wiki_set_option()}, {@link wiki_get_option()} 을 사용할 것을 권장한다.
+ *
+ * <b>사용 예제</b>
+ * <code>
+ *
+ * // NarinClass를 상속한 class 안에서 사용하려면.. $this->wiki_config 사용
+ * 
+ * // 클래스 로딩
+ * $wikiConfig = wiki_class_load("Config");
+ * 
+ * // 나린 레지스트리 "/config/using_plugins" 에 값 설정하기
+ * // 결과적으로 $wiki['option_table'] 에
+ * // name = /$bo_table/config/using_plugins;
+ * // content = ["html", "code"]
+ * // 형태로 저장된다. array("html", "code") 가 json_encode 된 형태로 저장됨
+ * $wikiConfig->update("/using_plugins", array("html", "code"));
+ *  
+ * // 나린 레지스트리 "/config/using_plugins" 읽어오기
+ * $using_plugins = $wikiConfig->using_plugins;	// 프로퍼티 형식으로 접근하여 사용
+ * foreach($using_plugins as $plugin_name) {
+ *  echo "플러그인명 : " . $plugin_name . "<br/>";
+ * }
+ * 
+ * // 나린 레지스트리에서 삭제하기
+ * $wikiConfig->delete("/using/plugins");
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinConfig {
 
 	/**
@@ -101,7 +138,6 @@ class NarinConfig {
 		$this->reg = "/".$wiki[bo_table] . "/config";
 
 		$result = sql_query("SELECT * FROM ".$wiki['option_table']." WHERE name LIKE '{$this->reg}/%'");
-
 		for($i=0; $row = sql_fetch_array($result); $i++) {
 			$value = json_decode($row['content'], $assoc=true);
 			$path = explode("/", $row['name']);
@@ -118,8 +154,7 @@ class NarinConfig {
 	/**
 	 *
 	 * 환경설정 업데이트
-	 *
-	 * @uses 사용-플러그인 설정할 때 : $config->update("/using_plugins", array("html", "code"));
+	 *	 
 	 * @param string $path 레지스트리 패스
 	 * @param mixed $value 저장할 값
 	 */

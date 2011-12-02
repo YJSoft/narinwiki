@@ -5,7 +5,7 @@
  *
  * 접근한 문서가 없는 문서일 경우 보여주는 스킨 페이지.
  * 
- * <b>사용 가능한 변수</b>
+ * <b>사용 변수</b>
  * - $g4 : 그누보드 global 변수
  * - $wiki : 위키 환경 설정 변수 (narin.config.php, narin.wiki.lib.php 파일 참조)
  * - $folder : 폴더 경로

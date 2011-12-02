@@ -1,4 +1,15 @@
 <?
+/**
+ *
+ * 미디어 관리자 스크립트
+ *
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
+ */
+
 ob_start();	
 include_once "_common.php";
 $g4['title'] = '나린위키 미디어 관리자';

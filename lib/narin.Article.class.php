@@ -1,9 +1,7 @@
 <?
 /**
  *
- * 나린위키 문서 클래스
- *
- * 저장,삭제, 업데이트, 백링크 등 문서에 관한 처리를 담당하는 클래스.
+ * 나린위키 문서 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,6 +9,52 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 문서 클래스
+ *
+ * 저장,삭제, 업데이트, 백링크 등 문서에 관한 처리를 담당하는 클래스.
+ * 
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiArticle = wiki_class_load("Article");
+ * 
+ * // "/narin/나린위키 매뉴얼" 문서가 존재하는 지 확인
+ * $is_exists = $wikiArticle->exists("/narin", "나린위키 매뉴얼");
+ *  
+ * // "/narin/나린위키 매뉴얼" 문서를 읽어오기
+ * $write = $wikiArticle->getArticle("/narin", "나린위키 매뉴얼");
+ * 
+ * // wr_id = 79 인 문서를 읽어오기
+ * $write = $wikiArticle->getArticleById(79);
+ *
+ * // "/narin/나린위키 매뉴얼" 문서를 링크하고 있는 다른 문서 목록(backlinks) 가져오기
+ * $back_links = $wikiArticle->getBackLinks("/narin/나린위키 매뉴얼", $includeSelf=false);
+ * 
+ * // 위키 시작 페이지 가져오기
+ * $write_startpage = $wikiArticle->getFrontPage();
+ * 
+ * // $content 에 "/narin/나린위키 매뉴얼" 문서에 대한 링크가 있는지 검사
+ * $has_link = $wikiArticle->hasInternalLink($content, "/narin/나린위키 매뉴얼");
+ * 
+ * // "/narin/나린위키 매뉴얼" 문서를 "/narinwiki/매뉴얼" 문서로 변경하기
+ * $wikiArticle->moveDoc("/narin/나린위키 매뉴얼", "/narinwiki/매뉴얼");
+ * 
+ * // 문서 보기시 cache 를 업데이트 하도록 설정 
+ * $wikiArticle->shouldUpdateCache ($wr_id, 1);
+ * 
+ * // wr_id = 79 인 문서의 문서/경로명을 "/narinwiki/매뉴얼"로 변경하기 
+ * $wikiArticle->updateArticle("/narinwiki/매뉴얼", 79);
+ * 
+ * // "/narinwiki/매뉴얼" 문서의 접근권한 5, 편집 권한 9로 변경 
+ * $wikiArticle->updateLevel("/narinwiki/매뉴얼", 5, 9);
+ * </code>
+ * 
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com) 
+ */
 class NarinArticle extends NarinClass {
 	
 	/**
@@ -45,12 +89,6 @@ class NarinArticle extends NarinClass {
 	 * 
 	 * 문서 반환 by 문서명
 	 * 
-	 * <code>
-	 * // "/narin/나린위키 매뉴얼" 문서를 읽어오는 방법
-	 * $wikiArticle = wiki_class_load("Article");
-	 * $write = $wikiArticle->getArticle("/narin", "나린위키 매뉴얼");
-	 * </code>
-	 * 
 	 * @param string $ns 네임스페이스(폴더)
 	 * @param string $docname 문서명
 	 * @return array 문서 데이터
@@ -71,12 +109,6 @@ class NarinArticle extends NarinClass {
 	/**
 	 * 
 	 * 문서 반환 by wr_id
-	 * 
-	 * <code>
-	 * // "/narin/나린위키 매뉴얼" 문서를 읽어오는 방법
-	 * $wikiArticle = wiki_class_load("Article");
-	 * $write = $wikiArticle->getArticle(79);
-	 * </code>
 	 * 
 	 * @param int $wr_id 문서id (그누보드 게시판의 wr_id)
 	 * @return array 문서 데이터
@@ -229,8 +261,8 @@ class NarinArticle extends NarinClass {
 		if($docname) $docname = mysql_real_escape_string($docname);
 		if($fullname) $fullname = mysql_real_escape_string($fullname);
 		if($wr_id) $wr_id = mysql_real_escape_string($wr_id);
-		$sql = "UPDATE ".$this->wiki['nsboard_table']." SET ns='$ns' WHERE bo_table='".$this->wiki['bo_table']."' AND wr_id='$wr_id'";
-		sql_query($sql);
+		//$sql = "UPDATE ".$this->wiki['nsboard_table']." SET ns='$ns', doc='$docname' WHERE bo_table='".$this->wiki['bo_table']."' AND wr_id='$wr_id'";
+		//sql_query($sql);
 		$sql = "UPDATE ".$this->wiki['write_table']." SET wr_subject = '$docname' WHERE wr_id = $wr_id";
 		sql_query($sql);
 	}
@@ -252,7 +284,7 @@ class NarinArticle extends NarinClass {
 		$this->toDoc = $toFullName;
 
 		// 이미 존재한다면 이동하지 않음
-		$ex = $this->getArticle($toNS, $toDocName);
+		$ex = $this->exists($toNS, $toDocName);
 		if($ex) return false;
 
 		$this->updateArticle($toDoc, $wr_id);

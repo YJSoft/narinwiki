@@ -3,6 +3,11 @@
  * 
  * 나린위키 스킨 : 검색 스킨
  *
+ * <b>사용 변수</b>
+ * - $list : 검색 결과 목록
+ * - $write_pages : 페이징
+ * - $wiki_admin_href : 관리자 링크
+ *
  * @package	narinwiki
  * @subpackage skin
  * @license http://narin.byfun.com/license GPL2

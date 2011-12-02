@@ -1,9 +1,7 @@
 <?
 /**
  *
- * 썸네일 클래스
- *
- * 미디어/첨부이미지의 썸네일을 생성, 삭제하는 클래스
+ * 썸네일 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,9 +9,32 @@
  * @filesource
  */
 
-// easy php thumbnail 클래스를 이용함
-require_once $wiki[path]."/lib/Thumb/easyphpthumbnail.class.php";
 
+// easy php thumbnail 클래스를 이용함
+require_once $wiki['path']."/lib/Thumb/easyphpthumbnail.class.php";
+
+/**
+ *
+ * 썸네일 클래스
+ *
+ * 미디어/첨부이미지의 썸네일을 생성, 삭제하는 클래스
+ * 
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiThumb = wiki_class_load("Thumb");
+ * 
+ * // 미디어관리자에 등록된 "/images/example/bag.jpg" 파일의 썸네일을
+ * // 너비 300px, 높이 120px, 품질 90%의 썸네일로 만들고
+ * // 썸네일 패스 가져오기
+ * $thumb_path = $wikiThumb->getMediaThumb("/images/example", "bag.jpg", 300, 120, 90);
+ * 
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinThumb extends NarinClass {
 
 	/**
@@ -28,7 +49,7 @@ class NarinThumb extends NarinClass {
 	public function __construct() {
 
 		parent::__construct();
-		$this->thumb_path = $this->wiki[path] . "/data/".$this->wiki[bo_table]."/thumb";
+		$this->thumb_path = $this->wiki['path'] . "/data/".$this->wiki['bo_table']."/thumb";
 	}
 
 	/**
@@ -109,7 +130,6 @@ class NarinThumb extends NarinClass {
 	 *
 	 * 문자열($haystack)이 주어진 문자($needle)로 시작하는지 여부 확인
 	 *
-	 * @deprecated
 	 * @param $string 문자열
 	 * @param $startString 찾을 문자열
 	 * @return true|false 문자열 시작이 일치하면 true, 아니면 false
@@ -134,7 +154,7 @@ class NarinThumb extends NarinClass {
 	 */
 	function getBoardThumb($wr_id, $thumb_width, $thumb_height, $img_idx=0, $quality=90, $use_crop=-1) {
 			
-		$bo_table = $this->wiki[bo_table];
+		$bo_table = $this->wiki['bo_table'];
 		$write_table = $this->g4[write_prefix] . $bo_table;
 
 		$wr = sql_fetch("SELECT * FROM $write_table WHERE wr_id = $wr_id");
@@ -144,7 +164,7 @@ class NarinThumb extends NarinClass {
 		$fileinfo = get_file($bo_table, $wr_id);
 			
 		// 원본 이미지 파일 경로
-		$file = $fileinfo[$img_idx][path] . '/' .$fileinfo[$img_idx][file];
+		$file = $fileinfo[$img_idx]['path'] . '/' .$fileinfo[$img_idx]['file'];
 
 		$pathinfo = pathinfo($file);
 		$extension = strtolower($pathinfo[extension]);

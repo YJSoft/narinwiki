@@ -1,12 +1,22 @@
 ﻿<?
 /**
  *
- * 문법 플러그인 클래스
+ * 문법 플러그인 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  * @filesource
+ */
+
+/**
+ *
+ * 문법 플러그인 클래스.
+ * 문법 플러그인은 이 클래스를 상속받아 구현해야 한다.
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
  */
 
 class NarinSyntaxPlugin extends NarinPlugin {

@@ -1,9 +1,7 @@
 <?
 /**
  *
- * 나린위키 캐시(Cache) 클래스
- *
- * 문서 캐시 관리를 위한 클래스.
+ * 나린위키 캐시(Cache) 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,6 +9,37 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 캐시(Cache) 클래스
+ *
+ * 문서 캐시 관리를 위한 클래스.
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiCache = wiki_class_load("Cache");
+ * 
+ * // wr_id = 79 인 문서의 저장된 HTML 캐시 가져오기
+ * $content = $wikiCache->get(79);
+ * 
+ * // wr_id = 79 인 문서의 캐시 업데이트하기
+ * $wikiParser = wiki_class_load("Parser");	// 파서 로드
+ * $content = $wikiParser->parse($view);	// 파싱
+ * $wikiCache->update(79, $content);		// 파싱된 결과 저장
+ * 
+ * // wr_id = 79 인 문서의 캐시 삭제
+ * $wikiCache->delete(79);
+ * 
+ * // 모든 캐시 초기화
+ * $wikiCache->clear();
+ * 
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinCache extends NarinClass {
 	
 	/**
@@ -23,6 +52,17 @@ class NarinCache extends NarinClass {
 	public function get($wr_id) {
 		$row = sql_fetch("SELECT content FROM ".$this->wiki['cache_table']." 
 							WHERE bo_table = '".$this->wiki['bo_table']."' AND wr_id = $wr_id");
+
+		// @todo 동작 확인해야 함
+		// cache 된 내용이 없으면 parsing 수행
+		if(!$row) {			
+			$write = sql_fetch(" select * from ".$this->wiki['write_table']." where wr_id = '$wr_id' ");
+			$wikiParser = wiki_class_load("Parser");
+			$content = mysql_real_escape_string($wikiParser->parse($write));
+			sql_query("INSERT INTO ".$this->wiki['cache_table']." VALUES ('', '".$this->wiki['bo_table']."', $wr_id, '$content')");
+			return $content;
+		}
+		
 		return $row['content'];
 	}
 	

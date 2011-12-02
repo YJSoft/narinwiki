@@ -1,9 +1,7 @@
 <?
 /**
  *
- * 나린위키 네임스페이스(폴더) 클래스
- *
- * 폴더 추가, 삭제, 이동 등 폴더에 관한 처리를 담당하는 클래스.
+ * 나린위키 네임스페이스(폴더) 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,6 +9,54 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 네임스페이스(폴더) 클래스
+ *
+ * 폴더 추가, 삭제, 이동 등 폴더에 관한 처리를 담당하는 클래스.
+ *
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiNS= wiki_class_load("Namespace");
+ * 
+ * // "/narin/plugin" 폴더 추가하기
+ * // 이때 "/narin" 폴더가 존재하지 않으면 "/narin" 도 생성됨
+ * $wikiNS->addNamespace("/narin/plugin");
+ * 
+ * // "/narin/plugin" 폴더 삭제하기
+ * // 이때 "/narin/plugin" 의 하위 폴더가 있거나, 문서가 있으면 삭제되지 않음
+ * // 또는 
+ * // 폴더가 비어서 삭제되었으면 상위 폴더도 검사하여 삭제한다.
+ * // 재귀적으로 상위폴더들을 검사하면서 빈 폴더를 삭제한다.
+ * $wikiNS->checkAndRemove("/narin/plugin");
+ *  
+ * // "/narin/plugin" 폴더 정보 얻기 (access_level, tpl 등)
+ * $ns = $wikiNS->get("/narin/plugin");
+ * 
+ * // "/narin/plugin" 폴더 내의 폴더/문서 목록 얻기
+ * $list = $wikiNS->getList("/narin/plugin");
+ * 
+ * // "/" 를 최상위 폴더로 하고 "/narin/plugin" 을 현재 폴더로 하는
+ * // 트리 HTML 얻기
+ * $tree_html = $wikiNS->get_tree("/", "/narin/plugin");
+ * 
+ * // "/narin/plugin" 폴더의 템플릿 설정하기
+ * $wikiNS->setTemplate("/narin/plugin", "== @DOCNAME@ ==");
+ * 
+ * // "/narin/plugin" 폴더의 접근 권한 설정하기
+ * $wikiNS->updateAccessLevel("/narin/plugin", 4);
+ * 
+ * // "/narin" 폴더를 "/narinwiki" 폴더로 변경하기
+ * $wikiNS->updateNamespace("/narin", "/narinwiki");
+ * 
+ * </code>
+ * 
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinNamespace extends NarinClass {
 
 	/**
@@ -73,7 +119,7 @@ class NarinNamespace extends NarinClass {
 		$escapedDstNS = mysql_real_escape_string($dstNS);
 
 		// $srcNS 의 하위 ns 를 읽어온다
-		$list = sql_list("SELECT * FROM ".$this->wiki['ns_table']."
+		$list = wiki_sql_list("SELECT * FROM ".$this->wiki['ns_table']."
 						  WHERE ns like '$escapedSrcNS/%' AND bo_table='".$this->wiki['bo_table']."'");		
 
 		foreach($list as $k=>$v) {

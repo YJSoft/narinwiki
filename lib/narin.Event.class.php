@@ -1,9 +1,7 @@
 <?
 /**
  *
- * 나린위키 이벤트 클래스
- *
- * 나린위키 시스템 이벤트 처리를 담당한다. 액션 플러그인을 로드하고, 핸들러를 등록하고 이벤트 trigger를 처리한다.
+ * 나린위키 이벤트 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -11,6 +9,30 @@
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 이벤트 클래스
+ *
+ * 나린위키 시스템 이벤트 처리를 담당한다. 액션 플러그인을 로드하고, 핸들러를 등록하고 이벤트 trigger를 처리한다.
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiEvent = wiki_class_load("Event");
+ * 
+ * // 문서가 저장된 후 발생하는 이벤트에 대한 핸들러 등록하기 (class에서 사용)
+ * $wikiEvent->addHandler("WRITE_UPDATE", $this, "on_write_update");
+ * 
+ * // WRITE_UPDATE 이벤트를 발생시키며 파라미터로 wr_id와 doc 를 넘겨주기
+ * // extract 는 이벤트 핸들러에서 반환한 값을 변수로 사용하기 위한 처리
+ * extract($wikiEvent->trigger("WRITE_UPDATE", array("wr_id"=>79, "doc"=>"/narinwiki/매뉴얼")));
+ *  
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinEvent extends NarinClass
 {
 	/**

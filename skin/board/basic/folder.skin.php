@@ -6,7 +6,7 @@
  * 문서보기 상단의 네비게이션을 클릭했을 때 보여지는
  * 폴더보기 스킨 페이지
  * 
- * <b>사용 가능한 변수</b>
+ * <b>사용 변수</b>
  * - $wiki['path'] : 위키 루트 폴더 경로
  * - $wiki['skin_path'] : 스킨 경로 ($wiki 변수는 narin.config.php, narin.wiki.lib.php 파일 참고)
  * - $folder['navi'] : 상단 네비게이션 문자열    e.g. Home > byfun > com > gnuboard

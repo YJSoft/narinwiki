@@ -1,4 +1,14 @@
 <?php
+/**
+ *
+ * 미디어 파일 업로드 스크립트
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
+ */
+
 include_once "_common.php";
 
 /**

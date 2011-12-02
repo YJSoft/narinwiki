@@ -1,5 +1,6 @@
 <?
 /**
+ * 
  * folder 보기 스크립트
  *
  * @package	narinwiki

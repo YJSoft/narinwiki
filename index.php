@@ -8,5 +8,5 @@
  * @author	byfun (http://byfun.com)
  * @filesource
  */
-header("location:narin.php?".$_SERVER['QUERY_STRING'']);
+header("location:narin.php?".$_SERVER['QUERY_STRING']);
 ?>

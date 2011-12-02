@@ -1,11 +1,14 @@
-<?
+ï»¿<?
 /**
- * ³ª¸°À§Å° ¹Ì¸®º¸±â
+ * 
+ * ì—ë””í„° ë¯¸ë¦¬ë³´ê¸° ìŠ¤í¬ë¦½íŠ¸
  *
- * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
- * @author     byfun (http://byfun.com)
+ * @package	narinwiki
+ * @subpackage pages
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
  */
- 
 include_once "_common.php";
 
 $doc = wiki_ajax_data($doc);
