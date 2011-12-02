@@ -10,8 +10,8 @@
  * @filesource
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
 
 if(!file_exists($wiki_path."/narin.config.php")) {
 	header("location:".$wiki_path."/install.php");

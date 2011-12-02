@@ -1167,14 +1167,16 @@ EOF;
 		$str = "";
 		$fIdx = 0;
 
-		foreach($view['file'] as $k=>$v) {
-			if(!$v[view] && $v['source']) {	// not count image
-				if($fIdx == $find_file_index) {
-					$title = ( $matches[3] ? $matches[3] : $v['source'] );
-					$href = "javascript:file_download('".$this->g4['bbs_path']."/download.php?bo_table=".$this->wiki['bo_table']."&wr_id=".$view['wr_id']."&no=".$k."', '".$title."')";
-					return "<a href=\"$href\" class=\"wikiFile\" style=\"$style\">$title</a>";
+		if(is_array($view['file'])) {
+			foreach($view['file'] as $k=>$v) {
+				if(!$v[view] && $v['source']) {	// not count image
+					if($fIdx == $find_file_index) {
+						$title = ( $matches[3] ? $matches[3] : $v['source'] );
+						$href = "javascript:file_download('".$this->g4['bbs_path']."/download.php?bo_table=".$this->wiki['bo_table']."&wr_id=".$view['wr_id']."&no=".$k."', '".$title."')";
+						return "<a href=\"$href\" class=\"wikiFile\" style=\"$style\">$title</a>";
+					}
+					$fIdx++;
 				}
-				$fIdx++;
 			}
 		}
 		return "{{".$matches[0]."}}";
