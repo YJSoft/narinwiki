@@ -1119,8 +1119,10 @@ EOF;
 
 		$str = "";
 		$view_list = array();
-		foreach($view['file'] as $k => $v) {
-			if($v[view]) array_push($view_list, array("file_index"=>$k, "file"=>$v));
+		if(is_array($view['file'])) {
+			foreach($view['file'] as $k => $v) {
+				if($v[view]) array_push($view_list, array("file_index"=>$k, "file"=>$v));
+			}
 		}
 
 		foreach($idxList as $idx) {
