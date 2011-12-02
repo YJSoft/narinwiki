@@ -3,6 +3,9 @@
  * 
  * 나린위키 스킨 : 문서 작성 스킨
  *
+ * <b>사용  변수</b>
+ * - $write : 기존 값들이 들어있는 배열 (문서 편집의 경우)
+ *
  * @package	narinwiki
  * @subpackage skin
  * @license http://narin.byfun.com/license GPL2

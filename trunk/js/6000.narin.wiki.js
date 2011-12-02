@@ -34,6 +34,9 @@ $(document).ready(function() {
 			win_pop_center(wiki_path + '/media.php?bo_table='+g4_bo_table, 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');
 		});
 	}
+	
+	// 외부 링크는 새창으로
+	$(".wiki_external_link").attr('target', '_blank');
 		    
 });
 

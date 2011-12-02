@@ -1,7 +1,7 @@
 <?
 /**
  * 
- * 나린위키 문서잠금(Lock) 플러그인 : 플러그인 정보 클래스
+ * 나린위키 문서잠금(Lock) 플러그인 정보 클래스 스크립트
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -10,6 +10,15 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 문서잠금(Lock) 플러그인 : 플러그인 정보 클래스
+ *
+ * @package	narinwiki
+ * @subpackage plugin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinPluginInfoLock extends NarinPluginInfo {
 
 	/**

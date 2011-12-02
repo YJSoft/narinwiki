@@ -3,7 +3,7 @@
  * 
  * 나린위키 스킨 : 문서 보기 스킨
  *
- * <b>사용가능한 변수</b>
+ * <b>사용 변수</b>
  * - $navigation  : 상단 네비게이션 문자열 e.g. Home > byfun > com > gnuboard
  * - $wiki_admin_href : 위키 관리 링크
  * - $doc_admin_href : 문서 관리 링크

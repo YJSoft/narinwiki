@@ -31,7 +31,6 @@ if (!$wiki_path || preg_match("/:\/\//", $wiki_path))
 $g4_path = $wiki_path . "/..";
 
 include_once $g4_path."/common.php";
-
 include_once $wiki_path ."/narin.config.php";
 include_once $wiki_path ."/lib/narin.Class.class.php";
 include_once $wiki_path ."/lib/narin.wiki.lib.php";

@@ -1,8 +1,7 @@
 <?
 /**
+ * 
  * 나린위키 메인 문법 플러그인 스크립트
- *
- * 나린위키의 기본 문법 클래스이다.
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -10,6 +9,16 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 메인 문법 플러그인 클래스
+ *
+ * 나린위키의 기본 문법 클래스이다.
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinSyntax extends NarinSyntaxPlugin {
 
 	/**
@@ -164,7 +173,7 @@ class NarinSyntax extends NarinSyntaxPlugin {
       'wiki_br'=>'(.*?)\\\\\\\\(?=\s|$)',
       'wiki_bold'=>'\*{2}(.*?)\*{2}',
       'wiki_italic'=>'\/{2}\s(.*?)\s\/{2}',
-      'wiki_underline'=>'__(.*?)__',
+      'wiki_underline'=>'__\s(.*?)\s__',
       'wiki_strike'=>'&lt;del&gt;(.*?)&lt;\/del&gt;',
       'wiki_sub'=>'&lt;sub&gt;(.*?)&lt;\/sub&gt;',
       'wiki_sup'=>'&lt;sup&gt;(.*?)&lt;\/sup&gt;',

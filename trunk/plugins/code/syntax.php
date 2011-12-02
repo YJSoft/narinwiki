@@ -1,7 +1,7 @@
 <?
 /**
  * 
- * 나린위키 코드(code) 플러그인 : 문법 클래스
+ * 나린위키 코드(code) 플러그인 문법 클래스 스크립트
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -10,6 +10,15 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 코드(code) 플러그인 : 문법 클래스
+ *
+ * @package	narinwiki
+ * @subpackage plugin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinSyntaxCode extends NarinSyntaxPlugin {
 
 	/**

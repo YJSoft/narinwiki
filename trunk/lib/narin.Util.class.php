@@ -1,16 +1,35 @@
 ﻿<?
 /**
  *
- * 나린위키 유틸리티 클래스
+ * 나린위키 유틸리티 클래스 스크립트
  * 
- * 현재 위키문서링크 수정과 nowiki 를 제거한 내용을 반환하는 기능만 있음.
- *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 
+/**
+ *
+ * 나린위키 유틸리티 클래스
+ * 
+ * 현재 위키문서링크 수정과 nowiki 를 제거한 내용을 반환하는 기능만 있음.
+ *
+ * <b>사용 예제</b>
+ * <code>
+ * // 클래스 로딩
+ * $wikiUtil = wiki_class_load("Util");
+ * 
+ * // $content 에서 nowiki, pre, code 블럭을 뺀 내용 가져오기
+ * $content = $wikiUtil->no_nowiki_content($content);
+
+
+ * </code>
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinUtil extends NarinClass
 {
 	/**
@@ -51,7 +70,7 @@ class NarinUtil extends NarinClass
 	 * @see lib/actions/on_write_update.php
 	 * @see lib/actions/on_write_comment_update.php
 	 * @param string $wr_content 문서 내용
-	 * @param string 문서 링크 경로가 수정된 내용
+	 * @return string 문서 링크 경로가 수정된 내용
 	 */
 	public function wiki_fix_internal_link($wr_content) {
 
@@ -67,8 +86,8 @@ class NarinUtil extends NarinClass
 	 *
 	 * '/' 로 시작하지 않는 문서 제목에 현재 폴더 경로를 덧붙임 (실제루틴)
 	 *
-	 * @param string $wr_content 문서 내용
-	 * @param string 문서 링크 경로가 수정된 내용
+	 * @param string $matches 패턴 매칭 결과
+	 * @return string 문서 링크 경로가 수정된 내용
 	 */
 	protected function wiki_add_folder_to_link($matches) {
 

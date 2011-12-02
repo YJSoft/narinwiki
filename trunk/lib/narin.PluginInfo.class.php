@@ -1,6 +1,7 @@
 ﻿<?
 /**
- * 나린위키 플러그인 정보 클래스
+ * 
+ * 나린위키 플러그인 정보 클래스 스크립트
  *
  * @package	narinwiki
  * @license http://narin.byfun.com/license GPL2
@@ -8,6 +9,14 @@
  * @filesource
  */
 
+/**
+ * 
+ * 나린위키 플러그인 정보 클래스
+ *
+ * @package	narinwiki
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ */
 class NarinPluginInfo extends NarinClass {
 
 	/**
