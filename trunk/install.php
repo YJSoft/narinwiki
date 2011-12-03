@@ -178,8 +178,8 @@ EOF;
 	$config_file .= "unset(\$wiki);\n";
 	$config_file .= "\$wiki['path'] = \$g4['path'] . \"/$wiki_path\";\n";
 	$config_file .= "\$wiki['skin_path'] = \$wiki['path'] . \"/skin/board/basic\";\n";
-	$config_file .= "\$wiki['bo_table'] = \"\$bo_table\";\n";
-	$config_file .= "\$wiki['front'] = \"\$board['bo_subject']\";\n";
+	$config_file .= "\$wiki['bo_table'] = \$bo_table;\n";
+	$config_file .= "\$wiki['front'] = \$board['bo_subject'];\n";
 	$config_file .= "\$wiki['tree_top'] = \"Home\";\n";
 	$config_file .= "\$wiki['write_table'] = \$g4['write_prefix'] . \$wiki['bo_table'];\n";
 	$config_file .= "\$wiki['ns_table'] = \"{$db_prefix}narin_namespace\";\n";
@@ -190,6 +190,7 @@ EOF;
 	$config_file .= "\$wiki['changes_table'] = \"{$db_prefix}narin_changes\";\n";
 	$config_file .= "\$wiki['media_table'] = \"{$db_prefix}narin_media\";\n";
 	$config_file .= "\$wiki['media_ns_table'] = \"{$db_prefix}narin_media_namespace\";\n";
+	$config_file .= "\$wiki['contrib_table'] = \"{$db_prefix}narin_contributor\";\n";
 	$config_file .= "?>\n";
 
 	$fp = @fopen("narin.config.php", "w");
