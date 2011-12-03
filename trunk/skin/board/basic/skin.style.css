@@ -33,8 +33,8 @@
 /* write.skin.php *************************************************************/
 	
 	/* 작성일/작성자/아이피... */
-	#wiki_after_contents { margin-bottom:5px; }
-	#wiki_contributors { padding:5px 0 }
+	#wiki_after_contents { margin-bottom:5px; font-size:8pt; }
+	#wiki_contributors { padding:5px 0;font-size:8pt; }
 	
 	/* 쓰기폼 테이블 */
 
