@@ -1,0 +1,310 @@
+/**
+ * 나린위키 CSS
+ *
+ * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
+ * @author     byfun (http://byfun.com)
+ */
+ 
+/* 위키 문법 스타일 ***********************************************************/	
+
+	/* 위키 컨텐츠 컨테이너 */
+	.narin_contents { line-height:160%; }
+
+	/* 존재하는 문서 링크 */
+	.narin_contents a.wiki_active_link { color:#002BB8 }
+	
+	/* 존재하지 않는 문서 링크 */
+	.narin_contents a.wiki_inactive_link { color:#CC2200; border-bottom: 1px dotted #CC2200;}
+	
+	/* 존재하는 폴더 링크 */
+	.narin_contents a.wiki_active_folder_link { color:#46795B;}
+	
+	/* 존재하지 않는 폴더 링크 */
+	.narin_contents a.wiki_inactive_folder_link { color:#83B898; border-bottom: 1px dotted #83B898;}
+	
+	/* 외부 링크 */
+	.narin_contents a.wiki_external_link { color:#3366BB; background:transparent url(../imgs/external_link.gif) right -3px no-repeat; padding:1px 16px 1px 0;}
+	
+	/* plugin : wiki image */
+	.narin_contents div.wiki_image { margin-top:5px; }
+
+	/* 목차 설정 */
+	.narin_contents #wiki_toc { float:right; clear:both; width:180px; margin-left:8px; background-color:#fff; }
+	.narin_contents #wiki_toc a { font-size:8pt}
+	.narin_contents #wiki_toc #wiki_toc_head { border:1px solid #ccc; margin:0; background-color:#f8f8f8;}
+	.narin_contents #wiki_toc #wiki_toc_head a.fold_down { background:url(img/arrow_down.gif) no-repeat 95%}
+	.narin_contents #wiki_toc #wiki_toc_head a.fold_up { background:url(img/arrow_up.gif) no-repeat 95%}
+	.narin_contents #wiki_toc #wiki_toc_head a { display:block; color:#555; padding-left:5px; }
+	.narin_contents #wiki_toc #wiki_toc_content { margin-top:3px; padding:5px 0; border:1px solid #ccc; }
+	.narin_contents #wiki_toc #wiki_toc_content a { color:#555; }
+	.narin_contents #wiki_toc .toc  {background:url(img/dot.gif) no-repeat 2px 8px; padding-left:8px; overflow:hidden;}
+	.narin_contents #wiki_toc .toc_1 { }
+	.narin_contents #wiki_toc .toc_2 { margin-left:10px;}
+	.narin_contents #wiki_toc .toc_3 { margin-left:20px;}
+	.narin_contents #wiki_toc .toc_4 { margin-left:30px;}
+	.narin_contents #wiki_toc .toc_5 { margin-left:40px;}
+	.narin_contents #wiki_toc .toc_6 { margin-left:50px;}
+	
+	/* 목록 설정 (들여쓰기)*/	
+	.narin_contents ul,
+	.narin_contents ol { margin:0; padding-left:25px;}
+	.narin_contents li { margin:2px 0; }	
+	
+	/* 순서가 있는 목록 설정 */
+	.narin_contents ol { list-style-type: decimal; }
+	.narin_contents ol ol { list-style-type: upper-roman; }
+	.narin_contents ol ol ol { list-style-type: lower-alpha; }
+	.narin_contents ol ol ol ol { list-style-type: lower-greek; }
+	
+	/* 섹션 */
+	.narin_contents .wiki_section { padding-left:10px; }
+	.narin_contents .wiki_section_1 { }
+	.narin_contents .wiki_section_2 { }
+	.narin_contents .wiki_section_3 { }
+	.narin_contents .wiki_section_4 { }
+	.narin_contents .wiki_section_5 { }
+	.narin_contents .wiki_section_6 { }
+	
+	/* 헤딩 스타일  */
+	.narin_contents  h1,
+	.narin_contents  h2,
+	.narin_contents  h3,
+	.narin_contents  h4,
+	.narin_contents  h5,
+	.narin_contents  h6 { display:block;margin:3px 0 5px 0; padding:2px;  }
+	
+	.narin_contents  h1,
+	.narin_contents  h2,
+	.narin_contents  h3 {padding:2px 5px 5px 0px; margin:15px 0 10px 0; border-bottom:1px solid #9ECFCF;}
+	
+	.narin_contents  h1 { }
+	.narin_contents  h2 {}
+	.narin_contents  h3 {}	
+	.narin_contents  h4 {}
+	.narin_contents  h5 {}
+	.narin_contents  h6 {}
+
+	/* nowiki / code style */	
+	.narin_contents div.wiki_box { padding:5px; margin:5px 0; border:1px dashed #ccc; background-color:#F0F4F7; overflow:auto;}
+	.narin_contents pre.wiki_code { border:1px dashed #ccc; background-color:#F0F4F7; padding:10px; margin:5px auto;}
+	.narin_contents pre { 
+		padding:5px; margin:0;
+		overflow:auto;
+		white-space: pre-wrap;       /* css-3 */
+		white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+		white-space: -pre-wrap;      /* Opera 4-6 */
+		white-space: -o-pre-wrap;    /* Opera 7 */
+		word-wrap: break-word;       /* Internet Explorer 5.5+ */		
+		}
+	
+	/* 인용 */
+	.narin_contents blockquote {border-left:2px solid #8cacbb;margin:0; padding:0 0 0 3px;}
+	.narin_contents div.wiki_quot{ display:inline;margin:0;padding:0;}
+
+	/* 밑줄 */
+	.narin_contents span.u { text-decoration:underline; }
+	
+	/* 주석 */
+	.narin_contents #wiki_footnotes { margin-top:20px; padding-top:5px; border-top:1px dashed #ccc}
+	.narin_contents #wiki_footnotes sup { font-weight:bold;}	 	
+	
+	.narin_contents .wiki_footnote_content {}
+
+
+	/* 위키 테이블 (syntax) */
+	.narin_contents table.wiki_table { background-color:#aaa;}
+	.narin_contents table.wiki_table th,
+	.narin_contents table.wiki_table td { padding:2px 5px;}
+	.narin_contents table.wiki_table th { background-color: #DEEFEF}
+	.narin_contents table.wiki_table td { background-color:#fff}
+
+	/* plugin : wiki link */
+	.narin_contents img { border:0; }		
+
+
+/* 위키 기본 스타일  *****************************************************************/
+textarea.markItUpEditor {
+	font-family:monospace;
+}
+
+/* 위키 내용이 보여지는 wrapper */
+.narin_contents p2:after {
+clear: both;
+content: ".";
+display: block;
+height: 0;
+visibility: hidden;
+font-size: 0;		
+}
+
+/* wiki tab */
+.wiki_tab { width:100%;margin:auto auto; margin-bottom:10px; }
+.wiki_tab ul {list-style: none;padding: 0;margin: 0; border-bottom:1px solid #ccc}
+.wiki_tab li {float: left; margin-right:2px; border: 1px solid #fff;border-bottom-width: 0;margin: 0;}
+.wiki_tab a {text-decoration: none;display: block;;background-color:#f0f0f0;padding: 5px 8px;color: #888;text-align: center;}
+.wiki_tab a:hover {background:#C0C0C0; color:#555;}
+.wiki_tab .selected { border-color: #ccc;}
+.wiki_tab .selected a {position: relative;top: 1px;background:#fff;color:#555; ;font-weight: bold;}
+
+/* for emoticon */
+img.middle{vertical-align:middle;}	
+img.left { float:left; }
+img.right { float:right; }
+img.center {display:block;margin-left:auto;margin-right:auto;}
+
+/* float clearing for IE6 *****************************************************************/
+* html .clear{
+height: 1%;	
+overflow: visible;
+}
+
+/* float clearing for IE7 *****************************************************************/
+*+html .clear{
+min-height: 1%;
+}
+
+/* float clearing for everyone else *****************************************************************/
+.clear:after{
+clear: both;
+content: ".";
+display: block;
+height: 0;
+visibility: hidden;
+font-size: 0;
+}	
+
+/* shadow ****************************/
+.shadow {
+-moz-box-shadow: 3px 3px 4px #ccc;
+-webkit-box-shadow: 3px 3px 4px #ccc;
+box-shadow: 3px 3px 4px #ccc;
+/* For IE 8 */
+-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
+/* For IE 5.5 - 7 */
+filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
+
+}
+
+
+/* Button Reset */
+.button,
+.button a,
+.button button,
+.button input { position:relative; margin:0; display:-moz-inline-stack; display:inline-block; text-decoration:none !important; border:0; font-size:12px; white-space:nowrap; background:url(button/buttonWhite.png) no-repeat; overflow:visible; color:#333;}
+.button { height:23px; padding:0; vertical-align:middle; margin-right:2px; background-position:left top;}
+.button a,
+.button button,
+.button input{ left:2px; vertical-align:top; cursor:pointer;}
+
+
+
+/* Button Size */
+.button.large { height:29px; background-position:left -30px; }
+.button.xLarge { height:35px; background-position:left -65px; }
+.button.small { height:18px; background-position:left -107px; }
+.button a,
+.button button,
+.button input { height:23px; padding:0 10px 0 8px; font-size:12px; line-height:23px; background-position:right top;}
+.button.large a,
+.button.large button,
+.button.large input { height:30px; padding:0 10px 0 8px; font-size:16px; line-height:29px; background-position:right -30px;}
+.button.xLarge a,
+.button.xLarge button,
+.button.xLarge input { height:35px; padding:0 10px 0 8px; font-size:20px; line-height:35px; background-position:right -65px;}
+.button.small a,
+.button.small button,
+.button.small input { height:18px; padding:0 6px 0 4px; font-size:11px; line-height:18px; background-position:right -107px;}
+
+/* Button Text Color */
+.button *:hover,
+.button *:active,
+.button *:focus{ color:#690;}
+
+.button.green,
+.button.green a,
+.button.green a:visited,
+.button.green button,
+.button.green input { background-image:url(button/buttonGreen.png); color:#fff;}
+.button.green *:hover,
+.button.green *:active,
+.button.green *:focus{ color:#ff0;}
+
+.button.black,
+.button.black a,
+.button.black button,
+.button.black a:visited,
+.button.black input { background-image:url(button/buttonBlack.png); color:#fff;}
+.button.black *:hover,
+.button.black *:active,
+.button.black *:focus{ color:#ff0;}
+
+.button.red,
+.button.red a,
+.button.red a:visited,
+.button.red button,
+.button.red input { background-image:url(button/buttonRed.png); color:#fff;}
+.button.red *:hover,
+.button.red *:active,
+.button.red *:focus{ color:#ff0;}
+
+.button.blue,
+.button.blue a,
+.button.blue a:visited,
+.button.blue button,
+.button.blue input { background-image:url(button/buttonBlue.png); color:#fff;}
+.button.blue *:hover,
+.button.blue *:active,
+.button.blue *:focus{ color:#ff0;}
+
+.button.purple,
+.button.purple a,
+.button.purple a:visited,
+.button.purple button,
+.button.purple input { background-image:url(button/buttonPurple.png); color:#fff;}
+.button.purple *:hover,
+.button.purple *:active,
+.button.purple *:focus{ color:#ff0;}
+
+.button.yellow,
+.button.yellow a,
+.button.yellow a:visited,
+.button.yellow button,
+.button.yellow input { background-image:url(button/buttonYellow.png); color:#555;}
+.button.yellow *:hover,
+.button.yellow *:active,
+.button.yellow *:focus{ color:#ff0;}
+
+/* Button Text Strong */
+.button.strong * { font-weight:bold !important;}
+
+
+
+/* 테이블 일반 설정 */
+.list_table{margin:1em 0;font-size:12px;}
+.list_table input,
+.list_table textarea,
+.list_table select,
+.list_table table,
+.list_table button{font-size:12px}
+.list_table table{width:100%;border:0;border-top:2px solid #999}
+.list_table caption{padding:8px 0;font-weight:bold;text-align:left}
+.list_table th,
+.list_table td{padding:8px;border:0;vertical-align:top}
+.list_table th{color:#333}
+.list_table td{color:#666}
+.list_table thead th{border-bottom:1px solid #ccc;background:#f8f8f8}
+.list_table tbody th{border-bottom:1px solid #ddd;background:#fafafa;text-align:left}
+.list_table tfoot th{border-bottom:1px solid #ddd}
+.list_table tbody td{border-bottom:1px solid #ddd}
+.list_table tfoot td{border-bottom:1px solid #ddd;font-weight:bold;color:#333}
+.list_table .item{position:relative;margin:-4px 0}
+.list_table .item .i_help{position:absolute;top:4px;right:0}
+.list_table .item .i_label{ top:6px; left:10px}
+.list_table .item .i_dsc{margin:2px 0}
+.list_table .item .i_check,
+.list_table .item .i_radio{width:13px;height:13px;margin:2px 5px 2px 0;padding:0;vertical-align:middle}
+.list_table .item .i_text{position:relative;margin:2px;padding:3px 4px;border:1px solid #b7b7b7;border-right-color:#e1e1e1;border-bottom-color:#e1e1e1;background:transparent}
+.list_table .item .hide{visibility:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:0;line-height:0}
+.list_table .item select{margin:2px}
+.list_table .item label{margin:0 10px 0 0;cursor:pointer}
+
