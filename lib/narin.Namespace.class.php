@@ -330,13 +330,16 @@ class NarinNamespace extends NarinClass {
 						AND ns NOT REGEXP '^$regp(.*)/' 
 						AND bo_table ='".$this->wiki['bo_table']."'";
 		if($withArticle) {
-			$sql = "SELECT nt.ns, nt.bo_table, wb.wr_subject AS doc, wb.wr_id
+			$sql = "SELECT nt.ns, nt.bo_table, wb.mb_id, wb.wr_name, mb.mb_nick, wb.wr_subject AS doc, wb.wr_id, wb.wr_datetime, ht.editor_mb_id AS editor, ht.reg_date AS update_date, wb.wr_good, wb.wr_nogood, wb.wr_comment, wb.wr_hit
 					FROM ".$this->wiki['ns_table']." AS nt 
 					LEFT JOIN ".$this->wiki['nsboard_table']." AS nb ON nt.ns = nb.ns AND nt.bo_table = nb.bo_table 
 					LEFT JOIN ".$this->wiki['write_table']." AS wb ON nb.wr_id = wb.wr_id 
+					LEFT JOIN ".$this->g4['member_table']." AS mb ON mb.mb_id = wb.mb_id 
+					LEFT JOIN ".$this->wiki['history_table']." AS ht ON nb.wr_id = ht.wr_id 					
 					WHERE $add nt.ns LIKE '$escapedParent$addSlash%' 
 						AND nt.ns NOT REGEXP '^$regp(.*)/' 
 						AND nt.bo_table = '".$this->wiki['bo_table']."' 
+					GROUP BY wb.wr_id 
 					ORDER BY wb.wr_subject";
 		}
 
@@ -346,33 +349,40 @@ class NarinNamespace extends NarinClass {
 		$result = sql_query($sql);
 		while ($row = sql_fetch_array($result))
 		{
+			if(!$row['update_date']) $row['update_date'] = $row['wr_datetime'];
+			if(!$row['editor']) $row['editor'] = ($row['mb_id'] ? $row['mb_id'] : $row['mb_name']);
 			if($row['ns'] == $parent) {
 				if(!$row['doc']) continue;
-				$path = ($row['ns'] == "/" ? "/" : $row['ns']."/").$row['doc'];
-				$href = $this->wiki[path].'/narin.php?bo_table='.$this->wiki['bo_table'].'&doc='.urlencode($path);
-				$ilink = "[[".$path."]]";
-				array_push($files, array("name"=>$row['doc'],
-										 "path"=>$path, 
-										 "href"=>$href, 
-										 "internal_link"=>$ilink, 
-										 "wr_id"=>$row[wr_id], 
-										 "type"=>"doc"));
+				$row['name'] = $row['doc'];
+				$row['path'] = ($row['ns'] == "/" ? "/" : $row['ns']."/").$row['doc'];
+				$row['href'] = $this->wiki[path].'/narin.php?bo_table='.$this->wiki['bo_table'].'&doc='.urlencode($row['path']);
+				$row['internal_link'] = "[[".$row['path']."]]";
+				$row['type'] = 'doc';				
+				array_push($files, $row);
 			} else {
-				$href = $this->wiki[path].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($row['ns']);
+				$row['href'] = $this->wiki[path].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($row['ns']);
 				$name = ereg_replace($parent."/", "", $row['ns']);
-				$name = ereg_replace($parent, "", $name);
+				$row['name'] = ereg_replace($parent, "", $name);
+				$row['path'] = $row['ns'];
 				if($already[$name]) continue;
 				$already[$name] = $name;
-				$ilink = "[[folder=".$row['ns']."]]";
-				array_push($folders, array("name"=>$name,
-										   "path"=>$row['ns'], 
-										   "href"=>$href, 
-										   "internal_link"=>$ilink, 
-										   "type"=>"folder"));
+				$row['internal_link'] = "[[folder=".$row['ns']."]]";
+				$row['type'] = 'folder';
+				unset($row['editor']);
+				unset($row['wr_hit']);
+				unset($row['wr_name']);
+				unset($row['mb_id']);
+				unset($row['wr_name']);
+				unset($row['wr_comment']);
+				unset($row['wr_nogood']);
+				unset($row['wr_good']);				
+				array_push($folders, $row);
 			}
+			//if($this->is_admin) print_r2($row);
 		}
 		if(count($folders)) $folders = wiki_subval_asort($folders, "name");
 		$list = array_merge($folders, $files);
+
 		return $list;
 	}
 

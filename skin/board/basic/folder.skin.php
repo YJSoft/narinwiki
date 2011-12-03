@@ -22,21 +22,30 @@
  * - $is_wiki_admin : 위키 관리자인가
  * 
  * <code> 
- * // $folder_list 형식
- * array( 
- *   array("path"=>"/byfun/com/gnuboard/plugin", 
- *   		"name"=>"plugin", 
- *   		"href"=>"folder.php?loc=/byfun/com/gnuboard/plugin", 
- *   		"type"=>"folder"),
- *   array("path"=>"/byfun/com/gnuboard/플러그인제작방법", 
- *   		"name"=>"플러그인제작방법", 
- *   		"href"=>"index.php?doc=/byfun/com/gnuboard/플러그인제작방법" 
- *   		"type"=>"doc"),
- *   array("path"=>"/byfun/com/gnuboard/도움말", 
- *   		"name"=>"도움말",  
- *   		"href"=>"index.php?doc=/byfun/com/gnuboard/도움말", 
- *   		"type"=>"doc")
- * )
+ * // $folder_list 의 한 row 형식
+ * Array
+ * (
+ *   [ns] => 폴더경로
+ *   [bo_table] => 게시판 id
+ *   [mb_id] => 작성자 id
+ *   [wr_name] => 작성자 name (문서 작성 시점)
+ *   [mb_nick] => 작성자 nick
+ *   [doc] => 문서명
+ *   [wr_id] => 문서 id
+ *   [wr_datetime] => 문서 생성 시간
+ *   [editor] => 마지막 편집자 id
+ *   [update_date] => 마지막 편집 시간
+ *   [wr_good] => 추천수
+ *   [wr_nogood] => 비추천수
+ *   [wr_comment] => 댓글수
+ *   [wr_hit] => 조회수
+ *   [href] => 문서/폴더 보기 URL
+ *   [name] => 문서 또는 폴더명
+ *   [path] => 전체 경로 (폴더경로 + 문서명)
+ *   [internal_link] => 위키 문서 링크 텍스트 (e.g. [[/폴더경로/문서명]])
+ *   [type] => 유형 (doc 또는 folder)
+ * ) 
+ * 
  * </code>
  *
  * @package	narinwiki
@@ -47,8 +56,7 @@
  */
  
 if (!defined("_GNUBOARD_")) exit; //개별 페이지 접근 불가 
-$colspan = 1;
-if($is_wiki_admin) $colspan++;
+$colspan = 5;
 ?>
 
 <div id="wiki_title_bar">
@@ -92,48 +100,75 @@ if($is_wiki_admin) $colspan++;
 <tr><td id="wiki_folder_navi"><?=$tree?></td><td valign="top">
 	
 	<div id="wiki_folder_contents">
-		<? if($is_wiki_admin) { ?>
-		<input type="checkbox" name="checkall">
-		<? } ?>
 		<form name="frmflist" method="post">
 		<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>">
 		<input type="hidden" name="folder" value="<?=wiki_input_value($folder['loc'])?>">
 		<input type="hidden" name="move_to_folder">
+
 		<table id="folder_list" cellspacing="0" cellpadding="0" border="0">
+		<colgroup>
+			<col width="20px"> <!-- checkbox -->
+			<col>
+			<col width="70px"> <!-- mb_id -->
+			<col width="50px"> <!-- hit -->
+			<col width="80px"> <!-- date -->
+		</colgroup>
+		<thead>
+			<th>
+				<? if($is_wiki_admin) { ?>
+				<input type="checkbox" name="checkall">
+				<? } ?>				
+			</th>
+			<th style="padding-left:20px">이름</th>
+			<th>작성자</th>
+			<th>조회수</th>
+			<th>날짜</th>
+		</thead>
+		<tbody>
 		<? 
 		// 최상위 폴더가 아니면... 상위 폴더 이동 링크 보여줌
 		if($loc != "/") {?>
 			<tr>
-				<? if($is_wiki_admin) echo "<td></td>"; ?>
+				<td> </td>
 				<td class="flist folder_up">
 					<a href="<?=$wiki['path']?>/folder.php?bo_table=<?=$wiki['bo_table']?>&loc=<?=$folder[up]?>">..</a>
 				</td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
 			</tr>	
 			<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>	
 		<?}
 		
 		for($i=0; $i<count($folder_list); $i++) {	?>
 			<tr>
+				<td>
 				<? if($is_wiki_admin) {				
 					if($folder_list[$i]['type'] == 'doc') {?>
-						<td width="20px">
 							<input type="checkbox" name="chk_wr_id[]" class="chk" value="<?=$folder_list[$i][wr_id]?>" style="margin-top:3px"/>
-						</td>
 					<?}
-					else echo '<td></td>';
-				}
-				?>
+					}?>
+				</td>
 				<td class="flist <?=$folder_list[$i]['type']?>">
 					<a href="<?=$folder_list[$i]['href']?>"><?=$folder_list[$i]['name']?></a>
+					<? 
+						if($folder_list[$i]['wr_comment']) {
+							?><span class="f_comment">(<?=$folder_list[$i]['wr_comment']?>)</span><?
+						}
+					?>
 				</td>		
+				<td><?=$folder_list[$i]['editor']?></td>
+				<td><?=$folder_list[$i]['wr_hit']?></td>
+				<td><?=substr($folder_list[$i]['update_date'], 0, 11)?></td>
 			</tr>
 			<tr><td colspan="<?=$colspan?>" height="1px" bgcolor="#ececec"></td></tr>
 			<? } ?>
+		</tbody>
 		</table>
 		
 		<div style="display:none;">
 			<a href="#move_folder_layer" class="wiki_modal" id="a_move_folder">문서이동</a>
-			<div id="move_folder_layer" style="width:400px;height:100px;">
+			<div id="move_folder_layer" >
 				<div style="background-color:#3B3B3B; color:#fff; padding:5px;">
 				문서 이동
 				</div>
@@ -273,6 +308,6 @@ function select_move_do() {
 }
 
 function closeDialog() {
-	$.nmTop().close();
+	$.wiki_lightbox_close();
 }
 </script>

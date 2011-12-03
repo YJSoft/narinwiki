@@ -14,7 +14,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 include_once "../head.php";
 $selected[$pageid] = " class='selected'";
 ?>
-<h1>위키 관리</h1>
+<h1>나린위키 관리</h1>
 
 <div class="wiki_tab"> 
 	<ul class="clear"> 
