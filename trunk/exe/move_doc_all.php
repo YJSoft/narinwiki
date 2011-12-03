@@ -26,8 +26,8 @@ if($folder != $move_to_folder) {
 	for($i=0; $i<count($chk_wr_id); $i++) {
 		$wr = $wikiArticle->getArticleById($chk_wr_id[$i]);
 		if(!$wr) continue;
-		$fromDoc = ($folder == "/" ? "/" : $folder."/").$wr['wr_subject'];
-		$toDoc = ($move_to_folder == "/" ? "/" : $move_to_folder."/").$wr['wr_subject'];
+		$fromDoc = wiki_doc($folder, $wr['wr_subject']);
+		$toDoc = wiki_doc($move_to_folder, $wr['wr_subject']);
 		$wikiArticle->moveDoc($fromDoc, $toDoc, $wr['wr_id']);
 	}
 }

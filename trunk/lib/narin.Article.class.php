@@ -282,8 +282,8 @@ class NarinArticle extends NarinClass {
 		if($docname) $docname = mysql_real_escape_string($docname);
 		if($fullname) $fullname = mysql_real_escape_string($fullname);
 		if($wr_id) $wr_id = mysql_real_escape_string($wr_id);
-		//$sql = "UPDATE ".$this->wiki['nsboard_table']." SET ns='$ns', doc='$docname' WHERE bo_table='".$this->wiki['bo_table']."' AND wr_id='$wr_id'";
-		//sql_query($sql);
+		$sql = "UPDATE ".$this->wiki['nsboard_table']." SET ns='$ns' WHERE bo_table='".$this->wiki['bo_table']."' AND wr_id='$wr_id'";
+		sql_query($sql);
 		$sql = "UPDATE ".$this->wiki['write_table']." SET wr_subject = '$docname' WHERE wr_id = $wr_id";
 		sql_query($sql);
 	}
@@ -324,7 +324,7 @@ class NarinArticle extends NarinClass {
 		// 이미 존재한다면 이동하지 않음
 		$ex = $this->exists($toNS, $toDocName);
 		if($ex) return false;
-
+		
 		$this->updateArticle($toDoc, $wr_id);
 
 		// 백링크 업데이트
@@ -350,7 +350,7 @@ class NarinArticle extends NarinClass {
 
 		$wikiEvent = wiki_class_load("Event");
 		$wikiEvent->trigger("MOVE_DOC", array("from"=>$fromFullName, "to"=>$toFullName));
-
+		
 		$this->namespace->checkAndRemove($fromNS);
 		
 		return true;

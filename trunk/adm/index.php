@@ -21,7 +21,6 @@ include_once "admin.head.php";
 	.list_table td { text-align:left; }
 </style>
 
-위키 관리 페이지입니다. <br/>
 <div class="list_table">
 <table id="" cellspacing="0" width="100%" cellpadding="0" border="1" >
 <colgroup>

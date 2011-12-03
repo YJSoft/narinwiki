@@ -93,11 +93,13 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
   	<div id="contributors">
   		<? 
   		$limit = count($contributors);
-  		echo "공헌자 : ";
-  		for($i=0; $i<$limit; $i++) {
-  			echo $contributors[$i]['editor'];
-  			if($i<$limit-1) echo ", ";
-  		} ?>
+  		if($limit > 0) {
+  			echo "공헌자 : ";
+	  		for($i=0; $i<$limit; $i++) {
+	  			echo $contributors[$i]['editor'];
+	  			if($i<$limit-1) echo ", ";
+	  		} 
+	  	} ?>
   	</div>
 	</div> <!--// wiki_after_contents -->
 	
