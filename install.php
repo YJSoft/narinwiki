@@ -169,7 +169,7 @@ EOF;
 
 	$history_table = $db_prefix."narin_history";
 
-	// FROM 2011-12-xx
+	// FROM 2011-12-03
 	sql_query("ALTER TABLE  $history_table ORDER BY `reg_date` DESC");
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
