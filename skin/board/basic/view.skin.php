@@ -90,7 +90,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 	 / 조회 : <?=number_format($view['wr_hit'])?>
 	  <? if ($is_good) { ?> / 추천 : <?=number_format($view['wr_good'])?><? } ?>
   	<? if ($is_nogood) { ?> / 비추천 : <?=number_format($view['wr_nogood'])?><? } ?>
-  	<div id="contributors">
+  	<div id="wiki_contributors">
   		<? 
   		$limit = count($contributors);
   		if($limit > 0) {
