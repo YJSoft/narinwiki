@@ -45,6 +45,7 @@ if($md == 'rc' && $page) {
 	$wikiCache = wiki_class_load("Cache");
 	$wikiParser = wiki_class_load("Parser");
 	while($write = sql_fetch_array($res)) {		
+		if(!$write['wr_id']) { $idx++; continue; }
 		$content = $wikiParser->parse($write);
 		$wikiCache->update($write['wr_id'], $content);
 		$idx++;
