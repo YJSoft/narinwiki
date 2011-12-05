@@ -31,7 +31,7 @@ class NarinActionGallery extends NarinActionPlugin {
 	 * 
 	 * @var boolean 기본 높이
 	 */	
-	var $height = 75;
+	var $height = 75;	// 실제로 안쓰임;;
 	
 
 	
@@ -68,7 +68,7 @@ class NarinActionGallery extends NarinActionPlugin {
 		$get = $params['get'];
 		
 		$width = (isset($get['width']) ? $get['width'] : $this->width);
-		$height = (isset($get['height']) ? $get['height'] : $this->width);
+		$height = (isset($get['height']) ? $get['height'] : $this->height);
 		
 		if(isset($get['width']) && !isset($get['height'])) {
 			$height = -1;
