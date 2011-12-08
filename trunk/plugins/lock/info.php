@@ -25,7 +25,7 @@ class NarinPluginInfoLock extends NarinPluginInfo {
 	 *
 	 * @var string 저장할 JS 파일 경로
 	 */
-	var $js_file;
+	var $data_js_file;
 
 	/**
 	 *
@@ -36,10 +36,12 @@ class NarinPluginInfoLock extends NarinPluginInfo {
 	/**
 	 * 생성자
 	 */
-	public function __construct() {
-		$this->id = "wiki_lock";
+	public function __construct() {		
 		parent::__construct();
+		
+		$this->id = "wiki_lock";
 		$this->data_js_file = $this->data_path."/js/lock_plugin.js";
+		$this->init();
 	}
 
 	/**
@@ -92,6 +94,8 @@ class NarinPluginInfoLock extends NarinPluginInfo {
 	public function uninstall() {
 		// data 폴더의 js 파일 삭제
 		@unlink($this->data_js_file);
+		// 저장된 플러그인 설정 삭제
+		$this->wiki_config->delete('/plugin_setting/' . $this->id);
 	}
 
 	/**
@@ -175,19 +179,19 @@ if(wiki_script == 'write.php') {
 	}	
 	
 	function lock_keep_alive() {
-		lock_keep_alive_timer = setTimeout(function() {
+		lock_keep_alive_timer = setInterval(function() {
 			lock_do();
 		}, 30000);		
 	}
 	
 	function lock_do() {
-		$.post(wiki_path+"/exe/a.php", { w : "plugin", p : "lock", m : "keep_alive", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
+		$.post(wiki_path+"/p.php", { p : "lock", m : "keep_alive", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
 		});			
 	}
 	
 	function lock_do_unlock() {
 		$.ajaxSetup({async:false});
-		$.post(wiki_path+"/exe/a.php", { w : "plugin", p : "lock", m : "unlock", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
+		$.post(wiki_path+"/p.php", { p : "lock", m : "unlock", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
 			
 		});			
 	}	

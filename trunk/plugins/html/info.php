@@ -26,8 +26,10 @@ class NarinPluginInfoHtml extends NarinPluginInfo {
 	 * 생성자
 	 */		  	
 	public function __construct() {
-		$this->id = "wiki_html";		
 		parent::__construct();
+				
+		$this->id = "wiki_html";				
+		$this->init();
 	}	  	
 
 	/**

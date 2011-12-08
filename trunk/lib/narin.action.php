@@ -21,7 +21,7 @@
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  */
-class NarinAction extends NarinActionPlugin {
+class NarinActionDefault extends NarinActionPlugin {
 
 	/**
 	 *

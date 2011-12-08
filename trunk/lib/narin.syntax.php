@@ -19,7 +19,7 @@
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  */
-class NarinSyntax extends NarinSyntaxPlugin {
+class NarinSyntaxDefault extends NarinSyntaxPlugin {
 
 	/**
 	 *

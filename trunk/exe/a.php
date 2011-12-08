@@ -20,6 +20,7 @@ include_once "./_common.php";
 @extract(wiki_unescape($_GET));
 
 $inc_file = "./response/".$w.".php";
+
 if(!$w || !file_exists($inc_file)) {
 	wiki_not_found_page();
 }

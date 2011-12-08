@@ -103,7 +103,7 @@ class NarinArticle extends NarinClass {
 						LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
 						WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'";
 		$write = sql_fetch($sql);		
-		$write['contributors'] = $this->getContributor($write['wr_id']);
+		if($write['wr_id']) $write['contributors'] = $this->getContributor($write['wr_id']);
 		return $write;
 	}
 	

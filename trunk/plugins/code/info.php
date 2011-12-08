@@ -26,8 +26,10 @@ class NarinPluginInfoCode extends NarinPluginInfo {
 	 * 생성자
 	 */		  	
 	public function __construct() {
-		$this->id = "wiki_code_highlighter";		
 		parent::__construct();
+		
+		$this->id = "wiki_code_highlighter";				
+		$this->init();
 	}	  	
 
 	/**

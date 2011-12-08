@@ -32,7 +32,7 @@ $large_width = $setting['large_size'];
 <input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
 
 <div class="list_table">
-	
+<a href="javascript:win_pop_center('../media.php?bo_table=<?=$bo_table?>&md=admin', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');">미디어 관리자 admin 모드</a>
 <table id="admbasic" cellspacing="0" cellpadding="0" border="0">
 <tbody>
 	<tr>

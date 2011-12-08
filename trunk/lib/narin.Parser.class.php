@@ -171,7 +171,7 @@ class NarinParser extends NarinClass
 
 		// 기본 문법 해석기 로드
 		include_once "narin.syntax.php";
-		$syntax = new NarinSyntax();
+		$syntax = new NarinSyntaxDefault();
 		$syntax->register($this);
 		array_push($this->plugins, $syntax);
 
@@ -320,6 +320,7 @@ class NarinParser extends NarinClass
 				if (preg_match("/$regex/i", $line, $matches))
 				{
 					$called[$id] = true;
+					
 					$line = $klass->$func($matches, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view));
 					if ($this->stop || $this->stop_all)
 					{
@@ -352,7 +353,7 @@ class NarinParser extends NarinClass
 
 		foreach ($this->variableParsers as $id => $p)
 		{
-			$regex = $p['start_regx']."(.*?)".$p['end_regx']."$";
+			$regex = "^".$p['start_regx']."(.*?)".$p['end_regx']."$";
 			if (preg_match("/$regex/i", $matches[2], $m))
 			{
 				if(method_exists($p['klass'], $p['func'])) {

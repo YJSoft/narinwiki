@@ -37,8 +37,8 @@ $thumb_width = 30;
 $thumb_height = 30;	
 $files = $media->getList($loc);
 foreach($files as $k=>$file) {
-	if($file['img_width']) {
-		$thumb_path = $thumb->getMediaThumb($loc, $filename=$file['source'], $thumb_width, $thumb_height, $quality=90);
+	if($file['img_width'] > 0) {
+		$thumb_path = $thumb->getMediaThumb($loc, $filename=$file['source'], $thumb_width, $thumb_height, $quality=90, $crop=true);
 		$files[$k]['thumb'] = $thumb_path;
 	} else $files[$k]['thumb'] = "";
 	preg_match("/\.([a-zA-Z0-9]{2,4})$/", $file['source'], $m);

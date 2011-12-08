@@ -63,7 +63,8 @@ class NarinActionLock extends NarinActionPlugin {
 		$ctrl->addHandler("WRITE_HEAD", $this, "on_write_head");
 		$ctrl->addHandler("WRITE_UPDATE_HEAD", $this, "on_write_update_head");
 		$ctrl->addHandler("WRITE_UPDATE", $this, "on_write_update");
-		$ctrl->addHandler("AJAX_CALL", $this, "on_ajax_call");
+		$ctrl->addHandler("PX_LOCK_KEEP_ALIVE", $this, "on_keep_alive");
+		$ctrl->addHandler("PX_LOCK_UNLOCK", $this, "on_unlick");
 		$ctrl->addHandler("LOAD_HEAD", $this, "on_load");
 	}	
 	
@@ -152,34 +153,39 @@ END;
 	
 	/**
 	 * 
-	 * 문서 작성 중 AJAX 콜에 대한 응답
+	 * 문서 작성 중 keep_alive AJAX 콜에 대한 응답
 	 * 
 	 * ajax로 문서 lock 갱신
 	 * 
 	 * @param array $params {@link NarinEvent) 에서 넘겨주는 파라미터
 	 */
-	public function on_ajax_call($params) {
+	public function on_keep_alive($params) {
 		list($ns, $docname, $doc) = wiki_page_name(stripslashes($params['post']['doc']));
 		$doc_code = md5($doc);		
-		
-		if($params['post']['p'] == "lock" && $params['post']['m'] == "keep_alive") {
-			$this->initialize_lock($doc);			
-			if(!$this->locked) { echo "0"; return; }	// lock 되어있지 않은 문서를 extend 할 수 없음			
-			if($this->locked['ip'] != $this->user_ip) { echo "0"; return; }	// 자신이 lock 한 문서만 extend 할 수 있음
-			$this->lock($doc);
-			echo "1";
-			return;
-		}
-		
-		if($params['post']['p'] == "lock" && $params['post']['m'] == "unlock") {
-			$this->initialize_lock($doc);			
-			if($this->locked['ip'] != $this->user_ip) { echo "0"; return; }	// 자신이 lock 한 문서만 unlock 할 수 있음
-			$this->unlock($doc);
-			echo "1";
-			return;			
-		}
-		echo "0";
+
+		$this->initialize_lock($doc);			
+		if(!$this->locked) { echo "0"; return; }	// lock 되어있지 않은 문서를 extend 할 수 없음			
+		if($this->locked['ip'] != $this->user_ip) { echo "0"; return; }	// 자신이 lock 한 문서만 extend 할 수 있음
+		$this->lock($doc);
+		echo "keep alive";
 	}
+	
+	/**
+	 * 
+	 * 문서 작성 중 unlick AJAX 콜에 대한 응답
+	 * 
+	 * ajax로 문서 lock 갱신
+	 * 
+	 * @param array $params {@link NarinEvent) 에서 넘겨주는 파라미터
+	 */
+	public function on_unlock($params) {
+		list($ns, $docname, $doc) = wiki_page_name(stripslashes($params['post']['doc']));
+		$doc_code = md5($doc);		
+		$this->initialize_lock($doc);			
+		if($this->locked['ip'] != $this->user_ip) { echo "0"; return; }	// 자신이 lock 한 문서만 unlock 할 수 있음
+		$this->unlock($doc);
+		echo "unlock";
+	}	
 	
 	/**
 	 * 

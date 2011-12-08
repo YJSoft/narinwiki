@@ -206,7 +206,7 @@ class NarinThumb extends NarinClass {
 	 * @param int $quality 썸네일 품질
 	 * @return string 썸네일 경로
 	 */
-	function getMediaThumb($ns, $filename, $thumb_width, $thumb_height, $quality=90) {
+	function getMediaThumb($ns, $filename, $thumb_width, $thumb_height, $quality=90, $crop = false) {
 			
 		$bo_table = $this->wiki['bo_table'];
 		$write_table = $this->g4['write_prefix'] . $bo_table;
@@ -233,18 +233,41 @@ class NarinThumb extends NarinClass {
 		$filename = $fileinfo['source'];
 			
 		// 썸네일 파일 패스  (썸네일 파일 명 : 게시판아이디-파일인덱스-퀄리티)
-		$thumb_name = "media-".$bo_table."-".$fileinfo['id'] . "-". $quality ."_".$thumb_width."x".$thumb_height. "." . $extension;
+		$croping = ($crop ? "-c" : "");
+		$thumb_name = "media-".$bo_table."-".$fileinfo['id'] . "-". $quality . $croping . "_".$thumb_width."x".$thumb_height. "." . $extension;
 		$thumb_file = $this->thumb_path."/".$thumb_name;
 
 		// 썸네일이 이미 존재하면 리턴
 		if(file_exists($thumb_file)) return $thumb_file;
 			
+			
+		if($crop) {						
+			$sizes = getimagesize($file);			
+	    $source_width = $sizes[0];
+	    $source_height = $sizes[1];					
+			$top = $left = $right = $bottom = 0;				
+			
+			// 원본 가로가 길 경우
+	    if (($source_width / $source_height) > ($thumb_width / $thumb_height)) {
+	        $temp_width = $source_height * $thumb_width / $thumb_height;
+	        $right = $left = ($source_width - $temp_width) / 2;
+	    }			
+			// 원본 세로가 길 경우
+	    if (($source_width / $source_height) < ($thumb_width / $thumb_height)) {
+	        $temp_height = $source_width * $thumb_height / $thumb_width;
+	        $top = $bottom = ($source_height - $temp_height) / 2;
+	    }
+		}
+
 		$thumbLib = new easyphpthumbnail;
 		$thumbLib->Thumbwidth = $thumb_width;
 		$thumbLib->Thumbheight = $thumb_height;
 		$thumbLib->Quality = $quality;
 		$thumbLib->Thumblocation = $this->thumb_path."/";
 		$thumbLib->Thumbfilename = $thumb_name;
+		if($crop) {
+			$thumbLib->Cropimage = array(1, 1, $left, $right, $top, $bottom);
+		}
 		$thumbLib->Createthumb($file, 'file');
 			
 		return $thumb_file;

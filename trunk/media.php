@@ -18,6 +18,13 @@ if(!$loc) $loc = "/";
 $wikiConfig = wiki_class_load("Config");
 $media_setting = $wikiConfig->media_setting;
 
+$is_admin_mode = false;
+$colspan = 5;
+if($is_wiki_admin && $md == 'admin') {
+	$is_admin_mode = true;
+	$colspan++;
+}
+
 $no_layout = true;
 include_once "head.php";
 ?>
@@ -39,6 +46,12 @@ include_once "head.php";
 	#media_search { }
 	#media_search #stx { float:right;border:1px solid #ccc; }
 	#media_search .button { float:right; margin-top:2px;}
+	#media_gallery { float:left; margin-top:2px;}
+	#gallery_table { width:100%; margin-top:8px; border-top:2px solid #888; padding:0; border-bottom:1px solid #888}
+	#gallery_table th{ padding:5px;border-top:1px solid #e5e5e5;text-align:right;background-color:#f5f7f9;color:#666;font-weight:normal}
+	#gallery_table td{ padding:5px;border-top:1px solid #e5e5e5;color:#4c4c4c;}
+	#gallery_table label { top:6px; left:10px}
+	.chk, .radio {width:13px;height:13px;margin:2px 5px 2px 0;padding:0;vertical-align:middle}			
 	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
 	.thumb { border:1px solid #ccc; padding:2px; }
 	.image_size { color:#888; padding-left:8px; font-size:90%;}
@@ -56,11 +69,14 @@ include_once "head.php";
 	</td>
 	<td id="narin_media_content" valign="top">
 	<div id="buttons">			
-		<span class="button"><a href="#upload" id="upload">업로드</a></span>		
+		<span class="button"><a href="#upload" id="upload">업로드</a></span>	
 		<span class="button"><a href="#mkdir" id="mkdir">새폴더</a></span>	
 		<span class="button"><a href="#rmdir" id="rmdir">폴더삭제</a></span>
 		<? if($is_wiki_admin) { ?>
 		<span class="button"><a href="#chmod" id="chmod">권한설정</a></span>
+			<? if($is_admin_mode) { ?>
+			<span class="button"><a href="#zipdown" id="zipdown">ZIP다운로드</a></span>
+			<? } ?>
 		<? } ?>
 	</div>
 		<h1 id="folder_label"><?=$loc?></h1>	
@@ -75,12 +91,19 @@ include_once "head.php";
 			<span class="button small green"><a href="javascript:;" id="ns_level_update">적용</a></span>
 		</div>
 		<? } ?>
+		<? if(!$is_admin_mode) { ?>
 		<div id="media_option">
 			<input type="checkbox" class="checkbox" id="media_opt_selection" name="media_opt_selection">
 			<label for="media_opt_selection" class="label">파일 선택 후 창을 닫지 않음</label>
 		</div>
+		<? } ?>
 		<div id="narin_media_upload"></div>
 		<div id="media_msg"></div>		
+		<? if(!$is_admin_mode) { ?>
+		<div id="media_gallery">
+			<a href="#gallery_insert_layer" id="gallery" class="wiki_modal">갤러리 삽입하기</a>
+		</div>
+		<? } ?>
 		<div id="media_search" class="clear">			
 			<span class="button blue small"><input type="button" name="sbtn" id="sbtn" value="검색"></span>			
 			<input type="text" name="stx" id="stx"/>
@@ -88,7 +111,10 @@ include_once "head.php";
 		<table id="file_list" width="100%" cellspacing="0" cellpadding="0" border="0">
 		<colgroup>			
 			<col>
-			<col width="30px">			
+			<col width="30px">	
+			<? if($is_admin_mode) { ?>
+			<col width="60px">	
+			<? } ?>		
 			<col width="80px">
 			<col width="160px">
 			<col width="20px">
@@ -97,8 +123,11 @@ include_once "head.php";
 		<tr>
 			<th scope="col"><a href="#order_name" id="order_name" class="ordering" code="source">파일명</a></th>
 			<th scope="col">&nbsp;</th>			
+			<? if($is_admin_mode) { ?>
+			<th scope="col"><a href="#order_downloads" id="order_downloads" class="ordering" code="reg_date">다운로드</a></th>
+			<? }?>
 			<th scope="col"><a href="#order_bytes" id="order_bytes" class="ordering" code="bytes">크기</a></th>
-			<th scope="col"><a href="#order_date" id="order_date" class="ordering" code="reg_date">날짜</a></th>			
+			<th scope="col"><a href="#order_date" id="order_date" class="ordering" code="reg_date">날짜</a></th>
 			<th scope="col">&nbsp;</th>
 		</tr>
 		</thead>
@@ -133,7 +162,7 @@ include_once "head.php";
 		
 		<div style="margin-top:5px; padding-top:5px; border-top:1px solid #ccc;text-align:center">
 			<span class="button small"><a href="#close" class="close_button">닫기</a></span>
-			<span class="button red small"><a href="#apply" id="media_image_apply">적용</span>
+			<span class="button red small"><a href="#apply" id="media_image_apply">적용</a></span>
 		</div>
 		<a href="#image_select_layer" id="show_img_layer" class="wiki_modal" style="display:none"></a>
 	</div>
@@ -141,6 +170,64 @@ include_once "head.php";
 
 </div> <!--// media_manager_wrapper -->
 
+<div style="display:none">
+	<div id="gallery_insert_layer">
+		
+		<div style="padding:5px;background-color:#333;color:#fff;margin-bottom:8px;">갤러리 삽입</div>
+		모든 입력사항은 선택사항입니다. 입력/선택 하지 않으셔도 됩니다.
+		<table id="gallery_table" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<th>썸네일크기</th>
+				<td>
+					너비 : <input type="text" style="border:1px solid #ccc" name="media_gallery_width" id="mg_width" size="5">px 
+					/ 높이 : <input type="text" style="border:1px solid #ccc" name="media_gallery_height" id="mg_height" size="5">px
+				</td>
+			</tr>			
+			<tr>
+				<th>파일명</th>
+				<td>
+						<input type="checkbox" name="media_gallery_showname" id="mg_showname" class="chk"/><label for="mg_showname">파일명 보기</label>
+						<input type="checkbox" name="media_gallery_noext" id="mg_noext" checked disabled class="chk"/><label for="mg_noext">확장자 보기</label>
+				</td>
+			</tr>
+			<tr>
+				<th>정렬</th>
+				<td>
+						<select name="mg_sort" id="mg_sort">
+							<option value="date">업로드 날짜</option>
+							<option value="name">파일명</option>
+							<option value="filesize">파일크기</option>
+							<option value="random">랜덤</option>
+						</select>
+						<select name="mg_reverse" id="mg_reverse">
+							<option value="0">내림차순</option>
+							<option value="1">올림차순</option>
+						</select>
+				</td>
+			</tr>
+			<tr>
+				<th>더보기</th>
+				<td>
+						<input type="checkbox" name="media_gallery_paging" id="mg_paging" class="chk"/><label for="mg_paging">더보기 사용</label>
+						&nbsp;
+						<select name="mg_page" id="mg_page" disabled>
+							<option value="20">20</option>
+							<option value="50">50</option>
+							<option value="100" selected>100</option>
+							<option value="200">200</option>
+						</select> 장씩 보기
+				</td>
+			</tr>
+		</table>
+		
+		<div style="margin-top:5px; padding-top:5px; text-align:center">
+			<span class="button small"><a href="#close" class="close_button">닫기</a></span>
+			<span class="button red small"><a href="#apply" id="media_gallery_apply">적용</a></span>
+		</div>
+	
+	
+	</div>
+</div>
 
 <style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
 <script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
@@ -246,11 +333,82 @@ include_once "head.php";
 
 		});
 
+		$('#media_gallery_apply').click(function() {
 
+				var g_width = $("#mg_width").val();
+				var g_height = $("#mg_height").val();
+				var g_showname = $("#mg_showname").is(":checked");
+				var g_noext = $("#mg_noext").is(":checked");
+				var g_sort_by = $("#mg_sort").val();
+				var g_reverse = $("#mg_reverse").val();
+				var g_paging = $("#mg_paging").is(":checked");
+				var g_page = $("#mg_page").val();
+
+				var arg = [];
+				if(g_width) arg.push('width='+g_width);
+				if(g_height) arg.push('height='+g_height);
+				if(g_showname) {
+					arg.push('showname');
+					if(g_noext) arg.push('noext');
+				}
+				arg.push('sort='+g_sort_by);
+				if(g_reverse == 1) arg.push('reverse');
+				if(g_paging) {
+					arg.push('paging='+g_page);
+				}
+				
+				if(arg.length > 0) arg = '?' + arg.join('&');
+				else arg = '';
+					
+				if(!window.opener) window.close();
+
+				window.opener.markitup_set({ replaceWith : "{{gallery="+mm.loc+arg+"}}" });
+				if(!$("#media_opt_selection").is(':checked')) {
+					window.close();
+				}
+				else $.wiki_lightbox_close();
+
+		});
+
+		$('#mg_paging').click(function(evt) {
+			if($(this).is(':checked')) {
+				$('#mg_page').attr('disabled', '');
+			} else {
+				$('#mg_page').attr('disabled', 'disabled');
+			}
+		});
+		
+		$('#mg_showname').click(function(evt) {
+			if($(this).is(':checked')) {
+				$('#mg_noext').attr('disabled', '');
+			} else {
+				$('#mg_noext').attr('disabled', 'disabled');
+			}
+		});		
+					
 		$('.file_del').live('click', function() {
 			tr = $(this).parents('.flist');
 			mm.delete_file(tr.find('.fname').text(), tr);
 		});
+		
+		<? if($is_admin_mode) { ?>
+		$('#clear_media').live('click', function() {
+			if(!confirm('폴더내의 모든 파일이 삭제됩니다.\n진행하시겠습니까?')) return;
+			if(!confirm('정말 진행하시겠습니까?')) return;
+			$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_clear&loc='+encodeURIComponent(mm.loc), function(data) {
+				mm.load();
+			});
+		});
+		
+		$('#zipdown').click(function(evt) { 
+			evt.preventDefault();
+			$.getJSON(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
+				if(json.code == 1) {
+					location.href = wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip_download&loc='+encodeURIComponent(mm.loc)+'&file='+json.file;
+				} else mm.show_msg(json.msg, 2);
+			});
+		});
+		<? }?>
 
 		mm.msg = $("<div></div>")
 				.attr('style', 'display:none;position:absolute;padding:10px 30px;text-align:center;background-color:#333;color:#fff;z-index:999999')
@@ -284,9 +442,7 @@ include_once "head.php";
 					$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_mkdir&ploc='+encodeURIComponent(mm.loc)+'&loc='+encodeURIComponent(folder), function(data) {
 								json = $.parseJSON(data);		
 								if(json.code == 1) {
-									mm.loc = folder;
-									mm.tree_load(folder);
-									mm.load();
+									mm.tree_load(mm.loc);
 								}
 								else mm.show_msg(json.msg, 2);
 								mm.hide_msg();
@@ -301,7 +457,7 @@ include_once "head.php";
 				mm.show_msg('폴더에 파일이 있어 삭제할 수 없습니다.', 2);
 				return;
 			}
-			if(!confirm('폴더를 삭제하시겠습니까')) return;
+			if(!confirm('폴더를 삭제하시겠습니까?')) return;
 			$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_rmdir&loc='+encodeURIComponent(mm.loc), function(data) {
 				json = $.parseJSON(data);
 				if(json.code == 1) {
@@ -434,7 +590,7 @@ include_once "head.php";
 	};
 	
 	mm.delete_file = function(fname, tr) {
-		if(!confirm('삭제하시겠습니까?')) return;
+		if(!confirm('삭제하시겠습니까?\n파일을 삭제하면 파일을 링크하고 있는 문서의 링크가 끊깁니다.')) return;
 		mm.show_msg('삭제중입니다. 잠시만 기다려주세요.');
 		$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_delete&loc='+encodeURIComponent(mm.loc)+'&file='+encodeURIComponent(fname), function(data) {
 			json = $.parseJSON(data);		
@@ -513,7 +669,7 @@ include_once "head.php";
 			file = mm.files[i];
 			if(file.img_width > 0) {
 				is_img = true;
-				img = $('<a></a>').attr('href', file.imgsrc).html('<img class="thumb" src="'+file.thumb+'"/>').wiki_lightbox();
+				img = $('<a></a>').addClass('media_lightbox').attr('href', file.imgsrc).html('<img class="thumb" src="'+file.thumb+'"/>').wiki_lightbox();
 				img_info = '<span class="image_size">'+file.img_width+'x'+file.img_height+'</span>';
 			} else {
 				is_img = false;
@@ -531,23 +687,43 @@ include_once "head.php";
 			$('<td></td>').attr('style', 'padding-left:28px;background:url("'+file.ext_icon+'") no-repeat left center;')
 										.append($('<a></a>').attr('href', 'javascript:;')
 																				.addClass('fname').data('file_path', file_path).data('is_img', is_img)
-																				.data('source', file.source)
+																				.data('source', file.source).data('url', file.href)
 																				.data('img_width', file.img_width).data('img_height', file.img_height)
 																				.html(file.source)
+																				<? if($is_admin_mode) { ?>
+																				.click(function(evt) {
+																					if(!$(this).data('is_img')) {																						
+																						location.href = $(this).data('url');
+																					} else {																						
+																						$(this).parent().parent().find('.media_lightbox').trigger('click');
+																					}
+																				})																					
+																				<? } else { ?>
 																				.click(function(evt) {
 																					mm.mark($(this));
-																				})
+																				})																					
+																				<? } ?>
 										)
 										.append(img_info)
 										.appendTo(tr);
 			$('<td></td>').append(img).attr('style', 'text-align:right;padding-right:5px').appendTo(tr);														
+			<? if($is_admin_mode) { ?>
+			$('<td></td>').attr('style', 'text-align:center').append((is_img ? '' : file.downloads)).appendTo(tr);
+			<? } ?>
 			$('<td></td>').html(file.filesize).appendTo(tr);
 			$('<td></td>').html(file.reg_date).appendTo(tr);
 			$('<td></td>').html(cmd_del).appendTo(tr);
 			mm.table.find('tbody').append(tr);
 		}
+
 		if(mm.files.length == 0) {
-			mm.table.find('tbody').append('<tr class="flist"><td colspan="5">파일이 없습니다.</td></tr>');
+			mm.table.find('tbody').append('<tr class="flist"><td colspan="<?=$colspan?>">파일이 없습니다.</td></tr>');
+		} else {
+		<? if($is_admin_mode) { ?>
+		mm.table.find('tbody').append(['<tr class="flist"><td colspan="<?=$colspan?>" style="text-align:right">',
+																	 '<span class="button red small"><a href="javascript:;" id="clear_media">모든파일삭제</a></span>',
+																	 '</td></tr>'].join(''));
+		<? } ?>			
 		}
 	};
 	
@@ -659,11 +835,14 @@ include_once "head.php";
 	
 	
 	$(document).ready(function() {
+		<? if(!$is_admin_mode) { ?>
 		if(!window.opener) {
 			alert('잘못된 접근입니다.');
 			window.location.href = wiki_path + '/narin.php?bo_table='+g4_bo_table;
+			return;
 		}
-		else mm.init();
+		<? } ?>
+		mm.init();
 		window.focus();
 	});	
 </script>

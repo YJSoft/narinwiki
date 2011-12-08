@@ -62,13 +62,13 @@ class NarinEvent extends NarinClass
 		include_once $this->wiki[path]."/lib/narin.Plugin.class.php";
 		include_once $this->wiki[path]."/lib/narin.ActionPlugin.class.php";
 
-		$path = $this->wiki[path]."/plugins";
+		$path = $this->wiki['path']."/plugins";
 		$use_plugins = array();
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 
 		// 기본 액션 로드
 		include_once "narin.action.php";
-		$action = new NarinAction();
+		$action = new NarinActionDefault();
 		$action->register($this);
 
 		// Action 플러그인 로드
@@ -117,7 +117,9 @@ class NarinEvent extends NarinClass
 	 */
 	public function addHandler($event, $obj, $handler)
 	{
-		$this->actions[$event][] = array("object"=>$obj, "handler"=>$handler);
+		if(!is_a($obj, "NarinActionPlugin")) return;
+		$name = strtoupper(preg_replace("/^NarinAction/", "", get_class($obj)));
+		$this->actions[$event][] = array("name"=>$name, "object"=>$obj, "handler"=>$handler);
 	}
 
 	/**
@@ -130,17 +132,46 @@ class NarinEvent extends NarinClass
 	 * @return array 리턴되는 배열 event_trigger()를 호출한 곳에서 extract()해서 global 하게 사용할 수 있도록 처리한다. (연관배열이어야 함)
 	 */
 	public function trigger($type, $params) {
-		$params[_type_] = $type;
+		$params['_type_'] = $type;
 		$returnValue = array();
 		if(is_array($this->actions[$type])) {
 			foreach($this->actions[$type] as $idx => $p) {
-				$ret = $p[object]->$p[handler]($params);
+				$ret = $p['object']->$p['handler']($params);
 				if(is_array($ret)) {
 					foreach($ret as $k=>$v) { $returnValue[$k] = $v; }
 				}
 			}
 		}
 		return $returnValue;
+	}
+
+	/**
+	 * 
+	 * 주어진 클래스의 이벤트 핸들러 실행
+	 * 
+	 * @see http://narin.byfun.com/bbs/board.php?bo_table=wiki&wr_id=22
+	 * @param string $plugin_name 플러그인명 (plugin 폴더명)
+	 * @param string $type 이벤트 타입 (WRITE_UPDATE, DELETE_TAIL, COMMENT_UPDATE 등..)
+	 * @param array $params 이 매소드를 호출하는 곳에서 넘겨주는 파라미터 array
+	 * @return array 리턴되는 배열 event_trigger()를 호출한 곳에서 extract()해서 global 하게 사용할 수 있도록 처리한다. (연관배열이어야 함)
+	 */
+	public function trigger_one($plugin_name, $type, $params)
+	{
+		$plugin_name = strtoupper($plugin_name);		
+		$params['_type_'] = $type;
+		$returnValue = array();
+		if(is_array($this->actions[$type])) {
+			foreach($this->actions[$type] as $idx => $p) {
+				if($p['name'] == $plugin_name) {
+					$ret = $p['object']->$p['handler']($params);
+					if(is_array($ret)) {
+						foreach($ret as $k=>$v) { $returnValue[$k] = $v; }
+					}
+					break;
+				}
+			}
+		}
+		return $returnValue;		
 	}
 
 }
