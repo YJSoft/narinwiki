@@ -339,3 +339,16 @@ function objToString(o){
 	}    
 	return "{" + parse(o).join(", ") + "}";    
 }
+
+function win_pop_center(loc, w, h, opts) {
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;    
+    var left = ((screen.width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((screen.height / 2) - (h / 2)) + dualScreenTop;
+    
+    if(opts != undefined) opts = ',' + opts;
+    else opts = '';
+         
+    var newwin = window.open(''+loc, 'narin_popup', 'top=' + top + ',left=' + left +',width=' + w + ',height=' + h + opts);
+    if (window.focus) {newwin.focus();}
+}

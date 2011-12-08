@@ -378,13 +378,35 @@ class NarinMedia extends NarinClass {
 		{
 			if($row['ns'] == $parent) {
 				if(!$row['source']) continue;
+				//if(is_callable($filter) && !$filter($row)) continue;
 				$row['path'] = $this->wiki['path'].'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
-				$row['href'] = $this->wiki['path'].'/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
+				$row['href'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
 				$row['imgsrc'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&w=img&file='.urlencode(wiki_doc($row['ns'], $row['source']));
 				array_push($files, $row);
 			}
 		}
 		return $files;
+	}
+	
+
+	/**
+	 *
+	 * 폴더 내 모든 파일 삭제 (DB & 파일)
+	 *
+	 *
+	 */	
+	function clear($loc) {
+		if(!$this->is_wiki_admin) return false;
+		
+		$files = $this->getList($loc);
+		foreach($files as $k=>$file) {
+			@unlink($this->path.$file['file']);
+		}
+		
+		$loc = mysql_real_escape_string($loc);
+		sql_query("DELETE FROM ".$this->wiki['media_table']." WHERE ns = '$loc'");
+		
+		return true;
 	}
 
 	/**

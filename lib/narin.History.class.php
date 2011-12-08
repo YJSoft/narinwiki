@@ -266,7 +266,7 @@ class NarinHistory  extends NarinClass {
 	 * @return array unlinked 문서 이력
 	 */
 	public function unlinkedHistory() {
-		$sql = "SELECT doc FROM ".$this->wiki['history_table']." WHERE wr_id = -1 GROUP BY doc";
+		$sql = "SELECT doc FROM ".$this->wiki['history_table']." WHERE bo_table = '".$this->bo_table."' AND wr_id = -1 GROUP BY doc";
 		return wiki_sql_list($sql);
 	}
 

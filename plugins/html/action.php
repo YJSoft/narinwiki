@@ -42,8 +42,48 @@ class NarinActionHtml extends NarinActionPlugin {
 	 */
 	public function register($ctrl)
 	{
-		$ctrl->addHandler("WRITE_UPDATE_HEAD", $this, "on_write_update_head");
+		$ctrl->addHandler("WRITE_HEAD", $this, "on_write_head");
 	}	
+	
+	/**
+	 * 
+	 * 문서 등록/수정 시 처리
+	 * 
+	 * @param array $params {@link NarinEvent} 에서 전달하는 파라미터
+	 */
+	public function on_write_head($params) {
+		$wr_content = $params['write']['wr_content'];
+		$member = $this->member;
+		$setting = $this->plugin_info->getPluginSetting();		
+		$allow_level = $setting['allow_level']['value'];
+		$allow_iframe_level = $setting['allow_iframe_level']['value'];
+		$allow_script_level = $setting['allow_script_level']['value'];
+		
+		if($allow_level > $member['mb_level'])
+		{
+			if(preg_match("/<html>/i", $wr_content)) {
+				$wikiControl = wiki_class_load("Control");
+				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (html)");
+			}
+		}
+		
+		if($allow_iframe_level > $member['mb_level'])
+		{
+			if(preg_match("/<iframe([^\>]*)/i", $wr_content)) {
+				$wikiControl = wiki_class_load("Control");
+				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (iframe)");
+			}			
+		}
+		if($allow_script_level > $member['mb_level'])
+		{
+			if(preg_match("/<script([^\>]*)/i", $wr_content)) {
+				$wikiControl = wiki_class_load("Control");
+				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (script)");
+				exit;
+			}					
+		}				
+	}
+	
 	
 	/**
 	 * 
@@ -82,6 +122,7 @@ class NarinActionHtml extends NarinActionPlugin {
 			}					
 		}				
 	}
+		
 }
 
 

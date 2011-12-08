@@ -26,7 +26,7 @@ if($ns['ns_access_level'] > $member['mb_level']) {
 }
 
 
-if(!$fileinfo['img_width']) {
+if(!$fileinfo['img_width'] && !$is_wiki_admin) {
 	$media->updateDownloadCount($fileinfo['id']);
 }
 

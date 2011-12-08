@@ -32,12 +32,12 @@
 	.narin_contents #wiki_toc { float:right; clear:both; width:180px; margin-left:8px; background-color:#fff; }
 	.narin_contents #wiki_toc a { font-size:8pt}
 	.narin_contents #wiki_toc #wiki_toc_head { border:1px solid #ccc; margin:0; background-color:#f8f8f8;}
-	.narin_contents #wiki_toc #wiki_toc_head a.fold_down { background:url(img/arrow_down.gif) no-repeat 95%}
-	.narin_contents #wiki_toc #wiki_toc_head a.fold_up { background:url(img/arrow_up.gif) no-repeat 95%}
+	.narin_contents #wiki_toc #wiki_toc_head a.fold_down { background:url(../imgs/arrow_down.gif) no-repeat 95%}
+	.narin_contents #wiki_toc #wiki_toc_head a.fold_up { background:url(../imgs/arrow_up.gif) no-repeat 95%}
 	.narin_contents #wiki_toc #wiki_toc_head a { display:block; color:#555; padding-left:5px; }
 	.narin_contents #wiki_toc #wiki_toc_content { margin-top:3px; padding:5px 0; border:1px solid #ccc; }
 	.narin_contents #wiki_toc #wiki_toc_content a { color:#555; }
-	.narin_contents #wiki_toc .toc  {background:url(img/dot.gif) no-repeat 2px 8px; padding-left:8px; overflow:hidden;}
+	.narin_contents #wiki_toc .toc  {background:url(../imgs/dot.gif) no-repeat 2px 8px; padding-left:8px; overflow:hidden;}
 	.narin_contents #wiki_toc .toc_1 { }
 	.narin_contents #wiki_toc .toc_2 { margin-left:10px;}
 	.narin_contents #wiki_toc .toc_3 { margin-left:20px;}

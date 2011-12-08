@@ -21,6 +21,7 @@ if(!$info) {
 }
 
 $setting = $info->getPluginSetting();
+
 if(!$info->checkSetting($setting)) alert("플러그인 설정 오류");
 
 ?>

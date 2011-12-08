@@ -47,10 +47,26 @@ class NarinPluginInfo extends NarinClass {
 	 * 생성자
 	 */
 	public function __construct() {
-		parent::__construct();
-			
+		
+		parent::__construct();			
+		
+		$class_name = substr(get_class($this), 15);
+		$class_name{0} = strtolower($class_name{0});
+		$this->plugin_path = $this->wiki[path]."/plugins/".$class_name;
+		$this->data_path = $this->wiki[path]."/data/".$this->wiki[bo_table];		
+		
+	}
+	
+	/**
+	 *
+	 * PluginInfo 에서 생성자 실행 후 호출하는 초기화 매소드
+	 * 
+	 * 플러그인 info 클래스에서 중복구현 되어야 함
+	 */
+	public function init() {
 		// get default setting from plugin instance
 		$default = $this->getSetting();
+		
 		if($default) {
 				
 			// load saved setting from db
@@ -67,10 +83,7 @@ class NarinPluginInfo extends NarinClass {
 			$this->setting = $default;
 		}
 
-		$class_name = substr(get_class($this), 15);
-		$class_name{0} = strtolower($class_name{0});
-		$this->plugin_path = $this->wiki[path]."/plugins/".$class_name;
-		$this->data_path = $this->wiki[path]."/data/".$this->wiki[bo_table];
+		
 	}
 
 	/**

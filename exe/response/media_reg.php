@@ -33,7 +33,7 @@ $thumb_width = 30;
 $thumb_height = 30;
 $f = $media->getFile($loc, $source);	
 if($f['img_width']) {
-	$thumb_path = $thumb->getMediaThumb($ns=$loc, $filename=$f['source'], $thumb_width, $thumb_height, $quality=90);
+	$thumb_path = $thumb->getMediaThumb($ns=$loc, $filename=$f['source'], $thumb_width, $thumb_height, $quality=90, $crop=true);
 	$f['thumb'] = $thumb_path;
 } else $f['thumb'] = "";
 
