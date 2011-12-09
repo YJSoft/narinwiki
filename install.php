@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `{$db_prefix}narin_cache` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `bo_table` varchar(255) NOT NULL,
   `wr_id` int(10) unsigned NOT NULL,
-  `content` text NOT NULL,
+  `content` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
@@ -171,7 +171,10 @@ EOF;
 
 	// FROM 2011-12-03
 	sql_query("ALTER TABLE  $history_table ORDER BY `reg_date` DESC");
-
+	
+	// FROM 2011-12-0x
+	sql_query("ALTER TABLE ".$db_prefix."narin_cache MODIFY content MEDIUMTEXT"); 
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	$config_file = "<?\n";

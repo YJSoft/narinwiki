@@ -43,8 +43,8 @@ if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && strtotime($_SERVER['HTTP_IF_MOD
 	header ('Content-type: text/javascript; charset='.$g4[charset]);
 	header ('Pragma:');
 	header ("Last-Modified: ".gmdate("D, d M Y H:i:s", $modified )." GMT");
-		
-	echo JSMin::minify($script);    
+	echo $script;
+	//echo JSMin::minify($script);    
 }
 
 /**

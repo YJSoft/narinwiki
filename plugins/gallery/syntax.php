@@ -35,7 +35,7 @@ class NarinSyntaxGallery extends NarinSyntaxPlugin {
 	function register($parser)
 	{
 		$parser->addVariableParser(
-          $id = $this->id."_gallery",
+          $id = "wiki_gallery",
           $klass = $this,
           $startRegx = "(gallery=|gal=)",	// gallery= 또는 gal=
           $endRegx = "((\?)(.*?))?",	// 파라미터 ? 다음 문자열 (optional)

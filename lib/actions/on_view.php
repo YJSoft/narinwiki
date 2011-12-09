@@ -56,7 +56,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 	
 	// 캐시 업데이트 하지 않아도 되는 경우
 	if(!$article['should_update_cache']) {
-		
+	
 		// 캐시 읽어옴		
 		$cached_content = $wikiCache->get($article['wr_id']);
 		
@@ -77,7 +77,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 	}
 	
 } else {	// 캐시 사용 안하는 경우
-			
+
 	$wikiParser = wiki_class_load("Parser");	
 	$view['content'] = $wikiParser->parse($view);
 	
