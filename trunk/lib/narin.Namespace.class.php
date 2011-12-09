@@ -355,12 +355,12 @@ class NarinNamespace extends NarinClass {
 				if(!$row['doc']) continue;
 				$row['name'] = $row['doc'];
 				$row['path'] = ($row['ns'] == "/" ? "/" : $row['ns']."/").$row['doc'];
-				$row['href'] = $this->wiki[path].'/narin.php?bo_table='.$this->wiki['bo_table'].'&doc='.urlencode($row['path']);
+				$row['href'] = $this->wiki['path'].'/narin.php?bo_table='.$this->wiki['bo_table'].'&doc='.urlencode($row['path']);
 				$row['internal_link'] = "[[".$row['path']."]]";
 				$row['type'] = 'doc';				
 				array_push($files, $row);
 			} else {
-				$row['href'] = $this->wiki[path].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($row['ns']);
+				$row['href'] = $this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($row['ns']);
 				$name = ereg_replace($parent."/", "", $row['ns']);
 				$row['name'] = ereg_replace($parent, "", $name);
 				$row['path'] = $row['ns'];

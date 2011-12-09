@@ -21,7 +21,11 @@ if($use_comment) {
 
 	for ($i=0; $i<count($list); $i++) {
 		$list[$i]['del_link'] = wiki_adjust_path($list[$i]['del_link']);
-		$list[$i]['content'] = $wikiParser->parse($list[$i]);
+    if (!strstr($list[$i]['wr_option'], "secret") || $is_admin || $is_wiki_admin 
+    		 || ($write['mb_id']==$member['mb_id'] && $member['mb_id']) 
+    		 || ($list[$i]['mb_id']==$member['mb_id'] && $member['mb_id'])) {		
+			$list[$i]['content'] = $wikiParser->parse($list[$i]);
+		}
 	}
 } else $list = "";
 ?>
