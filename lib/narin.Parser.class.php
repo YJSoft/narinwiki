@@ -261,7 +261,7 @@ class NarinParser extends NarinClass
 		$output_string = $this->emoticons($output_string);
 
 		// 이벤트
-		$this->trigger_event(EVENT_AFTER_PARSING_ALL, array("lines"=>&$this->output, "output"=>&$output_string, "parser"=>&$this, "view"=>$this->view));
+		$this->trigger_event(EVENT_AFTER_PARSING_ALL, array("lines"=>&$this->output, "output"=>&$output_string, "parser"=>&$this, "view"=>$this->view, "plugins"=>&$this->plugins));
 
 		$output_string = preg_replace($this->ele, "", $output_string);
 			
@@ -321,7 +321,7 @@ class NarinParser extends NarinClass
 				{
 					$called[$id] = true;
 					
-					$line = $klass->$func($matches, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view));
+					$line = $klass->$func($matches, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view, "plugins"=>&$this->plugins));
 					if ($this->stop || $this->stop_all)
 					{
 						break;
@@ -334,7 +334,7 @@ class NarinParser extends NarinClass
 		$isline = strlen(trim($line)) > 0;
 
 		// 이벤트 (EVENT_PARSING_FINISHING_LINE)
-		$this->trigger_event(EVENT_AFTER_PARSING_LINE, array("line"=>&$line, "called"=>$called, "lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view));
+		$this->trigger_event(EVENT_AFTER_PARSING_LINE, array("line"=>&$line, "called"=>$called, "lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view, "plugins"=>&$this->plugins));
 
 		return $line;
 	}
@@ -357,7 +357,7 @@ class NarinParser extends NarinClass
 			if (preg_match("/$regex/i", $matches[2], $m))
 			{
 				if(method_exists($p['klass'], $p['func'])) {
-					return $p['klass']->$p['func']($m, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view) );
+					return $p['klass']->$p['func']($m, array("lines"=>&$this->output, "parser"=>&$this, "view"=>&$this->view, "plugins"=>&$this->plugins) );
 				}
 			}
 		}
@@ -468,7 +468,7 @@ class NarinParser extends NarinClass
 	protected function do_block_parser($matches)
 	{
 		$p = $this->currentBlockParser;
-		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
+		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view, "plugins"=>&$this->plugins));
 	}
 
 	/**
@@ -481,7 +481,7 @@ class NarinParser extends NarinClass
 	protected function do_word_parser($matches)
 	{
 		$p = $this->currentWordParser;
-		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view));
+		return $p['klass']->$p['func']($matches, array("lines"=>&$this->output, "parser"=>$this, "view"=>&$this->view, "plugins"=>&$this->plugins));
 	}
 
 

@@ -25,12 +25,6 @@ class NarinActionDefault extends NarinActionPlugin {
 
 	/**
 	 *
-	 * @var string 플러그인 id
-	 */
-	protected $id;
-
-	/**
-	 *
 	 * @uses delete 의 head 와 tail 에서 공유해야 할 경우
 	 * @var array event 간에 공유해야할 데이터가 있는 경우 사용할 변수
 	 */
@@ -41,9 +35,9 @@ class NarinActionDefault extends NarinActionPlugin {
 	 * 생성자
 	 */
 	public function __construct() {
-		$this->id = "wiki_default_action";
-		$this->shared = array();
 		parent::__construct();
+		$this->id = "wiki_default_action";
+		$this->shared = array();		
 	}
 
 	/**
