@@ -43,6 +43,7 @@ class NarinActionHtml extends NarinActionPlugin {
 	public function register($ctrl)
 	{
 		$ctrl->addHandler("WRITE_HEAD", $this, "on_write_head");
+		$ctrl->addHandler("WRITE_UPDATE_HEAD", $this, "on_write_update_head");
 	}	
 	
 	/**

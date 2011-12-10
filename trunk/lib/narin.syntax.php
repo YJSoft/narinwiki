@@ -110,8 +110,8 @@ class NarinSyntaxDefault extends NarinSyntaxPlugin {
 	 * 생성자
 	 */
 	public function __construct() {
-		$this->id = "wiki_default_parser";
 		parent::__construct();
+		$this->id = "wiki_default_parser";		
 	}
 
 	/**
@@ -307,8 +307,8 @@ END;
 			$params['line'] = $this->wiki_table(false, array(), true) . $params['line'];
 		}
 
-		// internal 또눈 external 문서 링크에 이미지 사용
-		$params['line'] = preg_replace("/(<a[^>]*>)<a[^>]*>(<img[^>]*>)<\/a>(<\/a>)/i", "\\1\\2\\3", $params['line']);
+		// internal 또는 external 문서 링크에 이미지 사용
+		$params['line'] = preg_replace_callback("/(<a[^>]*>)<a[^>]*>(<img[^>]*>)<\/a>(<\/a>)/i", create_function('$matches', 'return str_replace("wiki_external_link", "", $matches[1]) . $matches[2].$matches[3];'), $params['line']);
 	}
 
 

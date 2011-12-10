@@ -1,4 +1,4 @@
-﻿<?
+<?
 /**
  * 
  * include head.sub 스크립트

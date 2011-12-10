@@ -21,6 +21,12 @@ class NarinPlugin extends NarinClass {
 	
 	/**
 	 * 
+	 * @var 플러그인 고유 id
+	 */	
+	var $id;
+	
+	/**
+	 * 
 	 * @var NarinPluginInfo 플러그인 정보 클래스 인스턴스
 	 */
 	protected $plugin_info;
@@ -33,6 +39,7 @@ class NarinPlugin extends NarinClass {
 		//$class_name = strtolower(substr(get_class($this), 11));
 		$class_name = substr(get_class($this), 11);
 		$class_name{0} = strtolower($class_name{0});
+		$this->id = $class_name;
 		$this->plugin_info = wiki_plugin_info($class_name);
 	}
 

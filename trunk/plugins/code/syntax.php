@@ -23,6 +23,15 @@ class NarinSyntaxCode extends NarinSyntaxPlugin {
 
 	/**
 	 *
+	 * 생성자
+	 */
+	public function __construct() {
+		$this->id = "wiki_code";
+		parent::__construct();
+	}
+	
+	/**
+	 *
 	 * @var array 코드블럭을 임시로 저장할 변수
 	 */
 	var $blocks = array();
