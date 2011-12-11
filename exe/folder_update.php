@@ -12,8 +12,8 @@
 include_once "./_common.php";
 
 
-$wikiArticle = wiki_class_load("Article");
-$wikiNS = wiki_class_load("Namespace");
+$wikiArticle =& wiki_class_load("Article");
+$wikiNS =& wiki_class_load("Namespace");
 
 $loc = stripcslashes($loc);
 $wiki_loc = stripcslashes($wiki_loc);

@@ -11,24 +11,24 @@
  */
 include_once("./_common.php");
 
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 $history_access_level = $wikiConfig->setting['history_access_level'];
 
-$wikiControl = wiki_class_load("Control");
+$wikiControl =& wiki_class_load("Control");
 if($member['mb_level'] < $history_access_level) {
 	$wikiControl->error("문서 이력 보기 권한 없음", "문서 이력보기 권한이 없습니다.");	
 }
 
-$wikiControl = wiki_class_load("Control");
-$wikiArticle = wiki_class_load("Article");
-$wikiHistory = wiki_class_load("History");
+$wikiControl =& wiki_class_load("Control");
+$wikiArticle =& wiki_class_load("Article");
+$wikiHistory =& wiki_class_load("History");
 	
 $history = $wikiHistory->get($hid);	
 if(!$history) {
 	$wikiControl->error("문서 이력 에러", "요청하신 문서 이력에 대한 자료가 없습니다.");
 }
 
-$article = $wikiArticle->getArticleById($history['wr_id']);	
+$article = &$wikiArticle->getArticleById($history['wr_id']);	
 
 $folder = $article['ns'];
 $docname = $article['doc'];

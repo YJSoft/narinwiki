@@ -12,8 +12,8 @@
  
 include_once("./_common.php");
 
-$wikiControl = wiki_class_load("Control");
-$wikiParser = wiki_class_load("Parser");	
+$wikiControl =& wiki_class_load("Control");
+$wikiParser =& wiki_class_load("Parser");	
 
 $write_table = $wiki['write_table'];
 if(!trim($stx)) {

@@ -18,7 +18,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiArticle = wiki_class_load("Article");
+ * $wikiArticle =& wiki_class_load("Article");
  * 
  * // "/narin/나린위키 매뉴얼" 문서가 존재하는 지 확인
  * $is_exists = $wikiArticle->exists("/narin", "나린위키 매뉴얼");
@@ -75,14 +75,21 @@ class NarinArticle extends NarinClass {
 	 */
 	public $toDoc;
 	
+	
+	/**
+	 *
+	 * DB에서 읽어온 문서 캐시
+	 *
+	 * @var array
+	 */
+	var $cache = array();
+	
 	/**
 	 * 
 	 * 생성자
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->namespace = wiki_class_load("Namespace");
-		$this->history = wiki_class_load("History");
 	}
 
 	/**
@@ -93,17 +100,28 @@ class NarinArticle extends NarinClass {
 	 * @param string $docname 문서명
 	 * @return array 문서 데이터
 	 */
-	public function getArticle($ns, $docname)
-	{
+	public function & getArticle($ns, $docname)
+	{		
+		if($this->is_wiki_admin) {
+			//wiki_print('get article');
+			//debug_print_backtrace();
+		}
+		$full = wiki_doc($ns, $docname);
+		if($this->cache[$full]) return $this->cache[$full];
+		
 		$e_ns = mysql_real_escape_string($ns);
 		$e_docname = mysql_real_escape_string($docname);
 		$sql = "SELECT wb.*, nt.*, wb.wr_subject AS doc, ht.reg_date AS update_date
 						FROM ".$this->wiki['write_table']." AS wb 
 						LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
 						LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
-						WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'";
+						WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND nt.ns = '$e_ns' AND wb.wr_subject = '$e_docname'
+						ORDER BY ht.reg_date DESC LIMIT 1
+						";
 		$write = sql_fetch($sql);		
 		if($write['wr_id']) $write['contributors'] = $this->getContributor($write['wr_id']);
+		$this->cache[$full] = &$write;
+		$this->cache[$write[$wr_id]] = &$write;
 		return $write;
 	}
 	
@@ -130,15 +148,27 @@ class NarinArticle extends NarinClass {
 	 * @param int $wr_id 문서id (그누보드 게시판의 wr_id)
 	 * @return array 문서 데이터
 	 */
-	public function getArticleById($wr_id)
+	public function & getArticleById($wr_id)
 	{
+		if($this->is_wiki_admin) {
+			//wiki_print('get article by id');
+			//debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		}		
+		if($this->cache[$wr_id]) return $this->cache[$wr_id];
+		
 		$wr_id = mysql_real_escape_string($wr_id);
 		$sql = "SELECT wb.*, nt.*, wb.wr_subject AS doc, ht.reg_date AS update_date FROM ".$this->wiki['write_table']." AS wb 
 				LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
 				LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
-				WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND wb.wr_id = '$wr_id'";
+				WHERE nt.bo_table = '".$this->wiki['bo_table']."' AND wb.wr_id = '$wr_id'
+				ORDER BY ht.reg_date DESC LIMIT 1
+				";
 		$write = sql_fetch($sql);
 		$write['contributors'] = $this->getContributor($wr_id);		
+		
+		$full = wiki_doc($write['ns'], $write['doc']);
+		$this->cache[$full] = &$write;
+		$this->cache[$wr_id] = &$write;
 		return $write;
 	}
 	
@@ -181,7 +211,7 @@ class NarinArticle extends NarinClass {
 	 * 
 	 * @return array 시작페이지의 문서 데이터
 	 */
-	public function getFrontPage() {
+	public function & getFrontPage() {
 		return $this->getArticle("/", $this->board['bo_subject']);
 	}
 
@@ -214,6 +244,8 @@ class NarinArticle extends NarinClass {
 			$row['href'] = $this->wiki['path']."/narin.php?bo_table=".$this->wiki['bo_table']."&doc=".urlencode($bdoc);
 			array_push($list, $row);
 		}
+		
+		if(count($list)) $list = wiki_subval_asort($list, "doc");
 		return $list;
 	}
 
@@ -229,7 +261,7 @@ class NarinArticle extends NarinClass {
 	public function deleteArticleById($wr_id)
 	{
 		$wr_id = mysql_real_escape_string($wr_id);
-		$write = $this->getArticleById($wr_id);
+		$write = & $this->getArticleById($wr_id);
 		if(!$write) return;
 
 		$sql = "DELETE FROM ".$this->wiki['nsboard_table']." WHERE bo_table = '".$this->wiki['bo_table']."' AND wr_id = '$wr_id'";
@@ -238,7 +270,8 @@ class NarinArticle extends NarinClass {
 		$sql = "DELETE FROM ".$this->wiki['contrib_table']." WHERE bo_table = '".$this->wiki['bo_table']."' AND wr_id = '$wr_id'";
 		sql_query($sql);
 		
-		$this->namespace->checkAndRemove($write['ns']);
+		$namespace =& wiki_class_load("Namespace");
+		$namespace->checkAndRemove($write['ns']);
 	}
 		
 	/**
@@ -253,7 +286,8 @@ class NarinArticle extends NarinClass {
 	public function addArticle($doc, $wr_id)
 	{
 		list($ns, $docname, $fullname) = wiki_page_name($doc);
-		$this->namespace->addNamespace($ns);
+		$namespace =& wiki_class_load("Namespace");
+		$namespace->addNamespace($ns);
 		if($ns) $ns = mysql_real_escape_string($ns);
 		if($docname) $docname = mysql_real_escape_string($docname);
 		if($fullname) $fullname = mysql_real_escape_string($fullname);
@@ -277,7 +311,8 @@ class NarinArticle extends NarinClass {
 	public function updateArticle($toDoc, $wr_id)
 	{
 		list($ns, $docname, $fullname) = wiki_page_name($toDoc);
-		$this->namespace->addNamespace($ns);
+		$namespace =& wiki_class_load("Namespace");
+		$namespace->addNamespace($ns);
 		if($ns) $ns = mysql_real_escape_string($ns);
 		if($docname) $docname = mysql_real_escape_string($docname);
 		if($fullname) $fullname = mysql_real_escape_string($fullname);
@@ -327,6 +362,8 @@ class NarinArticle extends NarinClass {
 		
 		$this->updateArticle($toDoc, $wr_id);
 
+		$history =& wiki_class_load("History");
+
 		// 백링크 업데이트
 		$backLinks = $this->getBackLinks($fromDoc, $includeSelf=true);
 		for($i=0; $i<count($backLinks); $i++) {
@@ -341,17 +378,17 @@ class NarinArticle extends NarinClass {
 			 $content = preg_replace_callback('/<nowiki><\/nowiki>/i', array($this,"_restoreNoWiki"),$content);
 			 */
 				
-			// 문서 이력에 백업
-			$this->history->update($backLinks[$i]['wr_id'], stripcslashes($content), $this->member['mb_id'], "문서명 업데이트로 인한 백링크 자동 업데이트");
+			// 문서 이력에 백업			
+			$history->update($backLinks[$i]['wr_id'], stripcslashes($content), $this->member['mb_id'], "문서명 업데이트로 인한 백링크 자동 업데이트");
 			$this->shouldUpdateCache($backLinks[$i]['wr_id'], 1);
 				
 			sql_query("UPDATE {$this->wiki['write_table']} SET wr_content = '$content' WHERE wr_id = {$backLinks[$i]['wr_id']}");
 		}
 
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("MOVE_DOC", array("from"=>$fromFullName, "to"=>$toFullName));
-		
-		$this->namespace->checkAndRemove($fromNS);
+		$namespace =& wiki_class_load("Namespace");
+		$namespace->checkAndRemove($fromNS);
 		
 		return true;
 	}
@@ -388,7 +425,7 @@ class NarinArticle extends NarinClass {
 	function updateLevel($doc, $access_level, $edit_level)
 	{
 		list($ns, $docname, $fullname) = wiki_page_name($doc);
-		$wr = $this->getArticle($ns, $docname, __FILE__, __LINE__);
+		$wr = & $this->getArticle($ns, $docname, __FILE__, __LINE__);
 		if(!$wr) die("No Article");
 		$access_level = mysql_real_escape_string($access_level);
 		$edit_level = mysql_real_escape_string($edit_level);

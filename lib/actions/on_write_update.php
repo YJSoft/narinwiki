@@ -18,7 +18,7 @@ if($wr_doc) {
 	$editor = ($member['mb_id'] ? $member['mb_id'] : $wr_name);
 		
 	// 위키 트리 구조에 글 등록	
-	$wikiArticle = wiki_class_load("Article");
+	$wikiArticle =& wiki_class_load("Article");
 	
 	if($w == '') { // 새글 작성 시
 		$wikiArticle->addArticle($wr_doc, $wr_id);
@@ -29,7 +29,7 @@ if($wr_doc) {
 	// 공헌자 추가
 	$wikiArticle->addContributor($wr_id, $editor);
 	
-	$wikiHistory = wiki_class_load("History");		
+	$wikiHistory =& wiki_class_load("History");		
 	$wikiHistory->update($wr_id, $wr_content, $editor, $wr_history);
 	
 	// 새문서일 경우 이전 문서 이력과 연결 시켜 줌
@@ -37,7 +37,7 @@ if($wr_doc) {
 	
 	// 절대경로로 시작하지않는 내부문서 경로에 현재 폴더 경로 추가
 	list($ns, $docname, $fullname) = wiki_page_name($wr_doc);
-	$util = wiki_class_load("Util");
+	$util =& wiki_class_load("Util");
 	$content = $util->wiki_fix_internal_link($wr_content);
 	$write['wr_content'] = $content;
 
@@ -54,11 +54,11 @@ if($wr_doc) {
 	}
 	
 	// 최근 변경 내역 업데이트
-	$wikiChanges = wiki_class_load("Changes");
+	$wikiChanges =& wiki_class_load("Changes");
 	$status = "새문서";
 	
 	if($w == "u") {
-		$thumb = wiki_class_load("Thumb");				
+		$thumb =& wiki_class_load("Thumb");				
 		$thumb->deleteThumb($wiki['bo_table']."-".$wr_id . "-");
 	}	
 	

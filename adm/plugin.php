@@ -14,8 +14,8 @@ $pageid = "plugin";
 
 include_once("_common.php");
 include_once "admin.head.php";
-$wikiPlugin = wiki_class_load("Plugin");
-$wikiConfig = wiki_class_load("Config");
+$wikiPlugin =& wiki_class_load("Plugin");
+$wikiConfig =& wiki_class_load("Config");
 $use_plugins = array();
 foreach($wikiConfig->using_plugins as $v) $use_plugins[$v] = $v;
 $plugins = wiki_plugin_load();

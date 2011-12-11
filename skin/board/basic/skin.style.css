@@ -59,6 +59,7 @@
 		.wiki_navigation a { color:#888; font-size:0.96em}
 		
 		#wiki_back_links { display:none; }
+		#wiki_back_links ul li { padding:2px; }
 		
 		#wiki_comment { margin-top:10px; }	
 		#wiki_after_contents { margin-top:10px; text-align:right; color:#888; font-size:9pt}

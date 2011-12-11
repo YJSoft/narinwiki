@@ -16,7 +16,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiHistory = wiki_class_load("History");
+ * $wikiHistory =& wiki_class_load("History");
  * 
  * // 문서이력 정보 가져오기
  * $wikiHistory->get(히스토리id);
@@ -94,7 +94,7 @@ class NarinHistory  extends NarinClass {
 					VALUES ('".$this->wiki['bo_table']."', '$wr_id', '$content', '$mb_id', '$summary', '".$this->user_ip."', '".$this->g4['time_ymdhis']."')";
 		sql_query($sql);
 
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("HISTORY_UPDATE", array("wr_id"=>$wr_id, "content"=>$content, "editor_mb_id"=>$mb_id, "summary"=>$summary));
 	}
 
@@ -109,7 +109,7 @@ class NarinHistory  extends NarinClass {
 		$sql = "DELETE FROM ".$this->wiki['history_table']." WHERE id = '$hid'";
 		sql_query($sql);
 
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("HISTORY_DELETE", array("hid"=>$hid));
 	}
 
@@ -133,7 +133,7 @@ class NarinHistory  extends NarinClass {
 			sql_query($sql);
 		}
 
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("HISTORY_DELETE_ALL", array("wr_id"=>$wr_id, "delete_all"=>$delete_all));
 	}
 
@@ -150,7 +150,6 @@ class NarinHistory  extends NarinClass {
 	function getHistory($wr_id, $doc, $page = 1, $page_rows = 20)
 	{
 		$bo_table = $this->wiki[bo_table];
-		$wikiParser = wiki_class_load("Parser");
 		$wr_id = mysql_real_escape_string($wr_id);
 
 		$sql_all = "SELECT id FROM ".$this->wiki['history_table']." AS ht
@@ -169,7 +168,6 @@ class NarinHistory  extends NarinClass {
 						WHERE ht.bo_table = '".$this->wiki['bo_table']."' AND ht.wr_id = '$wr_id' 
 						ORDER BY ht.id DESC LIMIT $from_record, $page_rows";			
 		$list = wiki_sql_list($sql);
-			
 		for($i=0; $i<count($list); $i++)
 		{
 			// 로그인 안한 상태로 작성했다면...

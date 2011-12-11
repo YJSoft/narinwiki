@@ -21,19 +21,23 @@
  */
 class NarinSyntaxColumns extends NarinSyntaxPlugin {
 	
+	/**
+	 *
+	 * @var 칼럼모드가 시작되고 첫 칼럼이 열렸는지를 나타내는 flag
+	 */
 	var $opened;
 	
+	/**
+	 *
+	 * @var 칼럼모드가 시작될 때 이전의 기본 파서의 section 정보를 백업
+	 */
 	var $prevSections;
-	var $prevSectionLevel;
 
 	/**
 	 *
-	 * 생성자
-	 */
-	public function __construct() {
-		$this->id = "wiki_columns";
-		parent::__construct();
-	}
+	 * @var 칼럼모드가 시작될 때 이전의 기본 파서의 section_level 정보를 백업
+	 */	
+	var $prevSectionLevel;
 
 	/**
 	 * 파싱 시작되기 전에 변수 초기화
@@ -49,25 +53,34 @@ class NarinSyntaxColumns extends NarinSyntaxPlugin {
 	 */
 	function register($parser)
 	{
-		 $parser->addLineParser(
-		          $id = "wiki_columns_open",
-		          $klass = $this,
-		          $regx = "&lt;columns(.*?)&gt;",
-		          $method = "columns_start");
+		// 칼럼모드 시작 (table)
+		$parser->addLineParser(
+	          $id = "wiki_columns_open",
+	          $klass = $this,
+	          $regx = "^&lt;columns(.*?)&gt;$",
+	          $method = "columns_start");
 		          
-		 $parser->addLineParser(
-		          $id = "wiki_columns_new",
-		          $klass = $this,
-		          $regx = "&lt;col(.*?)&gt;",
-		          $method = "columns_new");		
+		// 새 칼럼 (td)		          
+		$parser->addLineParser(
+	          $id = "wiki_columns_new",
+	          $klass = $this,
+	          $regx = "^&lt;col(.*?)&gt;$",
+	          $method = "columns_new");		
+	          
+		// 새 행 (tr)		          
+		$parser->addLineParser(
+	          $id = "wiki_columns_newrow",
+	          $klass = $this,
+	          $regx = "^&lt;row(.*?)&gt;$",
+	          $method = "columns_new_row");			          
 		          
-		 $parser->addLineParser(
-		          $id = "wiki_columns_close",
-		          $klass = $this,
-		          $regx = "&lt;\/columns&gt;",
-		          $method = "columns_close");				          
+		// 칼럼모드 종료 (/table)		          
+		$parser->addLineParser(
+	          $id = "wiki_columns_close",
+	          $klass = $this,
+	          $regx = "^&lt;\/columns&gt;$",
+	          $method = "columns_close");				          
 		                    
-		//$parser->addEvent(EVENT_AFTER_PARSING_ALL, $this, "wiki_restore_html");
 	}
 
 	/**
@@ -98,6 +111,20 @@ class NarinSyntaxColumns extends NarinSyntaxPlugin {
 		$this->opened = true;
 		return $this->get_close(&$params).$closeTd.'<td '.strip_tags($matches[1]).'>';
 	}
+	
+	/**
+	 * 
+	 * 새 행
+	 * 
+	 * @param array $matches 패턴매칭 결과
+	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
+	 * @return string HTML 태그
+	 */
+	public function columns_new_row($matches, $params) {
+		$params['parser']->stop = true;
+		$this->opened = false;
+		return $this->get_close(&$params).'</td><tr '.strip_tags($matches[1]).'>';
+	}	
 	
 
 	/**

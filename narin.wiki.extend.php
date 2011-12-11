@@ -32,7 +32,7 @@ if($board['bo_1_subj'] == "narinwiki" && $board['bo_1'] != "") {
 		include_once $wiki_path . "/lib/narin.wiki.lib.php";	
 		include_once $wiki_path ."/lib/narin.Class.class.php";
 		
-		$wikiControl = wiki_class_load("Control");
+		$wikiControl =& wiki_class_load("Control");
 		
 		// 스킨 경로 변경
 		$board_skin_path = $wiki['inc_skin_path'];

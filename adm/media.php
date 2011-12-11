@@ -15,7 +15,7 @@ $pageid = "media";
 include_once("_common.php");
 include_once "admin.head.php";
 
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 $setting = $wikiConfig->media_setting;
 $allow_extensions = $setting['allow_extensions'];
 $max_file_size = $setting['max_file_size'];

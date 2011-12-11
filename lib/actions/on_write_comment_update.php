@@ -13,7 +13,7 @@
 if (!defined('_GNUBOARD_')) exit;
 
 // 위키문서 링크 수정 (/ 로 시작하지 않는 문서에 대해서)
-$util = wiki_class_load("Util");
+$util =& wiki_class_load("Util");
 $content = $util->wiki_fix_internal_link($wr_content);
 
 if($content != $wr_content) {
@@ -25,7 +25,7 @@ if($content != $wr_content) {
 // 최근 변경 내역 업데이트
 if($w == 'c' || $w == 'cu') {
 	list($ns, $docname, $doc) = wiki_page_name($wr_doc);
-	$wikiChanges = wiki_class_load("Changes");
+	$wikiChanges =& wiki_class_load("Changes");
 	if($w == 'c') $status = "댓글 작성";
 	else $status = "댓글 편집";
 	$wikiChanges->update("DOC", $doc, $status, ($member['mb_id'] ? $member['mb_id'] : $wr_name));		

@@ -17,10 +17,10 @@ if(!$is_wiki_admin && !$is_doc_owner)
 	alert("권한이 없습니다.");
 }
 		
-$wikiNS = wiki_class_load("Namespace");
-$wikiConfig = wiki_class_load("Config");
-$wikiArticle = wiki_class_load("Article");
-$write = $wikiArticle->getArticleById($view[wr_id]);
+$wikiNS =& wiki_class_load("Namespace");
+$wikiConfig =& wiki_class_load("Config");
+$wikiArticle =& wiki_class_load("Article");
+$write = &$wikiArticle->getArticleById($view[wr_id]);
 $default_edit_level = $wikiConfig->setting[edit_level];
 $folders = $wikiNS->namespaces("/", $withArticle=false);
 $input_doc = wiki_input_value($docname);

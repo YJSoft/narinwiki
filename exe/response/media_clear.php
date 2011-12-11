@@ -16,7 +16,7 @@ if(!$loc || !$is_wiki_admin) wiki_ajax_error();
 
 $loc = wiki_ajax_data($loc);
 
-$media = wiki_class_load("Media");	
+$media =& wiki_class_load("Media");	
 $media->clear($loc);
 
 echo wiki_json_encode(array('code'=>1));

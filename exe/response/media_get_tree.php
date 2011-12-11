@@ -16,7 +16,7 @@ if(!$loc) wiki_ajax_error();
 
 $loc = wiki_ajax_data($loc);
 
-$media = wiki_class_load("Media");
+$media =& wiki_class_load("Media");
 $ns = $media->getNS($loc);
 if(!$ns && $loc == '/') $media->addNamespace('/');
 else if(!$ns) {

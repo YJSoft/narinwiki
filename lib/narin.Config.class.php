@@ -27,7 +27,7 @@
  * // NarinClass를 상속한 class 안에서 사용하려면.. $this->wiki_config 사용
  * 
  * // 클래스 로딩
- * $wikiConfig = wiki_class_load("Config");
+ * $wikiConfig =& wiki_class_load("Config");
  * 
  * // 나린 레지스트리 "/config/using_plugins" 에 값 설정하기
  * // 결과적으로 $wiki['option_table'] 에

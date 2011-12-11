@@ -18,7 +18,7 @@ if(!$is_wiki_admin) {
 	exit;
 }
 
-$wikiChanges = wiki_class_load("Changes");
+$wikiChanges =& wiki_class_load("Changes");
 
 if($w == 'da') {
 	$wikiChanges->clear();

@@ -12,7 +12,7 @@
 
 include_once("_common.php");
 
-$wikiHistory = wiki_class_load("History");
+$wikiHistory =& wiki_class_load("History");
 if($md == 'del_unlinked' && $doc) {
 	$wikiHistory->deleteUnlinked($doc);
 }
@@ -33,7 +33,7 @@ if($md == 'ehbd' && $expire) {
 
 // 변경내역 정리 by day
 if($md == 'ecbd' && $expire) {
-	$wikiChanges = wiki_class_load("Changes");
+	$wikiChanges =& wiki_class_load("Changes");
 	$wikiChanges->clearChangesByDate($expire);
 }
 

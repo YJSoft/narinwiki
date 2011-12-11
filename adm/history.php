@@ -15,7 +15,7 @@ $pageid = "history";
 include_once("_common.php");
 include_once "admin.head.php";
 
-$wikiHistory = wiki_class_load("History");
+$wikiHistory =& wiki_class_load("History");
 $unlinkedList = $wikiHistory->unlinkedHistory();
 ?>
 <style type="text/css">

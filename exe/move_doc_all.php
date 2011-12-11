@@ -22,9 +22,9 @@ $folder = stripcslashes($folder);
 $move_to_folder = stripcslashes($move_to_folder);
 
 if($folder != $move_to_folder) {
-	$wikiArticle = wiki_class_load("Article");
+	$wikiArticle =& wiki_class_load("Article");
 	for($i=0; $i<count($chk_wr_id); $i++) {
-		$wr = $wikiArticle->getArticleById($chk_wr_id[$i]);
+		$wr = &$wikiArticle->getArticleById($chk_wr_id[$i]);
 		if(!$wr) continue;
 		$fromDoc = wiki_doc($folder, $wr['wr_subject']);
 		$toDoc = wiki_doc($move_to_folder, $wr['wr_subject']);

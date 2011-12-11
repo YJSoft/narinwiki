@@ -15,7 +15,7 @@ include_once "_common.php";
 $g4['title'] = '나린위키 미디어 관리자';
 $loc = stripslashes($loc);
 if(!$loc) $loc = "/";
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 $media_setting = $wikiConfig->media_setting;
 
 $is_admin_mode = false;

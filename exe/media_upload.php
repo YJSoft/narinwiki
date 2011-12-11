@@ -46,7 +46,7 @@ if(!$loc || !$filename) {
 $loc = wiki_ajax_data($loc);
 $filename = wiki_ajax_data($filename);
 
-$media = wiki_class_load('Media');
+$media =& wiki_class_load('Media');
 $reg_file = $media->getFile(stripslashes($loc), stripslashes($filename));
 if($reg_file['id']) {
 	die('{"jsonrpc" : "2.0", "error" : {"code": 902, "message": "'.$filename.' : 같은 이름의 파일이 있습니다"}, "id" : "id"}');

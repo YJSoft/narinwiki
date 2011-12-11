@@ -22,7 +22,7 @@ if($md == 'clear') {
 		}
 	}	
 	
-	$wikiCache = wiki_class_load("Cache");
+	$wikiCache =& wiki_class_load("Cache");
 	$wikiCache->clear();
 	
 	echo wiki_json_encode(array('code'=>1));
@@ -42,8 +42,8 @@ if($md == 'rc' && $page) {
 					ORDER BY id LIMIT $from_record, $page_rows";	
 	$res = sql_query($sql);
 	$idx = 0;
-	$wikiCache = wiki_class_load("Cache");
-	$wikiParser = wiki_class_load("Parser");
+	$wikiCache =& wiki_class_load("Cache");
+	$wikiParser =& wiki_class_load("Parser");
 	while($write = sql_fetch_array($res)) {		
 		if(!$write['wr_id']) { $idx++; continue; }
 		$content = $wikiParser->parse($write);

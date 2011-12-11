@@ -16,7 +16,7 @@ if (!defined('_GNUBOARD_')) exit;
 include_once $wiki['path']."/lib/narin.Class.class.php";
 
 // wiki.extend 에서도 사용되어야 하기 때문에..
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 $skin = ( $wikiConfig->setting['skin'] ? $wikiConfig->setting['skin'] : "basic");
 $wiki['skin_path'] = $wiki['path']."/skin/board/".$skin;
 $wiki['inc_skin_path'] = $wiki['path']."/inc/skin";
@@ -27,7 +27,7 @@ if(!$board) $board = sql_fetch(" select * from {$g4['board_table']} where bo_tab
 if($is_admin || ($member['mb_id'] && $board['bo_admin'] == $member['mb_id']) ) $is_wiki_admin = true;
 else unset($is_wiki_admin);
 
-$wikiEvent = wiki_class_load("Event");
+$wikiEvent =& wiki_class_load("Event");
 
 
 /**
@@ -37,16 +37,16 @@ $wikiEvent = wiki_class_load("Event");
  * 사용법 :
  * <code>
  * // lib/narin.Article.class.php 를 로드하려면..
- * $wikiArticle = wiki_class_load("Article"); 
+ * $wikiArticle =& wiki_class_load("Article"); 
  * 
  * // lib/narin.Changes.class.php 를 로드하려면..
- * $wikiChanges = wiki_class_load("Changes"); 
+ * $wikiChanges =& wiki_class_load("Changes"); 
  * </code>
  * 
  * @param string $className 약식 클래스명 (사용법 참고)
  * @return NarinClass 클래스 인스턴스
  */
-function wiki_class_load($className) {
+function & wiki_class_load($className) {
 	
 	global $wiki;
 	
@@ -108,7 +108,7 @@ function wiki_page_name($pagename)
  */
 function wiki_validate_doc($doc)
 {
-	$wikiControl = wiki_class_load("Control");
+	$wikiControl =& wiki_class_load("Control");
 	
 	list($ns, $docname, $doc) = wiki_page_name($doc);	
 	
@@ -132,7 +132,7 @@ function wiki_validate_doc($doc)
  */
 function wiki_validate_folder($ns)
 {
-	$wikiControl = wiki_class_load("Control");
+	$wikiControl =& wiki_class_load("Control");
 	if(!wiki_check_doc_name($docname)) {
 		$wikiControl->error("문서명 오류", "문서명에 다음 문자는 사용할 수 없습니다 : \\, |, /");
 	}		
@@ -207,9 +207,9 @@ function wiki_adjust_path($path) {
  */
 function wiki_doc_from_write($doc, $wr_id)
 {
-	$wikiArticle = wiki_class_load("Article");
+	$wikiArticle =& wiki_class_load("Article");
 	if(!$doc) {
-		$write = $wikiArticle->getArticleById($wr_id);
+		$write = &$wikiArticle->getArticleById($wr_id);
 		$doc = ($write[ns] == "/" ? "" : $write[ns]) . "/" . $write[wr_subject];
 	}
 	
@@ -464,7 +464,7 @@ function wiki_get_skins($skin)
     $handle = opendir($dirname);
     while ($file = readdir($handle)) 
     {
-        if($file == "."||$file == "..") continue;
+        if($file{0} == ".") continue;
 
         if (is_dir($dirname.$file)) $result_array[] = $file;
     }

@@ -19,7 +19,7 @@ define("EVENT_AFTER_PARSING_LINE", "EVT_PARSING_FINSISHING_LINE");
  * <b>사용예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiParser = wiki_class_load("Parser");
+ * $wikiParser =& wiki_class_load("Parser");
  * 
  * // 위키 문법 -> HTML 파싱
  * // $view 또는 $write : 그누보드 게시물 배열

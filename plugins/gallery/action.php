@@ -115,7 +115,7 @@ class NarinActionGallery extends NarinActionPlugin {
 		
 		// 이미지 목록 가져오기
 		$path = wiki_ajax_data($get['path']);		
-		$wikiMedia = wiki_class_load('Media');
+		$wikiMedia =& wiki_class_load('Media');
 		$ns = $wikiMedia->getNS($path);
 		if($ns['ns_access_level'] > $member['mb_level']) {
 			echo wiki_json_encode(array('code'=>-1, 'msg'=>'권한이 없어 이미지를 표시할 수 없습니다.'));
@@ -126,7 +126,7 @@ class NarinActionGallery extends NarinActionPlugin {
 				
 		// 목록 정리		
 		$images = array();
-		$wikiThumb = wiki_class_load('Thumb');
+		$wikiThumb =& wiki_class_load('Thumb');
 
 		foreach($files as $k=>$f) {
 			if(!$f['img_width']) continue;

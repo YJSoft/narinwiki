@@ -13,8 +13,8 @@
 if (!defined('_GNUBOARD_')) exit;
 
 $wr_id = $params['wr_id'];
-$wikiArticle = wiki_class_load("Article");
-$article = $wikiArticle->getArticleById($wr_id);
+$wikiArticle =& wiki_class_load("Article");
+$article = &$wikiArticle->getArticleById($wr_id);
 $shared['delete_article'] = $article;		
 
 ?>

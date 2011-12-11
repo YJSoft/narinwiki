@@ -18,7 +18,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiChanges = wiki_class_load("Changes");
+ * $wikiChanges =& wiki_class_load("Changes");
  * 
  * // "/narin/플러그인" 문서가 새로 생성되었음을 기록하기
  * $wikiChanges->update('DOC', '/narin/플러그인', '새문서', $member['mb_id']);
@@ -74,7 +74,7 @@ class NarinChanges extends NarinClass {
 				VALUES ('".$this->wiki['bo_table']."', '$type', '$target', '$status', '$user', '".$this->user_ip."', '".$this->g4['time_ymdhis']."')";
 		sql_query($sql);
 		
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("CHANGES_UPDATE", array("type"=>$type, 
 													"target"=>$target, 
 													"status"=>$status, 
@@ -94,7 +94,7 @@ class NarinChanges extends NarinClass {
 		$sql = "DELETE FROM ".$this->wiki['changes_table']." WHERE id = '$cid'";
 		sql_query($sql);
 		
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("CHANGES_DELETE", array("cid"=>$cid));		
 	}
 	
@@ -106,7 +106,7 @@ class NarinChanges extends NarinClass {
 	{
 		sql_query("DELETE FROM ".$this->wiki['changes_table']." 
 					WHERE bo_table = '".$this->wiki['bo_table']."'");	
-		$wikiEvent = wiki_class_load("Event");
+		$wikiEvent =& wiki_class_load("Event");
 		$wikiEvent->trigger("CHANGES_DELETE_ALL", array());			
 	}
 	

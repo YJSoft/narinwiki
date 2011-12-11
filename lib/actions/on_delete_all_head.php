@@ -26,9 +26,9 @@ if ($wr_id) // 건별삭제
 else // 일괄삭제
     $tmp_array = $chk_wr_id;		
 
-$wikiArticle = wiki_class_load("Article");
+$wikiArticle =& wiki_class_load("Article");
 for($i=0; $i<count($tmp_array); $i++) {
-	$wr = $wikiArticle->getArticleById($tmp_array[$i]);
+	$wr = &$wikiArticle->getArticleById($tmp_array[$i]);
 	if($wr) {
 		$delete_all_docs[$wr['wr_id']] = wiki_doc($wr['ns'], $wr['doc']);
 	}

@@ -14,7 +14,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 
 if(!$is_wiki_admin ) {	alert("권한이 없습니다."); }
 
-$wikiNS = wiki_class_load("Namespace");
+$wikiNS =& wiki_class_load("Namespace");
 $ns = $wikiNS->get($loc);
 
 ?>

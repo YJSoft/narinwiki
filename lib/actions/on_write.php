@@ -19,7 +19,7 @@ if(!$write['is_owner'] && !$is_wiki_admin) $return_array['is_file'] = false;
 $title_msg = "문서 편집";
 if(!$w) {
 	$title_msg = "새 문서";
-	$wikiNS = wiki_class_load("Namespace");
+	$wikiNS =& wiki_class_load("Namespace");
 	$folder = $wikiNS->get($folder);
 	$tpl = $folder['tpl'];
 	$source = array("/@DOCNAME@/", "/@FOLDER@/", "/@USER@/", "/@NAME@/", "/@NICK@/", "/@MAIL@/", "/@DATE@/");

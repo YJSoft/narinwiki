@@ -36,7 +36,7 @@ if($w != 'da' && $w != 'ds') {
 	}
 }
 
-$wikiHistory = wiki_class_load("History");
+$wikiHistory =& wiki_class_load("History");
 
 if($w == 'r') {
 	if(!$is_wiki_admin && ( !$member['mb_id'] || $member['mb_id'] != $wr['mb_id'])) {
@@ -48,7 +48,7 @@ if($w == 'r') {
 	$sql = "UPDATE ".$wiki['write_table']." SET wr_content = '$content' WHERE wr_id = $wr_id";
 	sql_query($sql);
 
-	$first = sql_fetch("SELECT * FROM ".$wiki['history_table']." ORDER BY id DESC");
+	$first = sql_fetch("SELECT * FROM ".$wiki['history_table']." ORDER BY id DESC LIMIT 1");
 	$wikiHistory->delete($first['id']);	
 	$wikiHistory->delete($hid);
 	
@@ -57,7 +57,7 @@ if($w == 'r') {
 	
 
 	
-	$wikiArticle = wiki_class_load("Article");
+	$wikiArticle =& wiki_class_load("Article");
 	$wikiArticle->shouldUpdateCache($wr_id, 1);
 	echo 1;
 	exit;

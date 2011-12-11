@@ -115,7 +115,7 @@ END;
 		} else {
 			$l_duration = ( time() - $this->locked['time'] );	// in seconds
 			if($this->lock_life > $l_duration) {
-				$wikiControl = wiki_class_load("Control");
+				$wikiControl =& wiki_class_load("Control");
 				$wikiControl->error("문서 잠김", "편집중인 문서입니다.");
 			} else {
 				$this->lock($doc);

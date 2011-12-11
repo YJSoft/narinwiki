@@ -16,7 +16,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiControl = wiki_class_load("Control");
+ * $wikiControl =& wiki_class_load("Control");
  * 
  * // 에러 메시지 보여주기
  * $wikiControl->error("문서없음", "존재하지 않는 문서입니다. <a href='javascript:history.go(-1);'>뒤로</a>");
@@ -62,15 +62,15 @@ class NarinControl extends NarinClass {
 		
 		list($ns, $docname, $doc) = wiki_page_name($doc);	
 		
-		$wikiArticle = wiki_class_load("Article");
+		$wikiArticle =& wiki_class_load("Article");
 		
-		$article = $wikiArticle->getArticle($ns, $docname);										
+		$article = & $wikiArticle->getArticle($ns, $docname);										
 	
 		if($article && $article['access_level'] > $member['mb_level'] ) {
 			$this->notAllowedDocument($ns, $docname, $doc);
 		}
 		
-		$wikiNamespace = wiki_class_load("Namespace");
+		$wikiNamespace =& wiki_class_load("Namespace");
 		$n = $wikiNamespace->get($ns);
 		
 		if($n['ns_access_level'] > $member['mb_level']) {
@@ -165,8 +165,8 @@ class NarinControl extends NarinClass {
 					
 		// view
 		if($scriptFile == "board.php" && $wr_id) {
-			$wikiArticle = wiki_class_load("Article");
-			$view = $wikiArticle->getArticleById($wr_id);
+			$wikiArticle =& wiki_class_load("Article");
+			$view = & $wikiArticle->getArticleById($wr_id);
 			$doc = ($view[ns] == "/" ? "" : $view[ns]."/") . $view[doc];
 			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']."&doc=".urlencode($doc));
 			exit;			
@@ -181,11 +181,11 @@ class NarinControl extends NarinClass {
 		// 에디터에게 글 작성 권한을 주기 위해...
 		if($wr_id && $this->member['mb_id'] && $this->member['mb_id'] != $this->write['mb_id']) {
 			
-			$wikiArticle = wiki_class_load("Article");			
-			$wikiConfig = wiki_class_load("Config");
+			$wikiArticle =& wiki_class_load("Article");			
+			$wikiConfig =& wiki_class_load("Config");
 
 			$default_edit_level = $wikiConfig->setting['edit_level'];
-			$article = $wikiArticle->getArticleById($wr_id);
+			$article = & $wikiArticle->getArticleById($wr_id);
 			$edit_level = ( $article['edit_level'] ? $article['edit_level'] : $default_edit_level);				
 			
 			$is_doc_editor = ($this->member['mb_level'] >= $edit_level );
