@@ -1,0 +1,14 @@
+/* 갤러리 레이어 */
+div.wiki_gallery {}
+
+/* 이미지 하나를 감싸는 레이어 */
+div.wiki_gallery div.gallery_wrap{ margin:5px 10px}
+
+/* 이미지 링크 */
+div.wiki_gallery a {}
+
+/* 이미지 태그 */
+div.wiki_gallery a img {border:1px solid #888;padding:4px }	
+
+/* 이미지 이름 (showname 옵션) */
+div.wiki_gallery div.gallery_name { text-align:center; }
