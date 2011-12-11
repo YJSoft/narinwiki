@@ -44,7 +44,14 @@ if(!defined("_LATEST_PLUGIN_")) die("잘못된 접근");
 		return $list;		
 	}	
 
-
+	/**
+	 *
+	 * 시간이 얼마나 흘렀나
+	 *
+	 * @param string $date 날짜문자열
+	 * @param string $g4 그누보드 config
+	 * @return string 흘러간 시간
+	 */
 	function wiki_latest_elapsedTime($date, $g4) {
 	
 		$timeyear = 365 * 24 * 60 * 60;
