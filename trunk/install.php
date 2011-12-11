@@ -172,7 +172,7 @@ EOF;
 	// FROM 2011-12-03
 	sql_query("ALTER TABLE  $history_table ORDER BY `reg_date` DESC");
 	
-	// FROM 2011-12-0x
+	// FROM 2011-12-10
 	sql_query("ALTER TABLE ".$db_prefix."narin_cache MODIFY content MEDIUMTEXT"); 
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
