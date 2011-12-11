@@ -156,6 +156,13 @@ $.fn.wiki_latest = function() {
 		var params = $.parseJSON($this.html());
 		params = $.extend(setting, params);
 
+		if(params.noajax != undefined) {
+			$('#'+div_id).empty();
+			if(params.type == 'table') latest_table_rendering(div_id, params.list, params);
+			else latest_list_rendering(div_id, params.list, params);
+			return;
+		}
+
 		$.ajax({
 			url : wiki_path + '/p.php?bo_table=' + g4_bo_table + '&p=latest&m=list', 
 			data : params, 

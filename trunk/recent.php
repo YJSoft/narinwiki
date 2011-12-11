@@ -11,7 +11,7 @@
  */
 include_once("./_common.php");
 
-$wikiControl = wiki_class_load("Control");
+$wikiControl =& wiki_class_load("Control");
 
 $history_access_level = $wikiConfig->setting['history_access_level'];
 if($member['mb_level'] < $history_access_level) {

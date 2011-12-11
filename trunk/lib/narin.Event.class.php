@@ -18,7 +18,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiEvent = wiki_class_load("Event");
+ * $wikiEvent =& wiki_class_load("Event");
  * 
  * // 문서가 저장된 후 발생하는 이벤트에 대한 핸들러 등록하기 (class에서 사용)
  * $wikiEvent->addHandler("WRITE_UPDATE", $this, "on_write_update");

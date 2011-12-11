@@ -24,7 +24,7 @@ $wr = array('mb_id'=>$member['mb_id'],
 					  'wr_content'=>stripslashes($content)
 					 );
 
-$parser = wiki_class_load("Parser");
+$parser =& wiki_class_load("Parser");
 $html = $parser->parse($wr);
 
 $no_layout = true;

@@ -18,8 +18,8 @@ $loc = wiki_ajax_data($loc);
 $file = wiki_ajax_data($file);
 $source = wiki_ajax_data($source);
 
-$media = wiki_class_load("Media");
-$thumb = wiki_class_load("Thumb");
+$media =& wiki_class_load("Media");
+$thumb =& wiki_class_load("Thumb");
 
 $ns = $media->getNS($loc);		
 if($ns['ns_access_level'] > $member['mb_level'] || $ns['ns_upload_level'] > $member['mb_level']) {

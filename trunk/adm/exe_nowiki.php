@@ -30,7 +30,7 @@ foreach($chk as $idx => $i) {
 }
 
 // update	
-$wikiArticle = wiki_class_load("Article");
+$wikiArticle =& wiki_class_load("Article");
 foreach($chk as $idx => $i) {	
 	$wr_folder[$i] = preg_replace("/\/$/", "", $wr_folder[$i]);
 	$doc = $wr_folder[$i] . "/" . $wr_subject[$i];

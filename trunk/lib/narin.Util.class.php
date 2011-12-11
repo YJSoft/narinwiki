@@ -18,7 +18,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiUtil = wiki_class_load("Util");
+ * $wikiUtil =& wiki_class_load("Util");
  * 
  * // $content 에서 nowiki, pre, code 블럭을 뺀 내용 가져오기
  * $content = $wikiUtil->no_nowiki_content($content);

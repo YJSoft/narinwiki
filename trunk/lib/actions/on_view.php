@@ -15,8 +15,8 @@ if (!defined('_GNUBOARD_')) exit;
 $view = &$params['view'];
 
 // 위키 오브젝트 로드
-$wikiArticle = wiki_class_load("Article");
-$wikiUtil = wiki_class_load("Util");
+$wikiArticle =& wiki_class_load("Article");
+$wikiUtil =& wiki_class_load("Util");
 
 // <nowiki>, <pre> 를 제외한 컨텐츠
 $no_nowiki_content = $wikiUtil->no_nowiki_content($view['wr_content']);
@@ -24,7 +24,7 @@ $no_nowiki_content = $wikiUtil->no_nowiki_content($view['wr_content']);
 // 편집 권한
 $default_edit_level = $wikiConfig->setting['edit_level'];
 
-$article = $wikiArticle->getArticle($folder, $docname);
+$article = &$wikiArticle->getArticle($folder, $docname);
 
 // 최근 업데이트된 시간
 $view['update_date'] = $article['update_date'];
@@ -40,7 +40,7 @@ $history_access_level = $wikiConfig->setting['history_access_level'];
 // 문서이력의 '보기'
 $is_history = false;
 if($hid) {
-	$wikiHistory = wiki_class_load("History");	
+	$wikiHistory =& wiki_class_load("History");	
 	$history = $wikiHistory->get($hid, $view['wr_id']);	
 	if($history) {				
 		if($member['mb_level'] >= $history_access_level) {
@@ -52,7 +52,7 @@ if($hid) {
 
 // 문서이력보기 또는 ~~NOCACHE~~ 사용시 캐시 사용 안함
 if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
-	$wikiCache = wiki_class_load("Cache");		
+	$wikiCache =& wiki_class_load("Cache");		
 	
 	// 캐시 업데이트 하지 않아도 되는 경우
 	if(!$article['should_update_cache']) {
@@ -62,7 +62,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 		
 		// 저장된 캐시가 없다면 parsing 후 cacheing
 		if(!$cached_content) {			
-			$wikiParser = wiki_class_load("Parser");	
+			$wikiParser =& wiki_class_load("Parser");	
 			$view['content'] = $wikiParser->parse($view);
 			$wikiCache->update($wr_id, $view['content']);		
 		} else {	// 저장된 캐시가 있으면 사용
@@ -71,20 +71,20 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 		}
 	
 	} else {	// 캐시를 업데이트 해야 하는 경우
-		$wikiParser = wiki_class_load("Parser");	
+		$wikiParser =& wiki_class_load("Parser");	
 		$view['content'] = $wikiParser->parse($view);
 		$wikiCache->update($wr_id, $view['content']);			
 	}
 	
 } else {	// 캐시 사용 안하는 경우
 
-	$wikiParser = wiki_class_load("Parser");	
+	$wikiParser =& wiki_class_load("Parser");	
 	$view['content'] = $wikiParser->parse($view);
 	
 	if($article['should_update_cache']) {
 		// 캐시를 사용하지 않더라도 일단 캐시 
 		// 외부에서 parsing 사용하지 않더라도 쓸 수 있게...
-		$wikiCache = wiki_class_load("Cache");
+		$wikiCache =& wiki_class_load("Cache");
 		$wikiCache->update($wr_id, $view['content']);
 	}	
 	
@@ -182,8 +182,9 @@ if($is_wiki_admin) {
 $return_array['recent_href'] = $wiki['path']."/recent.php?bo_table=".$wiki['bo_table'];
 
 // 백링크
-$wikiArticle = wiki_class_load("Article");
+$wikiArticle =& wiki_class_load("Article");
 $back_links = $wikiArticle->getBackLinks($doc);
+
 $return_array['back_links'] = $back_links;
 
 // 문서이력 URL

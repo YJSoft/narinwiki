@@ -15,7 +15,7 @@ $pageid = "basic";
 include_once("_common.php");
 include_once "admin.head.php";
 
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 $setting = $wikiConfig->setting;
 $skin = $setting['skin'];
 $editLevel = $setting['edit_level'];

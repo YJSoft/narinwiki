@@ -21,7 +21,7 @@ if($loc == '/') {
 	exit;					
 }
 
-$media = wiki_class_load("Media");
+$media =& wiki_class_load("Media");
 
 $parent_ns = wiki_get_parent_path($loc);
 $parent = $media->getNS($parent_ns);

@@ -22,7 +22,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiMedia = wiki_class_load("Media");
+ * $wikiMedia =& wiki_class_load("Media");
  * 
  * // 미디어 폴더 추가하기
  * // "/images/example/plugin" 폴더를 만드는데

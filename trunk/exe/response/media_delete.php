@@ -17,7 +17,7 @@ if(!$loc || !$file) wiki_ajax_error();
 $loc = wiki_ajax_data($loc);
 $file = wiki_ajax_data($file);
 
-$media = wiki_class_load("Media");	
+$media =& wiki_class_load("Media");	
 $file_info = $media->getFile($loc, $file);
 
 if(!$file_info) {
@@ -35,7 +35,7 @@ if($file_info['mb_id'] != $member['mb_id'] && !$is_wiki_admin) {
 
 $media->deleteFile($loc, $file);
 
-$thumb = wiki_class_load("Thumb");	
+$thumb =& wiki_class_load("Thumb");	
 $thumb->deleteThumb("media-".$wiki['bo_table']."-".$file_info['id']);
 echo wiki_json_encode(array('code'=>1));
 

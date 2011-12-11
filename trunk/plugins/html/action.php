@@ -63,7 +63,7 @@ class NarinActionHtml extends NarinActionPlugin {
 		if($allow_level > $member['mb_level'])
 		{
 			if(preg_match("/<html>/i", $wr_content)) {
-				$wikiControl = wiki_class_load("Control");
+				$wikiControl =& wiki_class_load("Control");
 				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (html)");
 			}
 		}
@@ -71,14 +71,14 @@ class NarinActionHtml extends NarinActionPlugin {
 		if($allow_iframe_level > $member['mb_level'])
 		{
 			if(preg_match("/<iframe([^\>]*)/i", $wr_content)) {
-				$wikiControl = wiki_class_load("Control");
+				$wikiControl =& wiki_class_load("Control");
 				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (iframe)");
 			}			
 		}
 		if($allow_script_level > $member['mb_level'])
 		{
 			if(preg_match("/<script([^\>]*)/i", $wr_content)) {
-				$wikiControl = wiki_class_load("Control");
+				$wikiControl =& wiki_class_load("Control");
 				$wikiControl->error("권한 없음", "접근할 수 없는 내용을 가지고 있습니다. (script)");
 				exit;
 			}					

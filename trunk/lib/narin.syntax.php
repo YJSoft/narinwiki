@@ -934,7 +934,7 @@ END;
 		// 문서 존재 여부 확인
 		list($ns, $docname, $full) = wiki_page_name($doc);
 
-		$article = wiki_class_load("Article");
+		$article =& wiki_class_load("Article");
 		$is_exists = $article->exists($ns, $docname);
 		if($is_exists) $class = "wiki_active_link";
 		else $class = "wiki_inactive_link";
@@ -988,7 +988,7 @@ END;
 		$loc = $tmp[0];
 		parse_str(str_replace("&amp;", "&", $tmp[1]));
 
-		$wikiNS = wiki_class_load("Namespace");
+		$wikiNS =& wiki_class_load("Namespace");
 
 		// Check level
 		$n = $wikiNS->get($loc);
@@ -1115,7 +1115,7 @@ EOF;
 			} else array_push($idxList, $idx);
 		}
 			
-		if($use_thumb) $thumb = wiki_class_load("Thumb");
+		if($use_thumb) $thumb =& wiki_class_load("Thumb");
 
 		$str = "";
 		$view_list = array();
@@ -1192,7 +1192,7 @@ EOF;
 	 * @return string 이미지 또는 파일 링크
 	 */
 	public function wiki_media($matches, $params) {
-		$media = wiki_class_load("Media");
+		$media =& wiki_class_load("Media");
 
 		// [0] : all string
 		// [1] : path
@@ -1253,7 +1253,7 @@ EOF;
 		$rn = rand(1, 999999);
 		$origin = $fileinfo['imgsrc'];
 		if($use_thumb) {
-			$thumb = wiki_class_load("Thumb");
+			$thumb =& wiki_class_load("Thumb");
 			$img = $thumb->getMediaThumb($ns=$fileinfo['ns'], $filename=$fileinfo['source'], $width, $height, $quality=90);
 		} else {
 			$img = $fileinfo['imgsrc'];

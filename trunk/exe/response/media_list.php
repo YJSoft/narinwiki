@@ -16,7 +16,7 @@ if(!$loc) wiki_ajax_error();
 
 $loc = wiki_ajax_data($loc);
 
-$media = wiki_class_load("Media");
+$media =& wiki_class_load("Media");
 $ns = $media->getNS($loc);
 
 if(!$ns) {
@@ -32,7 +32,7 @@ if($ns['ns_access_level'] > $member['mb_level']) {
 	exit;
 }
 
-$thumb = wiki_class_load("Thumb");
+$thumb =& wiki_class_load("Thumb");
 $thumb_width = 30;
 $thumb_height = 30;	
 $files = $media->getList($loc);

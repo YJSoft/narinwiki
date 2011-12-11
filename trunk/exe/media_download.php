@@ -11,7 +11,7 @@
 
 include_once "_common.php";
 
-$media = wiki_class_load("Media");
+$media =& wiki_class_load("Media");
 $fileinfo = $media->getFile($file);
 
 if(!$fileinfo) {

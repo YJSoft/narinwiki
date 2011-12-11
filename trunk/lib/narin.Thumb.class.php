@@ -22,7 +22,7 @@ require_once $wiki['path']."/lib/Thumb/easyphpthumbnail.class.php";
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiThumb = wiki_class_load("Thumb");
+ * $wikiThumb =& wiki_class_load("Thumb");
  * 
  * // 미디어관리자에 등록된 "/images/example/bag.jpg" 파일의 썸네일을
  * // 너비 300px, 높이 120px, 품질 90%의 썸네일로 만들고
@@ -81,7 +81,7 @@ class NarinThumb extends NarinClass {
 	 */
 	function clearThumb($expire_time = 259200, $trigger_time = 21600)
 	{
-		$wikiConfig = wiki_class_load("Config");
+		$wikiConfig =& wiki_class_load("Config");
 		$last_clean_time = $wikiConfig->thumb_clean_time;
 
 		if(empty($last_clean_time)) $last_clean_time = 0;
@@ -212,7 +212,7 @@ class NarinThumb extends NarinClass {
 		$write_table = $this->g4['write_prefix'] . $bo_table;
 
 		// 파일 정보 로드
-		$media = wiki_class_load("Media");
+		$media =& wiki_class_load("Media");
 		$fileinfo = $media->getFile($ns, $filename);
 		if(!$fileinfo) {
 			return;

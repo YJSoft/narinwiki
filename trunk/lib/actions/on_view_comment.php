@@ -15,7 +15,7 @@ if (!defined('_GNUBOARD_')) exit;
 /**
  * 댓글에 대한 위키 문법 분석
  */
-$wikiParser = wiki_class_load("Parser");
+$wikiParser =& wiki_class_load("Parser");
 $list = &$params['list'];
 if($use_comment) {
 

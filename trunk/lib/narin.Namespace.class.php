@@ -19,7 +19,7 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiNS= wiki_class_load("Namespace");
+ * $wikiNS=& wiki_class_load("Namespace");
  * 
  * // "/narin/plugin" 폴더 추가하기
  * // 이때 "/narin" 폴더가 존재하지 않으면 "/narin" 도 생성됨
@@ -113,7 +113,7 @@ class NarinNamespace extends NarinClass {
 	function updateNamespace($srcNS, $dstNS)
 	{
 		if($srcNS == "/") return;
-		$wikiArticle = wiki_class_load("Article");
+		$wikiArticle =& wiki_class_load("Article");
 
 		$escapedSrcNS = mysql_real_escape_string($srcNS);
 		$escapedDstNS = mysql_real_escape_string($dstNS);
@@ -146,7 +146,7 @@ class NarinNamespace extends NarinClass {
 	 */
 	function _updateNamespace($wikiArticle, $srcNS, $toNS)
 	{
-		$wikiHistory = wiki_class_load("History");
+		$wikiHistory =& wiki_class_load("History");
 
 		// $srcNS 에 포함된 documents 목록을 읽어온다.
 		$list = $this->getList($srcNS, $withArticle = true);
@@ -183,7 +183,7 @@ class NarinNamespace extends NarinClass {
 		$this->addNamespace($toNS);
 		$this->checkAndRemove($srcNS);
 
-		$wikiChanges = wiki_class_load("Changes");
+		$wikiChanges =& wiki_class_load("Changes");
 		$wikiChanges->update("FOLDER", $srcNS, "폴더명변경", $this->member[mb_id]);
 	}
 

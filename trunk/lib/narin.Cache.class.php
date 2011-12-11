@@ -18,13 +18,13 @@
  * <b>사용 예제</b>
  * <code>
  * // 클래스 로딩
- * $wikiCache = wiki_class_load("Cache");
+ * $wikiCache =& wiki_class_load("Cache");
  * 
  * // wr_id = 79 인 문서의 저장된 HTML 캐시 가져오기
  * $content = $wikiCache->get(79);
  * 
  * // wr_id = 79 인 문서의 캐시 업데이트하기
- * $wikiParser = wiki_class_load("Parser");	// 파서 로드
+ * $wikiParser =& wiki_class_load("Parser");	// 파서 로드
  * $content = $wikiParser->parse($view);	// 파싱
  * $wikiCache->update(79, $content);		// 파싱된 결과 저장
  * 
@@ -57,7 +57,7 @@ class NarinCache extends NarinClass {
 		// cache 된 내용이 없으면 parsing 수행
 		if(!$row) {			
 			$write = sql_fetch(" select * from ".$this->wiki['write_table']." where wr_id = '$wr_id' ");
-			$wikiParser = wiki_class_load("Parser");
+			$wikiParser =& wiki_class_load("Parser");
 			$content = mysql_real_escape_string($wikiParser->parse($write));
 			sql_query("INSERT INTO ".$this->wiki['cache_table']." VALUES ('', '".$this->wiki['bo_table']."', $wr_id, '$content')");
 			return $content;

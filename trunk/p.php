@@ -13,7 +13,7 @@ include_once "_common.php";
 
 if(!$p || !$m) wiki_not_found_page();
 
-$wikiConfig = wiki_class_load("Config");
+$wikiConfig =& wiki_class_load("Config");
 
 $is_active = false;
 foreach($wikiConfig->using_plugins as $plugin) {

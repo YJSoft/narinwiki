@@ -14,8 +14,8 @@ include_once "./_common.php";
 
 list($ns, $docname, $fulldoc) = wiki_validate_doc(stripslashes($doc));
 
-$wikiArticle = wiki_class_load("Article");
-$write = $wikiArticle->getArticle($ns, $docname);
+$wikiArticle =& wiki_class_load("Article");
+$write = &$wikiArticle->getArticle($ns, $docname);
 if(!$write) {
 	alert("존재하지 않는 문서입니다.");
 	exit;
