@@ -59,7 +59,7 @@ include_once "head.php";
 	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
 	.thumb { border:1px solid #ccc; padding:2px; }
 	.image_size { color:#888; padding-left:8px; font-size:90%;}
-	.plupload_header_content2 { display:none; }
+	.plupload_header_content { display:none; }
 </style>
 
 <div id="media_manager_wrapper">
@@ -819,7 +819,7 @@ $(function() {
 			file = mm.files[i];
 			if(file.img_width > 0) {
 				is_img = true;
-				img = $('<a></a>').addClass('media_lightbox').attr('href', file.imgsrc).html('<img class="thumb" src="'+file.thumb+'"/>').wiki_lightbox();
+				img = $('<a></a>').addClass('media_lightbox').attr('href', file.imgsrc.replace(/^(\.\.\/)/i, '')).html('<img class="thumb" src="'+file.thumb.replace(/^(\.\.\/)/i, '')+'"/>').wiki_lightbox();
 				img_info = '<span class="image_size">'+file.img_width+'x'+file.img_height+'</span>';
 			} else {
 				is_img = false;
@@ -834,7 +834,7 @@ $(function() {
 			else file_path = mm.loc + '/' + file.source;
 				
 			var tr = $('<tr></tr>').attr('class', 'flist');
-			$('<td></td>').attr('style', 'padding-left:28px;background:url("'+file.ext_icon+'") no-repeat left center;')
+			$('<td></td>').attr('style', 'padding-left:28px;background:url("'+file.ext_icon.replace(/^(\.\.\/)/i, '')+'") no-repeat left center;')
 										.append($('<a></a>').attr('href', 'javascript:;')
 																				.addClass('fname').data('file_path', file_path).data('is_img', is_img)
 																				.data('source', file.source).data('url', file.href)
