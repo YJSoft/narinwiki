@@ -9,7 +9,7 @@
  * @author	byfun (http://byfun.com)
  * @filesource
  */
-$use_minify = false;
+$use_minify = true;
 
 if($use_minify) ob_start();	
 include_once "_common.php";
@@ -142,115 +142,6 @@ include_once "head.php";
 	</td>
 </tr>
 </table>
-<? if(0) { ?>
-<div id='test_uploader'></div>
-<style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/i18n/ko.js"></script>
-<script>
-$(function() {
-	
-	uploader = $('<div></div>').html('<p></p>').appendTo($('#test_uploader'));
-	
-	uploader.pluploadQueue({
-			runtimes : 'gears,flash,silverlight,html5',
-			url : wiki_path+'/exe/media_upload.php?bo_table=wiki&loc=/',
-			max_file_size : '100mb',
-			chunk_size : '1mb',
-			unique_names : true,
-				
-			filters : [
-				{title : "업로드 가능 파일", extensions : "txt,docx,xlsx,pptx,hwp,doc,xls,ppt,pdf,odf,jpg,jpeg,gif,png,psd,ai,zip,rar,tar,gz,7z,wmv,avi,swf,flv,asf,mp3,wma,ogg,html,htm"}
-			],
-				
-			flash_swf_url : wiki_path+'/js/plupload/plupload.flash.swf',
-			silverlight_xap_url : wiki_path+'/js/plupload/plupload.silverlight.xap',
-			/*
-			preinit : {
-		 		UploadFile: function(up, file) {
-					up.settings.url = wiki_path+'/exe/media_upload.php?bo_table=wiki&loc=/&filename='+encodeURIComponent(file.name);
-				}				
-			},                 
-
-			init : {	
-						 						
-				StateChanged: function(up) {
-					if(up.state == plupload.STARTED) {
-						//mm.uploading = true;
-						$(window).bind('beforeunload', function(){
-						  return '업로드 중입니다. 다른 페이지로 이동하시겠습니까?';
-						});						
-					}
-					if(up.state == plupload.STOPPED) {
-						setTimeout(function() { 
-							$('#narin_uploader').fadeOut(function() {
-								$(this).remove(); 
-								//mm.hide_msg_stack(); 
-							});
-						}, 500);
-						//mm.is_upload_visible = false;
-						//mm.uploading = false;
-						$(window).unbind('beforeunload');						
-					}								
-				},
-					
-				FileUploaded: function(up, file, info) {
-					res = $.parseJSON(info.response);
-					if(res.error) {
-						//mm.show_msg_stack(res.error.message);
-						return;
-					}
-
-					if(file.percent == 100 && file.status == 5) {
-						//mm.uploading_count++;
-						$.post(wiki_path+'/exe/a.php', { w : 'media_reg', bo_table : g4_bo_table, loc : '/', source : file.name, file : file.target_name }, function(data) {
-							//mm.uploading_count--;
-							try {
-								json = $.parseJSON(data);
-							} catch(exception) {
-								//mm.show_msg(data, 2);
-								return;											
-							}
-							if(json.code == 1) {
-								//mm.files.splice(0,0,json);
-								//mm.render();
-							}
-						});
-					}
-				}
-			}						
-			*/
-	});
-/*	
-	uploader.pluploadQueue({
-		// General settings
-		runtimes : 'gears,flash,silverlight,html5',
-		url : 'upload.php',
-		max_file_size : '10mb',
-		chunk_size : '1mb',
-		unique_names : true,
-
-		// Resize images on clientside if we can
-		resize : {width : 320, height : 240, quality : 90},
-
-		// Specify what files to browse for
-		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"}
-		],
-
-		flash_swf_url : wiki_path+'/js/plupload/plupload.flash.swf',
-		silverlight_xap_url : wiki_path+'/js/plupload/plupload.silverlight.xap'
-
-	});
-*/
-});
-	
-</script>
-
-<? exit; } ?>
-
 
 <div style="display:none">
 	<div id="image_select_layer">
@@ -837,7 +728,7 @@ $(function() {
 			$('<td></td>').attr('style', 'padding-left:28px;background:url("'+file.ext_icon.replace(/^(\.\.\/)/i, '')+'") no-repeat left center;')
 										.append($('<a></a>').attr('href', 'javascript:;')
 																				.addClass('fname').data('file_path', file_path).data('is_img', is_img)
-																				.data('source', file.source).data('url', file.href)
+																				.data('source', file.source).data('url', file.href.replace(/^(\.\.\/)/i, ''))
 																				.data('img_width', file.img_width).data('img_height', file.img_height)
 																				.html(file.source)
 																				<? if($is_admin_mode) { ?>
