@@ -9,12 +9,16 @@
  * @author	byfun (http://byfun.com)
  * @filesource
  */
+$use_minify = false;
 
-ob_start();	
+if($use_minify) ob_start();	
 include_once "_common.php";
+
+@mkdir($wiki['path'].'/data/'.$bo_table, 0707);
+@mkdir($wiki['path'].'/data/'.$bo_table.'/files', 0707);
+
 $g4['title'] = '나린위키 미디어 관리자';
-$loc = stripslashes($loc);
-if(!$loc) $loc = "/";
+
 $wikiConfig =& wiki_class_load("Config");
 $media_setting = $wikiConfig->media_setting;
 
@@ -55,7 +59,7 @@ include_once "head.php";
 	.media_msg { color:#DD0000; margin:2px 0px; padding:5px 5px; }
 	.thumb { border:1px solid #ccc; padding:2px; }
 	.image_size { color:#888; padding-left:8px; font-size:90%;}
-	.plupload_header_content { display:none; }
+	.plupload_header_content2 { display:none; }
 </style>
 
 <div id="media_manager_wrapper">
@@ -79,7 +83,7 @@ include_once "head.php";
 			<? } ?>
 		<? } ?>
 	</div>
-		<h1 id="folder_label"><?=$loc?></h1>	
+		<h1 id="folder_label">/</h1>	
 		<? if($is_wiki_admin) { 
 			$opts = "";
 			for($i=1; $i<=10; $i++) $opts .= '<option value="'.$i.'">'.$i.'</option>';
@@ -138,6 +142,115 @@ include_once "head.php";
 	</td>
 </tr>
 </table>
+<? if(0) { ?>
+<div id='test_uploader'></div>
+<style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
+<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/i18n/ko.js"></script>
+<script>
+$(function() {
+	
+	uploader = $('<div></div>').html('<p></p>').appendTo($('#test_uploader'));
+	
+	uploader.pluploadQueue({
+			runtimes : 'gears,flash,silverlight,html5',
+			url : wiki_path+'/exe/media_upload.php?bo_table=wiki&loc=/',
+			max_file_size : '100mb',
+			chunk_size : '1mb',
+			unique_names : true,
+				
+			filters : [
+				{title : "업로드 가능 파일", extensions : "txt,docx,xlsx,pptx,hwp,doc,xls,ppt,pdf,odf,jpg,jpeg,gif,png,psd,ai,zip,rar,tar,gz,7z,wmv,avi,swf,flv,asf,mp3,wma,ogg,html,htm"}
+			],
+				
+			flash_swf_url : wiki_path+'/js/plupload/plupload.flash.swf',
+			silverlight_xap_url : wiki_path+'/js/plupload/plupload.silverlight.xap',
+			/*
+			preinit : {
+		 		UploadFile: function(up, file) {
+					up.settings.url = wiki_path+'/exe/media_upload.php?bo_table=wiki&loc=/&filename='+encodeURIComponent(file.name);
+				}				
+			},                 
+
+			init : {	
+						 						
+				StateChanged: function(up) {
+					if(up.state == plupload.STARTED) {
+						//mm.uploading = true;
+						$(window).bind('beforeunload', function(){
+						  return '업로드 중입니다. 다른 페이지로 이동하시겠습니까?';
+						});						
+					}
+					if(up.state == plupload.STOPPED) {
+						setTimeout(function() { 
+							$('#narin_uploader').fadeOut(function() {
+								$(this).remove(); 
+								//mm.hide_msg_stack(); 
+							});
+						}, 500);
+						//mm.is_upload_visible = false;
+						//mm.uploading = false;
+						$(window).unbind('beforeunload');						
+					}								
+				},
+					
+				FileUploaded: function(up, file, info) {
+					res = $.parseJSON(info.response);
+					if(res.error) {
+						//mm.show_msg_stack(res.error.message);
+						return;
+					}
+
+					if(file.percent == 100 && file.status == 5) {
+						//mm.uploading_count++;
+						$.post(wiki_path+'/exe/a.php', { w : 'media_reg', bo_table : g4_bo_table, loc : '/', source : file.name, file : file.target_name }, function(data) {
+							//mm.uploading_count--;
+							try {
+								json = $.parseJSON(data);
+							} catch(exception) {
+								//mm.show_msg(data, 2);
+								return;											
+							}
+							if(json.code == 1) {
+								//mm.files.splice(0,0,json);
+								//mm.render();
+							}
+						});
+					}
+				}
+			}						
+			*/
+	});
+/*	
+	uploader.pluploadQueue({
+		// General settings
+		runtimes : 'gears,flash,silverlight,html5',
+		url : 'upload.php',
+		max_file_size : '10mb',
+		chunk_size : '1mb',
+		unique_names : true,
+
+		// Resize images on clientside if we can
+		resize : {width : 320, height : 240, quality : 90},
+
+		// Specify what files to browse for
+		filters : [
+			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Zip files", extensions : "zip"}
+		],
+
+		flash_swf_url : wiki_path+'/js/plupload/plupload.flash.swf',
+		silverlight_xap_url : wiki_path+'/js/plupload/plupload.silverlight.xap'
+
+	});
+*/
+});
+	
+</script>
+
+<? exit; } ?>
+
 
 <div style="display:none">
 	<div id="image_select_layer">
@@ -271,20 +384,26 @@ include_once "head.php";
 		uploading_count : 0
 	};
 	
+	// 미디어 관리자 초기화
 	mm.init = function() {
+		
+		// 왼쪽 트리 메뉴 로딩
 		mm.tree_load(mm.loc);
 						
+		// 검색 버튼 클릭 이벤트
 		mm.sbtn.click(function(evt) {
 			evt.preventDefault();
 			mm.filter();
 		});		
 		
+		// 검색창 엔터 입력 이벤트
 		mm.stx.keypress(function(evt) {
 			 if(evt.which == 13) {
 			 	mm.filter();
 			 }
 		});							
-						
+		
+		// 테이블 헤더 클릭 이벤트 (정렬)						
 		$('.ordering').click(function(evt) {
 			evt.preventDefault();
 			field = $(this).attr('code');
@@ -297,9 +416,11 @@ include_once "head.php";
 			mm.ordering();
 			mm.render();
 		});								
-						
+		
+		// 라이트박스 닫기 버튼	이벤트					
 		$('.close_button').click(function(evt) { evt.preventDefault(); $.wiki_lightbox_close(); });
 
+		// 이미지 삽입 확인 버튼 이벤트
 		$('#media_image_apply').click(function() {
 
 				var a = $("input[name=media_image_align]:checked").val();
@@ -332,7 +453,8 @@ include_once "head.php";
 				else $.wiki_lightbox_close();
 
 		});
-
+		
+		// 갤러리 삽입 확인 버튼 이벤트
 		$('#media_gallery_apply').click(function() {
 
 				var g_width = $("#mg_width").val();
@@ -370,6 +492,7 @@ include_once "head.php";
 
 		});
 
+		// 갤러리 삽입 창 : 페이징
 		$('#mg_paging').click(function(evt) {
 			if($(this).is(':checked')) {
 				$('#mg_page').attr('disabled', '');
@@ -378,6 +501,7 @@ include_once "head.php";
 			}
 		});
 		
+		// 갤러리 삽입 창 : 파일명보이기
 		$('#mg_showname').click(function(evt) {
 			if($(this).is(':checked')) {
 				$('#mg_noext').attr('disabled', '');
@@ -385,13 +509,15 @@ include_once "head.php";
 				$('#mg_noext').attr('disabled', 'disabled');
 			}
 		});		
-					
+
+		// 파일 삭제 버튼 클릭 이벤트
 		$('.file_del').live('click', function() {
 			tr = $(this).parents('.flist');
 			mm.delete_file(tr.find('.fname').text(), tr);
 		});
 		
 		<? if($is_admin_mode) { ?>
+			// 폴더내 모든 파일 삭제 버튼 클릭
 		$('#clear_media').live('click', function() {
 			if(!confirm('폴더내의 모든 파일이 삭제됩니다.\n진행하시겠습니까?')) return;
 			if(!confirm('정말 진행하시겠습니까?')) return;
@@ -400,6 +526,7 @@ include_once "head.php";
 			});
 		});
 		
+		// 압축 다운로드 버튼 클릭
 		$('#zipdown').click(function(evt) { 
 			evt.preventDefault();
 			$.getJSON(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
@@ -410,26 +537,30 @@ include_once "head.php";
 		});
 		<? }?>
 
+		// 메시지 레이어
 		mm.msg = $("<div></div>")
 				.attr('style', 'display:none;position:absolute;padding:10px 30px;text-align:center;background-color:#333;color:#fff;z-index:999999')
 				.html('').appendTo($("body"));		
 		if(!$.browser.msie) {
 			mm.msg.center();
 		}
+		
+		// 상단 메뉴 : 업로드 버튼
 		mm.upload_button.click(function(evt) {
 				evt.preventDefault();
 				if(mm.uploading) {
 					mm.show_msg('업로드중입니다...', 2);
 					return;
 				}
+				$('#narin_uploader').remove();
 				if(mm.is_upload_visible) {
-					$('#narin_uploader').remove();
 					mm.is_upload_visible = false;
 				} else {
 					mm.set_uploader();
 				}				
 		});		
 		
+		// 상단 메뉴 : 폴더생성 버튼
 		mm.mkdir_button.click(function(evt) {
 			evt.preventDefault();
 			var folder = prompt('폴더명 : ', '');
@@ -451,6 +582,7 @@ include_once "head.php";
 			}			
 		});
 		
+		// 상단 메뉴 : 폴더삭제 버튼
 		mm.rmdir_button.click(function(evt) {
 			evt.preventDefault();
 			if(mm.files.length > 0) {
@@ -470,6 +602,7 @@ include_once "head.php";
 			});
 		});
 		
+		// 상단 메뉴 : 권한설정 버튼
 		mm.chmod_button.click(function(evt) {
 			evt.preventDefault();
 			var pan = $("#chmod_option");
@@ -480,6 +613,7 @@ include_once "head.php";
 			}
 		});
 		
+		// 상단 메뉴 : 권한설정 실행 버튼
 		$("#ns_level_update").click(function(evt) {
 			evt.preventDefault();
 			al = $("#ns_access_level").val();
@@ -500,15 +634,20 @@ include_once "head.php";
 			});			
 		});
 		
+		// 유틸 : 배열에서 원소 삭제
 		Array.prototype.remove = function(from, to) {
 		  var rest = this.slice((to || from) + 1 || this.length);
 		  this.length = from < 0 ? this.length + from : from;
 		  return this.push.apply(this, rest);
 		};		
-						
-		mm.load();				
-	};
+		
+		// 파일목록 로딩						
+		mm.load();			
+			
+	}; // mm.init 끝
 	
+	
+	// 폴더 권한 설정 적용
 	mm.set_ns_level = function(al, ul, cl, pcl) {
 		mm.access_level = al;
 		mm.mkdir_level = cl;
@@ -531,7 +670,8 @@ include_once "head.php";
 			mm.upload_button.hide();
 		} else mm.upload_button.show();					
 	};
-		
+	
+	// 트리 로딩	
 	mm.tree_load = function(dir, callback) {	
 		mm.folder_label.text(dir);	
 		$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_get_tree&loc='+encodeURIComponent(dir), function(data) {
@@ -557,12 +697,14 @@ include_once "head.php";
 		});				
 	};
 	
+	// 트리에 현재 폴더 스타일 적용
 	mm.set_tree_location = function() {	
 		$("#tree_wrapper").find('span.folder a').removeClass('selected');
 		$("#tree_wrapper").find('span.leaf').removeClass('leaf_folder').addClass('leaf_folder');
 		$("#tree_wrapper").find('span.folder a[code="'+mm.loc+'"]').addClass('selected').parent().removeClass('leaf_folder');		
 	};
 	
+	// 유틸 : 메시지 보이기
 	mm.show_msg = function(str, seconds) {
 		mm.msg.html(str).center_now().show();		
 		if(seconds) {
@@ -571,11 +713,13 @@ include_once "head.php";
 		}
 	};
 	
+	// 유틸 : 메시지 감추기
 	mm.hide_msg = function() {
 		mm.msg.fadeOut();
 		mm.msg_timer = null;
 	};
 	
+	// 유틸 : 파일목록창 위에 여러 메시지 보이기
 	mm.show_msg_stack = function(str, seconds) {
 		$('<div></div>').attr('class', 'media_msg').text(str).prependTo(mm.msg_stack);
 		if(seconds) {
@@ -584,11 +728,13 @@ include_once "head.php";
 		}		
 	};
 	
+	// 유틸 : 파일목록창 위의 여러 메시지 감추기
 	mm.hide_msg_stack = function() {
 		mm.msg_stack.find('.media_msg').fadeOut().remove();
 		mm.msg_timer_stack = null;
 	};
 	
+	// 파일 삭제
 	mm.delete_file = function(fname, tr) {
 		if(!confirm('삭제하시겠습니까?\n파일을 삭제하면 파일을 링크하고 있는 문서의 링크가 끊깁니다.')) return;
 		mm.show_msg('삭제중입니다. 잠시만 기다려주세요.');
@@ -611,6 +757,7 @@ include_once "head.php";
 		});
 	};
 	
+	// 파일 검색 (현재 목록 중에서 검색)
 	mm.filter = function() {
 		var stx = $.trim(mm.stx.val());
 		mm.table.find('.flist').show();
@@ -624,7 +771,8 @@ include_once "head.php";
 			}
 		});
 	};
-
+	
+	// 파일 정렬 (현재 목록을 정렬)
 	mm.ordering = function() {
 		var m = ( mm.order == 'desc' ? -1 : 1);
 		var k = function(v) {
@@ -636,7 +784,8 @@ include_once "head.php";
 							   (k(a) > k(b)) ? 1 : 0 ) * m;				
 		});	
 	};
-				
+			
+	// 파일 목록 로딩
 	mm.load = function(callback) {
 		mm.stx.val('');
 		mm.table.find('.flist').remove();
@@ -660,6 +809,7 @@ include_once "head.php";
 		});			
 	};
 
+	// 파일 목록 보이기
 	mm.render = function() {
 		
 		//mm.files.sort(mm.sort_by(mm.order_field, mm.order));
@@ -727,6 +877,7 @@ include_once "head.php";
 		}
 	};
 	
+	// 이미지 : 파일명 클릭시 
 	mm.mark = function($a) {
 		var is_img = $a.data('is_img');		
 		mm.clicked_link = $a;
@@ -739,10 +890,11 @@ include_once "head.php";
 		}
 	};
 	
+	// 업로더 : 업로더 설정 및 보이기
 	mm.set_uploader = function() {
-		$('#narin_uploader').remove();
 		mm.is_upload_visible = true;
 		uploader = $('<div></div>').attr('id', 'narin_uploader').html('<p>&nbsp;</p>').appendTo(mm.uploader_wrapper);
+
 		mm.uploader = uploader.pluploadQueue({
 			runtimes : 'gears,flash,silverlight,html5',
 			url : wiki_path+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc),
@@ -752,7 +904,7 @@ include_once "head.php";
 				
 			<? if($media_setting['allow_extensions']) { ?>
 			filters : [
-				{title : "업로드 가능 파일", extensions : "<?=$media_setting['allow_extensions']?>"},			
+				{title : "업로드 가능 파일", extensions : "<?=$media_setting['allow_extensions']?>"}
 			],
 			<? } ?>
 	
@@ -765,8 +917,8 @@ include_once "head.php";
 				}				
 			},                 
 
-			init : {
-		 						
+			init : {	
+						 						
 				StateChanged: function(up) {
 					if(up.state == plupload.STARTED) {
 						mm.uploading = true;
@@ -828,9 +980,9 @@ include_once "head.php";
 	        }
 
 	        return false;
-	    });		
-	   
-	}
+	  });		
+
+	};
 	
 	
 	
@@ -850,13 +1002,13 @@ include_once "head.php";
 <? include_once "tail.php"; ?>
 
 <?
-
-$content = ob_get_contents();
-ob_end_clean();
-
-include_once $wiki[path]."/lib/Minifier/htmlmin.php";
-include_once $wiki[path]."/lib/Minifier/jsmin.php";
-include_once $wiki[path]."/lib/Minifier/cssmin.php";
-echo Minify_HTML::minify($content, $options=array("jsMinifier"=>"JSMin::minify", "cssMinifier"=>"CssMin::minify"));
-
+if($use_minify) {
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	include_once $wiki[path]."/lib/Minifier/htmlmin.php";
+	include_once $wiki[path]."/lib/Minifier/jsmin.php";
+	include_once $wiki[path]."/lib/Minifier/cssmin.php";
+	echo Minify_HTML::minify($content, $options=array("jsMinifier"=>"JSMin::minify", "cssMinifier"=>"CssMin::minify"));
+}
 ?>
