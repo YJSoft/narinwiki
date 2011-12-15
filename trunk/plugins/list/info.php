@@ -1,7 +1,7 @@
 <?
 /**
  * 
- * 나린위키 최근문서 플러그인 정보 클래스 스크립트
+ * 나린위키 리스트 플러그인 정보 클래스 스크립트
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -12,7 +12,7 @@
 
 /**
  * 
- * 나린위키 최근문서 플러그인 : 플러그인 정보 클래스
+ * 나린위키 리스트 플러그인 : 플러그인 정보 클래스
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -20,7 +20,7 @@
  * @author	byfun (http://byfun.com)
  */
  
-class NarinPluginInfoLatest extends NarinPluginInfo {
+class NarinPluginInfoList extends NarinPluginInfo {
 
 	/**
 	 *
@@ -42,9 +42,9 @@ class NarinPluginInfoLatest extends NarinPluginInfo {
 		
 		parent::__construct();			
 		
-		$this->id = "wiki_latest";				
-		$this->data_js_file = $this->data_path."/js/latest_plugin.js";
-		$this->data_css_file = $this->data_path."/css/latest_plugin.css";
+		$this->id = "wiki_list";				
+		$this->data_js_file = $this->data_path."/js/list_plugin.js";
+		$this->data_css_file = $this->data_path."/css/list_plugin.css";
 		
 		// {@link NarinPluginInfo} 클래스의 생성자에서 getSetting() 을 호출함		
 		$this->init();
@@ -58,7 +58,7 @@ class NarinPluginInfoLatest extends NarinPluginInfo {
 	 */
 	public function description()
 	{
-		return "최근문서 플러그인 (저자 : byfun, byfun@byfun.com)";
+		return "리스트 플러그인 (저자 : byfun, byfun@byfun.com)";
 	}
 
 	/**
@@ -121,7 +121,7 @@ class NarinPluginInfoLatest extends NarinPluginInfo {
 	 * @see lib/NarinPluginInfo::getSetting()
 	 */
 	public function getSetting() {
-		$css = file_exists($this->data_css_file) ? file_get_contents($this->data_css_file) : file_get_contents($this->plugin_path."/latest.css");
+		$css = file_exists($this->data_css_file) ? file_get_contents($this->data_css_file) : file_get_contents($this->plugin_path."/list.css");
 		return array("css"=>array("type"=>"textarea", 
 															"label"=>"CSS : ", 
 															"desc"=>"최근문서 CSS를 설정해주세요.", 
@@ -136,10 +136,9 @@ class NarinPluginInfoLatest extends NarinPluginInfo {
 	protected function setJsCss($css = "")
 	{
 		
-		$js = file_get_contents($this->plugin_path."/latest.js");
-		if(!$css) $css = file_get_contents($this->plugin_path."/latest.css");
-		
-		$js = str_replace("{_pluginpath_}", $this->plugin_path, $js);
+		$js = file_get_contents($this->plugin_path."/list.js");
+		if(!$css) $css = file_get_contents($this->plugin_path."/list.css");
+
 		// js 파일 작성
 		$fp = fopen($this->data_js_file, "w");
 		fwrite($fp, $js);

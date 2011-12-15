@@ -156,8 +156,8 @@ class NarinNamespace extends NarinClass {
 
 		// $srcNS / $document[] 에 대한 백 링크들을 업데이트한다.
 		for($i=0; $i<count($list); $i++) {
-			if($list[$i][type] == 'folder')	continue;
-			$wikiArticle->fromDoc = $fromDoc = $list[$i][path];
+			if($list[$i]['type'] == 'folder')	continue;
+			$wikiArticle->fromDoc = $fromDoc = $list[$i]['path'];
 			$wikiArticle->toDoc = preg_replace("/^(".preg_quote($srcNS, "/").")(.*?)/", $toNS, $fromDoc);
 				
 			// 백링크 업데이트
@@ -165,11 +165,11 @@ class NarinNamespace extends NarinClass {
 				
 			for($k=0; $k<count($backLinks); $k++) {
 
-				$content = mysql_real_escape_string(preg_replace_callback('/(\[\[)(.*?)(\]\])/', array(&$wikiArticle, 'wikiLinkReplace'), $backLinks[$k][wr_content]));
+				$content = mysql_real_escape_string(preg_replace_callback('/(\[\[)(.*?)(\]\])/', array(&$wikiArticle, 'wikiLinkReplace'), $backLinks[$k]['wr_content']));
 
 				// 문서 이력에 백업
-				$wikiHistory->update($backLinks[$i][wr_id], stripcslashes($content), $this->member[mb_id], "폴더명 변경에 따른 자동 업데이트");
-				$wikiArticle->shouldUpdateCache($backLinks[$i][wr_id], 1);
+				$wikiHistory->update($backLinks[$k]['wr_id'], stripcslashes($content), $this->member['mb_id'], "폴더명 변경에 따른 자동 업데이트");
+				$wikiArticle->shouldUpdateCache($backLinks[$k]['wr_id'], 1);
 
 				sql_query("UPDATE ".$this->wiki['write_table']." SET wr_content = '$content' WHERE wr_id = ".$backLinks[$k]['wr_id']."");
 			}
@@ -184,7 +184,8 @@ class NarinNamespace extends NarinClass {
 		$this->checkAndRemove($srcNS);
 
 		$wikiChanges =& wiki_class_load("Changes");
-		$wikiChanges->update("FOLDER", $srcNS, "폴더명변경", $this->member[mb_id]);
+		$wikiChanges->update("FOLDER", $srcNS, "폴더명변경 (이전)", $this->member['mb_id']);
+		$wikiChanges->update("FOLDER", $toNS, "폴더명변경 (이후)", $this->member['mb_id']);
 	}
 
 	/**
@@ -238,7 +239,7 @@ class NarinNamespace extends NarinClass {
 								WHERE ns.bo_table = '".$this->wiki['bo_table']."' AND ns.ns = '$escapedNS'");
 
 		// if there's no document
-		if(!$namespace[wr_id]) {
+		if(!$namespace['wr_id']) {
 				
 			// if there's no child, delete
 			$child = sql_fetch("SELECT * FROM ".$this->wiki['ns_table']." WHERE ns LIKE '{$escapedNS}/%'");

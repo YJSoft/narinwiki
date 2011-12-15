@@ -1,7 +1,7 @@
 <?
 /**
  *
- * 나린위키 최근문서 플러그인 문법 클래스 스크립트
+ * 나린위키 리스트 플러그인 문법 클래스 스크립트
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -12,14 +12,14 @@
 
 /**
  *
- * 나린위키 최근문서 플러그인 : 문법 클래스
+ * 나린위키 리스트 플러그인 : 문법 클래스
  *
  * @package	narinwiki
  * @subpackage plugin
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  */
-class NarinSyntaxLatest extends NarinSyntaxPlugin {
+class NarinSyntaxList extends NarinSyntaxPlugin {
 	 
 	/**
 	 *
@@ -28,11 +28,11 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 	function register($parser)
 	{
 		$parser->addVariableParser(
-          $id = "wiki_latest",
+          $id = "wiki_list",
           $klass = $this,
-          $startRegx = "latest=",	// latest=
+          $startRegx = "list=",	// list=
           $endRegx = "((\?)(.*?))?",	// 파라미터 ? 다음 문자열 (optional)
-          $method = "wiki_latest");
+          $method = "wiki_list");
 	}
 
 	/**
@@ -43,8 +43,8 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
 	 * @return string HTML 태그
 	 */
-	public function wiki_latest($matches, $params) {
-		// $matches[1] = latest=
+	public function wiki_list($matches, $params) {
+		// $matches[1] = list=
 		// $matches[1] = 경로
 		// $matches[4] = 파라미터
 		
@@ -55,45 +55,17 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 		}
 				
 		$args['path'] = $matches[1];
-		
-		if(isset($args['noajax'])) {
-			return $this->wiki_latest_noajax($args, &$params);			
-		}
-		
+
+		$list = $this->wiki_list_nojs($args, &$params);
 		if(isset($args['nojs'])) {
-			return $this->wiki_latest_nojs($args, &$params);			
+			return $list;
 		}		
 		
 		$options = wiki_json_encode($args);		
 		
-		return '<div class="wiki_latest" style="display:none">'.$options.'</div>';
+		return $list.'<div class="wiki_lister" style="display:none">'.$options.'</div>';
 	}
 
-	/**
-	 * 
-	 * Ajax를 사용하지 않는 출력
-	 * 
-	 * @param array $args 최근문서문법에서 분석된 파라미터
-	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
-	 * @return string HTML 태그
-	 */
-	protected function wiki_latest_noajax($args, $params) {
-		
-		$ns = $args['path'];
-		$recursive = (isset($args['nosub']) ? false : true);
-		$rows = (isset($args['rows']) ? $args['rows'] : 5);
-		$cutstr = (isset($args['title_length']) ? $args['title_length'] : 512);
-		$dateformat = (isset($args['dateformat']) ? $args['dateformat'] : "Y-m-d h:i:s");
-
-		define("_LATEST_PLUGIN_", 1);
-		include_once dirname(__FILE__).'/latest.lib.php';
-		
-		$list = wiki_latest_recentUpdate($this->wiki, $this->g4, stripslashes($ns), $recursive, $dateformat, $rows, $cutstr);
-		$args['list'] = array('code'=>1, 'current_time'=>$this->g4['time_ymdhis'], 'list'=>&$list);
-		$options = wiki_json_encode($args);
-		return '<div class="wiki_latest" style="display:none">'.$options.'</div>';
-	}
-	
 	/**
 	 * 
 	 * 자바스크립트를 사용하지 않는 출력
@@ -102,26 +74,37 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
 	 * @return string HTML 태그
 	 */
-	protected function wiki_latest_nojs($args, $params) {
+	protected function wiki_list_nojs($args, $params) {
 
-		define("_LATEST_PLUGIN_", 1);
-		include_once dirname(__FILE__).'/latest.lib.php';
+		define("_LIST_PLUGIN_", 1);
+		include_once dirname(__FILE__).'/list.lib.php';
 		
 		$recursive = (isset($args['nosub']) ? false : true);
 		$rows = (isset($args['rows']) ? $args['rows'] : 5);
 		$cutstr = (isset($args['title_length']) ? $args['title_length'] : 512);
 		$dateformat = (isset($args['dateformat']) ? $args['dateformat'] : "Y-m-d h:i:s");
 		$current_time = $this->g4['time_ymdhis'];
+		$reverse = (isset($args['reverse']) ? true : false);
+		$with_content = ($args['type'] == 'webzine' ? true : false);
 		
 		$args['emp'] = (isset($args['emp']) ? $args['emp'] : 0);
 		$args['emp_style'] = (isset($args['emp_style']) ? $args['emp_style'] : 'font-weight:bold');
-		$args['order'] = isset($args['order']) ? $args['order'] : 'title,editor,date';
+		$args['field'] = isset($args['field']) ? $args['field'] : 'title,editor,date';
 		$args['title_length'] = isset($args['title_length']) ? $args['title_length'] : 512;
-
+		$args['order'] = isset($args['order']) ? $args['order'] : 'date';
 		
+		$wild = '';
+		foreach($args as $k => $v) {
+			if(strpos($k, '*') !== false) {
+				$wild = $k;				
+				break;				
+			}
+		}		
 		
-		$list = wiki_latest_recentUpdate($this->wiki, $this->g4, stripslashes($args['path']), $recursive, $dateformat, $rows, $cutstr);
-		if($args['type'] == 'table') return $this->render_table($args, &$list, &$params);
+		$list = wiki_list_docs($this->wiki, $this->g4, stripslashes($args['path']), $args['order'], $wild, $recursive, $dateformat, $rows, $cutstr, $reverse, $with_content);
+		
+		// TODO : 웹진모드  (보류)
+		if($args['type'] == 'table' || $args['type'] == 'webzine') return $this->render_table($args, &$list, &$params);
 		else return $this->render_list($args, &$list, &$params);
 		
 	}
@@ -138,7 +121,7 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 	protected function render_list($args, $list, $params) {	
 				
 		$div = '';
-		$ul = '<ul class="wiki_list_1 latest_list">';
+		$ul = '<ul class="wiki_list wiki_list_1 list_list">';
 		
 		// 목록
 		for($i=0; $i<count($list); $i++) {
@@ -150,23 +133,13 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 					$emp = ' '.$args['emp_style'];
 				}
 			}		
-			$row = '<li>
-								<a href="'.$item['href'].'" class="wiki_active_link latest_title" style="'.$args['title_style'].$emp.'">
-									'.$item['title'].'
-								</a>
-						  ';
+			$row = '<li><a href="'.$item['href'].'" class="wiki_active_link list_title" style="'.$args['title_style'].$emp.'">'.$item['title'].'</a>';
 			if(!isset($args['nocomment']) && $item['comments'] > 0) {
-				$row .= '<span class="latest_comment" style="'.$args['comment_style'].'">
-									'.$item['comments'].'
-								 </span>
-								';
+				$row .= '<span class="list_comment" style="'.$args['comment_style'].'">('.$item['comments'].')</span>';
 			}
 
 			if(isset($args['showfolder'])) {
-				$row .= '<span class="latest_folder" style="'.$args['folder_style'].'">
-									'.$item['ns'].'
-								 </span>
-								';
+				$row .= '<span class="list_folder" style="'.$args['folder_style'].'">'.$item['ns'].'</span>';
 			}
 			
 			if(isset($args['showeditor'])) {
@@ -174,19 +147,13 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 				if(isset($args['usename'])) $name = $item['name'];
 				else if(isset($args['usenick'])) $name = $item['nick'];
 				
-				$row .= '<span class="latest_editor" style="'.$args['folder_style'].'">
-									'.$name.'
-								 </span>
-								';
+				$row .= '<span class="list_editor" style="'.$args['folder_style'].'">'.$name.'</span>';
 			}	
 			
 			if(isset($args['showdate'])) {
 				$date = $item['date'];
 				if(isset($args['elapsed'])) $date = $item['elapsed'];
-				$row .= '<span class="latest_date" style="'.$args['date_style'].'">
-									'.$date.'
-								 </span>
-								';
+				$row .= '<span class="list_date" style="'.$args['date_style'].'">'.$date.'</span>';
 			}					
 			
 			$row .= '</li>';
@@ -195,7 +162,7 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 		}		
 				
 		unset($list);				
-		return '</ul>'.$ul;
+		return $ul.'</ul>';
 		
 	}
 	
@@ -210,40 +177,47 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 	 */
 	protected function render_table($args, $list, $params) {	
 
-		$head = array('title'=>'문서명', 'date'=>'날짜', 'editor'=>'편집자');
+		$head = array('title'=>'문서명', 'date'=>'날짜', 'editor'=>'편집자', 'hits'=>'조회수');
 		
-		$order = explode(',', str_replace(' ', '', $args['order']));
+		$field = explode(',', str_replace(' ', '', $args['field']));
 		
-		$table_style = (isset($args['table_style']) ? ' style="'.$args['table_steyl'].'"' : '');
-		$table = '<table cellspacing="0" cellpadding="0" class="latest_table" $table_style>';
+		$table_style = (isset($args['table_style']) ? ' style="'.$args['table_style'].'"' : '');
+		
+		// 테이블 열기
+		$table = '<table cellspacing="0" cellpadding="0" class="list_table" $table_style>';
 
 		if(isset($args['elapsed'])) $head['date'] = '시간';
 		
+		// 테이블 해드
 		if(!isset($args['nohead'])) {
 			$table .= '<thead><tr>';
-			for($i=0; $i<count($order); $i++) {
-				$table .= '<td class="latest_'.$order[$i].'">'.$head[$order[$i]].'</td>';
+			for($i=0; $i<count($field); $i++) {
+				$table .= '<td class="list_'.$field[$i].'">'.$head[$field[$i]].'</td>';
 			}
 			$table .= '</tr></thead>';
 		}
 
 		$table .= '<tbody>';
 
+		// 테이블 바디
 		for($i=0; $i<count($list); $i++) {
 
 			$item = $list[$i];
 			$td = '';
 			
-			for($j=0; $j<count($order); $j++) {
-				$content = $item[$order[$j]];
-
-				$td .= '<td class="latest_'.$order[$j].'" style="'.$args[$order[$j].'_style'].'">';
+			
+			// 필드 순서대로 출력
+			for($j=0; $j<count($field); $j++) {
+				$content = $item[$field[$j]];
+				$td .= '<td class="list_'.$field[$j].'" style="'.$args[$field[$j].'_style'].'">';
 				
-				if($order[$j] == 'date') {
+				// 필드 : 데이트
+				if($field[$j] == 'date') {
 					if(isset($args['elapsed'])) $content = $item['elapsed'];					
 				}
 				
-				if($order[$j] == 'editor') {
+				// 필드 : 편집자
+				if($field[$j] == 'editor') {
 					if(isset($args['usename'])) { 
 						$content = $item['name'];
 					} else if(isset($args['usenick'])) { 
@@ -251,7 +225,8 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 					}
 				}	
 				
-				if($order[$j] == 'title') {
+				// 필드 : 제목
+				if($field[$j] == 'title') {
 
 					$emp = '';
 					if($args['emp'] > 0) {
@@ -260,26 +235,39 @@ class NarinSyntaxLatest extends NarinSyntaxPlugin {
 						}
 					}
 
+					// 제목에 링크
 					$content = '<a href="'.$item['href'].'" class="wiki_active_link" '.$emp.'>'.$content.'</a>';
 					
+					// 댓글
 					if(!isset($args['nocomment']) && $item['comments'] > 0) {
-						$content .= '<span class="latest_comment">'.$item['comments'].'</span>';
-					}					
+						$content .= '<span class="list_comment">'.$item['comments'].'</span>';
+					}				
+					
+					// 폴더	
 					if(!isset($args['nofolder'])) {
-						$content .= '<span class="latest_folder">'.$item['ns'].'</span>';
+						$content .= '<span class="list_folder">'.$item['ns'].'</span>';
 					}
+					
+					// TODO : 내용 보이기 (보류)
+					//
+					//if($args['type'] == 'webzine') {
+					//	$content .= '<div class="list_content" style="width:100%;overflow:auto">'.$item['content'].'</div>';
+					//}			
+										
 				}
 				
+				// TD에 내용 추가
 				$td .= $content . '</td>';
 				
 			} // for $j
-			
+						
+			// TABLE에 TR 추가
 			$table .= '<tr>'.$td.'</tr>';
 			
 		} // for $i
 
 		$table .= '</tbody></table>';
-		
+
 		unset($list);
 		return $table;
 	}
