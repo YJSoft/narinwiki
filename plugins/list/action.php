@@ -1,7 +1,7 @@
 <?
 /**
  * 
- * 나린위키 최근문서 플러그인 액션 클래스 스크립트
+ * 나린위키 리스트 플러그인 액션 클래스 스크립트
  *
  * @package	narinwiki
  * @subpackage plugin
@@ -12,21 +12,21 @@
 
 /**
  * 
- * 나린위키 최근문서 플러그인 : 액션 클래스
+ * 나린위키 리스트 플러그인 : 액션 클래스
  *
  * @package	narinwiki
  * @subpackage plugin
  * @license http://narin.byfun.com/license GPL2
  * @author	byfun (http://byfun.com)
  */
-class NarinActionLatest extends NarinActionPlugin {
+class NarinActionList extends NarinActionPlugin {
 	
 	/**
 	 * 
 	 * 생성자
 	 */
 	public function __construct() {
-		$this->id = "wiki_action_latest";		
+		$this->id = "wiki_action_list";		
 		parent::__construct();
 	}	  	
 
@@ -36,7 +36,7 @@ class NarinActionLatest extends NarinActionPlugin {
 	 */
 	public function register($ctrl)
 	{
-		$ctrl->addHandler("PX_LATEST_LIST", $this, "on_ajax_call");
+		$ctrl->addHandler("PX_LIST_LIST", $this, "on_ajax_call");
 	}	
 	
 	/**
@@ -57,12 +57,22 @@ class NarinActionLatest extends NarinActionPlugin {
 		$rows = (isset($get['rows']) ? $get['rows'] : 5);
 		$cutstr = (isset($get['title_length']) ? $get['title_length'] : 512);
 		$dateformat = (isset($get['dateformat']) ? $get['dateformat'] : "Y-m-d h:i:s");
+		$order = (isset($get['order']) ? $get['order'] : 'date');
+		$reverse = (isset($get['reverse']) ? true : false);
+		$with_content = ($get['type'] == 'webzine' ? true : false);
 		
-		define("_LATEST_PLUGIN_", 1);
-		include_once dirname(__FILE__).'/latest.lib.php';
+		$wild = '';
+		foreach($get as $k => $v) {
+			if(strpos($k, '*') !== false) {
+				$wild = $k;				
+				break;				
+			}
+		}				
 		
-		$list = wiki_latest_recentUpdate($this->wiki, $this->g4, stripslashes($ns), $recursive, $dateformat, $rows, $cutstr);
+		define("_LIST_PLUGIN_", 1);
+		include_once dirname(__FILE__).'/list.lib.php';
 		
+		$list = wiki_list_docs($this->wiki, $this->g4, stripslashes($ns), $order, $wild, $recursive, $dateformat, $rows, $cutstr, $reverse, $with_content);
 
 		echo wiki_json_encode(array('code'=>1, 'current_time'=>$this->g4['time_ymdhis'], 'list'=>$list));
 		exit;

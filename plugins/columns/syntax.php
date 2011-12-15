@@ -94,7 +94,7 @@ class NarinSyntaxColumns extends NarinSyntaxPlugin {
 	public function columns_start($matches, $params) {
 		$params['parser']->stop = true;
 		$this->save_section(&$params);
-		return $this->get_close(&$params).'<!-- wiki_columns--><table class="wiki_columns" border="0" cellspacing="0" cellpadding="0" '.strip_tags($matches[1]).'><tr>';
+		return $this->get_close(&$params).'<!-- wiki_columns--><div style="overflow:auto"><table class="wiki_columns" border="0" cellspacing="0" cellpadding="0" '.strip_tags($matches[1]).'><tr>';
 	}
 	
 	/**
@@ -140,7 +140,7 @@ class NarinSyntaxColumns extends NarinSyntaxPlugin {
 		$this->opened = false;
 		$closeTag = $this->get_close(&$params);
 		$this->recover_section(&$params);
-		return $closeTag."</td></tr></table><!--// wiki_columns -->";
+		return $closeTag."</td></tr></table></div><!--// wiki_columns -->";
 	}
 
 	/**
