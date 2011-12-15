@@ -102,10 +102,6 @@ class NarinArticle extends NarinClass {
 	 */
 	public function & getArticle($ns, $docname)
 	{		
-		if($this->is_wiki_admin) {
-			//wiki_print('get article');
-			//debug_print_backtrace();
-		}
 		$full = wiki_doc($ns, $docname);
 		if($this->cache[$full]) return $this->cache[$full];
 		
@@ -150,10 +146,6 @@ class NarinArticle extends NarinClass {
 	 */
 	public function & getArticleById($wr_id)
 	{
-		if($this->is_wiki_admin) {
-			//wiki_print('get article by id');
-			//debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-		}		
 		if($this->cache[$wr_id]) return $this->cache[$wr_id];
 		
 		$wr_id = mysql_real_escape_string($wr_id);
@@ -228,10 +220,17 @@ class NarinArticle extends NarinClass {
 	{
 		$escapedDoc = mysql_real_escape_string($doc);
 		$list = array();
+		// 2011-12-11 : 문서명뒤의 hash 태그사용할 수 있도록 수정
 		$sql = "SELECT *, wb.wr_subject AS doc FROM ".$this->wiki['write_table']." AS wb 
 				LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
-				WHERE nt.bo_table= '".$this->wiki['bo_table']."' AND ( wb.wr_content LIKE '%[[".$escapedDoc."]]%' OR wb.wr_content LIKE '%[[".$escapedDoc."|%') AND wb.wr_content NOT LIKE '%[[".$escapedDoc."/%'";
-			
+				WHERE nt.bo_table= '".$this->wiki['bo_table']."' 
+							AND ( 
+							      wb.wr_content LIKE '%[[".$escapedDoc."]]%' 
+							      OR wb.wr_content LIKE '%[[".$escapedDoc."#%]]%'
+							      OR wb.wr_content LIKE '%[[".$escapedDoc."|%'
+							      OR wb.wr_content LIKE '%[[".$escapedDoc."#%|%'
+							    ) 
+							AND wb.wr_content NOT LIKE '%[[".$escapedDoc."/%'";
 		$result = sql_query($sql);
 		while($row = sql_fetch_array($result))
 		{
@@ -241,7 +240,7 @@ class NarinArticle extends NarinClass {
 			$bdoc = ($row['ns'] == "/" ? "/" : $row['ns'] . "/") . $row['doc'];
 			if(!$includeSelf && $bdoc == $doc) continue;
 				
-			$row['href'] = $this->wiki['path']."/narin.php?bo_table=".$this->wiki['bo_table']."&doc=".urlencode($bdoc);
+			$row['href'] = $wiki['path'].'/narin.php?bo_table='.$wiki['bo_table'].'&doc='.urlencode($bdoc);
 			array_push($list, $row);
 		}
 		
@@ -394,6 +393,7 @@ class NarinArticle extends NarinClass {
 	}
 
 	/**
+	 *
 	 * 위키 문서 링크 변경
 	 *
 	 * $this->moveDoc() 와 {@link NarinNamespace} 에서 호출됨.
