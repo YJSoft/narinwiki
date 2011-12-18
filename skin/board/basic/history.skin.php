@@ -82,7 +82,7 @@ if($clear_href) $btn_width = 220;
 			<?=$history[$i][summary]?>&nbsp;
 		</td>
 		<td class="history_cmd">
-			<? if($i) { ?>
+			<? if($i || $page > 1) { ?>
 			<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>&hid=<?=$history[$i][id]?>">보기</a></span>
 			<span class="button"><a href="<?=$wiki[path]?>/diff.php?bo_table=<?=$bo_table?>&hid=<?=$history[$i][id]?>">차이</a></span>			
 			<a href="#history_content_layer<?=$i?>" id="show_history_<?=$i?>" style="display:none" class="wiki_modal"></a>

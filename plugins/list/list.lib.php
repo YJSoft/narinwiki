@@ -48,9 +48,9 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 				FROM ".$wiki['ns_table']." AS nt 
 				LEFT JOIN ".$wiki['nsboard_table']." AS nb ON nt.ns = nb.ns AND nt.bo_table = nb.bo_table 
 				INNER JOIN ".$wiki['write_table']." AS wt ON nb.wr_id = wt.wr_id $addwild
-				LEFT JOIN ".$g4['member_table']." AS mt ON mt.mb_id = wt.mb_id 
 				LEFT JOIN ( SELECT wr_id, editor_mb_id, reg_date  FROM ".$wiki['history_table']." ORDER BY reg_date DESC ) AS ht 
 					ON nb.wr_id = ht.wr_id 
+				LEFT JOIN ".$g4['member_table']." AS mt ON mt.mb_id = ht.editor_mb_id 					
 				$addjoin
 				WHERE $add $ns_match 
 					AND nt.bo_table = '".$wiki['bo_table']."' 
