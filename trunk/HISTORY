@@ -1,6 +1,12 @@
+  * 2011-12-10e
+    * 리스트 플러그인 편집자명 오류 수정
+      * plugins/list/list.lib.php
+    * 문서이력 목록 최상단에 현재문서 잘못나오는 오류 수정
+      * skins/board/basic/history.skin.php
   * 2011-12-10d  
     * 폴더명 변경시 백링크 업데이트 관련 오류 수정
       * lib/narin.Namespace.class.php
+      * lib/narin.Article.class.php
     * latest 플러그인을 list 플러그인으로 교체
     * columns 플러그인의 TOC 충돌 문제 수정
   * 2011-12-10c
