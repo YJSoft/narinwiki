@@ -1,28 +1,16 @@
-  * 2011-12-10e
-    * 리스트 플러그인 편집자명 오류 수정
-      * plugins/list/list.lib.php
-    * 문서이력 목록 최상단에 현재문서 잘못나오는 오류 수정
-      * skins/board/basic/history.skin.php
-  * 2011-12-10d  
-    * 폴더명 변경시 백링크 업데이트 관련 오류 수정
-      * lib/narin.Namespace.class.php
-      * lib/narin.Article.class.php
-    * latest 플러그인을 list 플러그인으로 교체
-    * columns 플러그인의 TOC 충돌 문제 수정
-  * 2011-12-10c
-    * 미디어관리자 파일 경로 오류 수정
-  * 2011-12-10b
-    * IE에서 미디어관리자 업로드 에러 수정
-  * 2011-12-10
-    * 캐시 테이블 content 필드 수정 (text -> mediumtext)
-      * 문법강조(code) 사용시 text 크기를 넘기는 경우 발생
-    * latest, colums 플러그인 빌트인
-    * 파일 인코딩 오류 수정
-    * NarinParser 에서 플러그인 parser 호출 시 plugin 목록을 파라미터로 넘기도록 수정
-      * 필요한 경우 플러그인간 호출/변수 등을 공유하기 위함
-    * 메모리사용성 개선
-    * 기타 버그 수정
-    * 주의 : DB 업데이트로 인한 재설치 필요    
+  * 2012-01-01
+    * Fancy URL 기능  
+    * 위키 에디터 툴바에 플러그인 버튼 추가 기능
+    * 관리(admin) 플러그인
+    * 부분 NOCACHE 기능 
+    * syntax/action 플러그인의 실행 순서 설정
+    * js/css 캐시 방법 변경
+    * IE 에서 페이지 로딩시 오래 걸리는 버그 수정
+    * code 플러그인의 geshi 문법 파일 일부 제거
+    * $wiki['path'] 변수 삭제, 다음으로 대체 사용
+      * include 시 : WIKI_PATH (절대경로 매크로)
+      * url 사용 시 : $wiki['url']
+    * 주의 : 설치과정 변경으로 재설치 필요
   * 2011-12-08
     * 미디어관리자 admin 모드 (위키 관리 > 미디어관리자)
     * 갤러리 플러그인 (빌트인)

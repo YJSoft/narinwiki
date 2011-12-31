@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
  
@@ -33,6 +33,12 @@ class NarinPluginInfoList extends NarinPluginInfo {
 	 * @var string 저장할 CSS 파일 경로
 	 */
 	var $data_css_file;	
+	
+	/**
+	 * 
+	 * @var string 저장할 아이콘 파일 경로
+	 */
+	var $data_icon_file;
 
 
 	/**
@@ -45,6 +51,7 @@ class NarinPluginInfoList extends NarinPluginInfo {
 		$this->id = "wiki_list";				
 		$this->data_js_file = $this->data_path."/js/list_plugin.js";
 		$this->data_css_file = $this->data_path."/css/list_plugin.css";
+		$this->data_icon_file = $this->data_path."/css/list_plugin.png";
 		
 		// {@link NarinPluginInfo} 클래스의 생성자에서 getSetting() 을 호출함		
 		$this->init();
@@ -135,19 +142,16 @@ class NarinPluginInfoList extends NarinPluginInfo {
 	 */
 	protected function setJsCss($css = "")
 	{
-		
-		$js = file_get_contents($this->plugin_path."/list.js");
 		if(!$css) $css = file_get_contents($this->plugin_path."/list.css");
-
-		// js 파일 작성
-		$fp = fopen($this->data_js_file, "w");
-		fwrite($fp, $js);
-		fclose($fp);
-		
+				
 		// css 파일 작성
 		$fp = fopen($this->data_css_file, "w");
 		fwrite($fp, $css);
 		fclose($fp);
+		
+		copy($this->plugin_path."/list.js", $this->data_js_file);
+		copy($this->plugin_path."/list.png", $this->data_icon_file);		
+		
 	}
 
 }

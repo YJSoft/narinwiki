@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage inc
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -20,8 +20,8 @@ if(!$is_wiki_admin && !$is_doc_owner)
 $wikiNS =& wiki_class_load("Namespace");
 $wikiConfig =& wiki_class_load("Config");
 $wikiArticle =& wiki_class_load("Article");
-$write = &$wikiArticle->getArticleById($view[wr_id]);
-$default_edit_level = $wikiConfig->setting[edit_level];
+$write = &$wikiArticle->getArticleById($view['wr_id']);
+$default_edit_level = $wikiConfig->setting['edit_level'];
 $folders = $wikiNS->namespaces("/", $withArticle=false);
 $input_doc = wiki_input_value($docname);
 $input_full = wiki_input_value($doc);
@@ -30,9 +30,9 @@ $input_full = wiki_input_value($doc);
 	
 <h1>문서관리</h1> 
 
-<form name="frmwikiman" onsubmit="return wiki_admin_submit(this);" method="post">
+<form name="frmwikiman" onsubmit="return wiki_admin_submit(this);" action="<?=$wiki['url']?>/exe/doc_update.php" method="post">
 <input type="hidden" name="w" value="u">	
-<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>">	
+<input type="hidden" name="bo_table" value="<?=$bo_table?>">	
 <input type="hidden" name="doc" value="<?=$input_full?>">	
 <input type="hidden" name="wiki_folder_switch" id="wiki_folder_switch" value="wiki_folder_select">	
 <div class="list_table">
@@ -51,7 +51,7 @@ $input_full = wiki_input_value($doc);
 		<select name="wiki_edit_level" class="tx" >
 			<option value='0'>위키기본설정 따름 (<?=$default_edit_level?>)</option>
 			<? for($i=1; $i<=10; $i++) {
-				$selected = ($write[edit_level] == $i ? "selected" : "");
+				$selected = ($write['edit_level'] == $i ? "selected" : "");
 				echo "<option value='$i' $selected>$i</option>";
 			} ?>
 		</select>
@@ -63,7 +63,7 @@ $input_full = wiki_input_value($doc);
 	<td>
 		<select name="wiki_access_level" style="width:50px" class="tx" >
 			<? for($i=1; $i<=10; $i++) {
-				$selected = ($write[access_level] == $i ? "selected" : "");
+				$selected = ($write['access_level'] == $i ? "selected" : "");
 				echo "<option value='$i' $selected>$i</option>";
 			} ?>
 		</select>
@@ -156,9 +156,9 @@ $input_full = wiki_input_value($doc);
 	  
 	  $.ajaxSetup({async:false});
 	  $.getJSON(
-	  	"<?=$wiki[path]?>/exe/ajax.filter.php", 
+	  	"<?=$wiki['url']?>/exe/ajax.filter.php", 
 	  	{
-	  		"bo_table": "<?=$wiki[bo_table]?>",
+	  		"bo_table": "<?=$bo_table?>",
 	      "subject": fname,
 	      "content": f.wiki_doc.value      
 	    }, 
@@ -180,12 +180,6 @@ $input_full = wiki_input_value($doc);
 	  }    
 	  
 	  f.wiki_folder_input.value = "/"+f.wiki_folder_input_fake.value;
-	  <?
-	  if ($g4[https_url])
-	      echo "f.action = '$g4[https_url]/$wiki[path]/exe/doc_update.php';";
-	  else
-	      echo "f.action = '$wiki[path]/exe/doc_update.php';";
-	  ?>       
 	  
 	  return true;
 	}	

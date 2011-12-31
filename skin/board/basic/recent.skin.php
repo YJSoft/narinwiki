@@ -15,7 +15,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -41,16 +41,16 @@ if($clear_href) $colspan++;
 	<tr>
 		<? if($clear_href) { ?>
 		<td>
-			<input type="checkbox" name="cid[]" value="<?=$list[$i][id]?>"/>
+			<input type="checkbox" name="cid[]" value="<?=$list[$i]['id']?>"/>
 		</td>	
 		<? } ?>
 		<td class="changes_date">
-			<?=$list[$i][reg_date]?>
+			<?=$list[$i]['reg_date']?>
 		</td>
 		<td class="changes_doc">
-			<a href="<?=$list[$i][view_href]?>"><?=$list[$i][target]?></a>&nbsp;
-			: <?=$list[$i][status]?>&nbsp;
-			- <?=($list[$i][user] ? $list[$i][user] : $list[$i][ip_addr])?>
+			<a href="<?=$list[$i]['view_href']?>"><?=$list[$i]['target']?></a>&nbsp;
+			: <?=$list[$i]['status']?>&nbsp;
+			- <?=($list[$i]['user'] ? $list[$i]['user'] : $list[$i]['ip_addr'])?>
 		</td>		
 
 	</tr>
@@ -78,7 +78,7 @@ if($clear_href) $colspan++;
 
 	<div class="wiki_tools_left">
 		<span class="button"><a href="javascript:history.go(-1);">뒤로</a></span>
-		<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>
+		<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 	</div>
 	<div class="wiki_tools_right">
 		<? if($clear_href) { ?>

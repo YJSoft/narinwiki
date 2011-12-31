@@ -4,7 +4,7 @@
  * 나린위키 메인 문법 플러그인 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,16 +16,10 @@
  * 나린위키의 기본 문법 클래스이다.
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinSyntaxDefault extends NarinSyntaxPlugin {
-
-	/**
-	 *
-	 * @var string 플러그인 아이디
-	 */
-	var $id;
 
 	/**
 	 *
@@ -111,6 +105,7 @@ class NarinSyntaxDefault extends NarinSyntaxPlugin {
 	 */
 	public function __construct() {
 		parent::__construct();
+		$this->order = 1;
 		$this->id = "wiki_default_parser";		
 	}
 
@@ -127,6 +122,7 @@ class NarinSyntaxDefault extends NarinSyntaxPlugin {
 			
 		$this->list_level_types = array();
 		$this->list_level = 0;
+		$this->list_space = 0;
 
 		$this->table_rowspan = array();
 		$this->table_opened = false;
@@ -181,7 +177,8 @@ class NarinSyntaxDefault extends NarinSyntaxPlugin {
       'wiki_font_size'=>'&lt;size(.*?)&gt;(.*?)&lt;\/size&gt;',
       'wiki_footnotes'=>'\(\((.*?)\)\)',
       'wiki_no_toc'=>'~~NOTOC~~',
-      'wiki_comment'=>'~~COMMENT~~'
+      'wiki_comment'=>'~~COMMENT~~',
+      'wiki_norobot'=>'~~NOROBOT~~'
       );
 
       $variable_regs = array(
@@ -758,7 +755,7 @@ END;
 			}
 			else	// 리스트를 새로 열음
 			{
-				$output_string .= "\n$tab<{$m_listtype} class='wiki_list_".$this->list_level."'>\n$tab\t<li>";
+				$output_string .= "\n$tab<{$m_listtype} class='wiki_list wiki_list_".$this->list_level."'>\n$tab\t<li>";
 			}
 
 		}
@@ -939,9 +936,18 @@ END;
 		if($is_exists) $class = "wiki_active_link";
 		else $class = "wiki_inactive_link";
 
+		// [[/narin/나린위키 문법#HML 직접 작성]] 과 같이
+		// 문단 링크 허용 (FROM 2011-12-01)
+		/*
+		$hash = '';
+		if(strpos($full, '#')) {
+			list($doc, $hash) = explode('#', $full);
+			$hash = '#' . $hash;
+		}
+		*/
 		return sprintf(
       '<a href="%s" class="%s">%s</a>',
-		$this->wiki['path']."/narin.php?bo_table=".$this->bo_table."&doc=".urlencode($doc),
+		wiki_url('read', array('doc'=>$doc)),
 		$class,
 		$title
 		);
@@ -999,7 +1005,6 @@ END;
 
 		$up = wiki_get_parent_path($loc);
 		$str = "<ul class='folder_list' style='$style'>";
-		//if($loc != "/") $str .= '<li class="folder_up"><a href="'.$this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.$up.'">..</a></li>';
 		for($i=0; $i<count($files); $i++) {
 			$str .= '<li class="'.$files[$i]['type'].'"><a href="'.$files[$i]['href'].'">'.$files[$i]['name'].'</a></li>';
 		}
@@ -1025,12 +1030,11 @@ END;
 
 		if($matches[6]) parse_str(str_replace("&amp;", "&", $matches[6]));
 		$btn_txt = ($title ? $title : "문서만들기");
-		$path = $this->wiki['path'];
+		$path = $this->wiki['url'];
 		return <<<EOF
 		
 				<div class="wiki_newpage clear" style="$style">				
 				<form action="$path/narin.php" method="get" class="wiki_form">				
-				<input type="hidden" name="bo_table" value="{$this->wiki['bo_table']}"/>
 				<input type="hidden" name="loc" value="$loc"/>				
 				<span class="form_label">$label</span>
 				<input type="text" name="doc" class="txt" size="20"/>
@@ -1053,12 +1057,11 @@ EOF;
 	 */
 	public function wiki_search($matches, $params)
 	{
-		$path = $this->wiki['path'];
+		$path = $this->wiki['url'];
 		return <<<EOF
 		
 		<div class="wiki_search clear">
 		<form action="$path/search.php" onsubmit="return wiki_search(this);"  class="wiki_form" method="get">
-		<input type="hidden" name="bo_table" value="{$this->wiki['bo_table']}"/>
 		<input type="text" class="search_text txt" name="stx" size="20"/>
 		<span class="button"><input type="submit" value="검색"></span>
 		</form>			
@@ -1172,7 +1175,7 @@ EOF;
 				if(!$v[view] && $v['source']) {	// not count image
 					if($fIdx == $find_file_index) {
 						$title = ( $matches[3] ? $matches[3] : $v['source'] );
-						$href = "javascript:file_download('".$this->g4['bbs_path']."/download.php?bo_table=".$this->wiki['bo_table']."&wr_id=".$view['wr_id']."&no=".$k."', '".$title."')";
+						$href = "javascript:file_download('".$this->g4['bbs_path']."/download.php?&wr_id=".$view['wr_id']."&no=".$k."', '".$title."')";
 						return "<a href=\"$href\" class=\"wikiFile\" style=\"$style\">$title</a>";
 					}
 					$fIdx++;
@@ -1259,7 +1262,7 @@ EOF;
 			$img = $fileinfo['imgsrc'];
 		}
 
-		return "<a href='$origin' class='wiki_image wiki_modal' style='$style' rel='$rn'><img src='$img' class='$align' style='$imgstyle' border='0' title='$title'/></a>";
+		return "<a href='$origin' class='wiki_image wiki_modal' style='$style' rel='$rn'><img src='$img' class='$align' style='border:1px solid #888;padding:4px;$imgstyle' border='0' title='$title'/></a>";
 
 	}
 
@@ -1305,7 +1308,22 @@ EOF;
 		$params['view']['use_comment'] = true;
 		return "";
 	}
+	
+	/**
+	 *
+	 * 메타태그에 norobot 추가
+	 * @see narin.php
+	 *
+	 * @param array $matches 매칭 결과
+	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
+	 * @return string ""
+	 */
+	public function wiki_norobot($matches, $params) {
+		return "";
+	}	
 
+			
+	
 	/**
 	 *
 	 * 플러그인 설명

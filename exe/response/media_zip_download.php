@@ -4,7 +4,7 @@
  * 미디어 파일 다운로드 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -15,7 +15,7 @@ include_once "_common.php";
 
 if(!$loc || !$is_wiki_admin || !$file) wiki_not_found_page();
 
-$filepath = $wiki['path'].'/data/'.$bo_table.'/'.$file.'.zip';
+$filepath = WIKI_PATH.'/data/'.$bo_table.'/'.$file.'.zip';
 
 if(!file_exists($filepath)) {
 	wiki_not_found_page();

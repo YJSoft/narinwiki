@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -28,11 +28,11 @@ $large_width = $setting['large_size'];
 	#admbasic td { padding-left:5px; }
 	.desc { color:#888; font-size:90%;text-align:left;font-weight:normal; margin-top:8px;}	
 </style>
-<form name="frmadm" onsubmit="return check_form(this);" action="<?=$wiki['path']?>/adm/exe_media.php" method="post">
+<form name="frmadm" onsubmit="return check_form(this);" action="<?=$wiki['url']?>/adm/exe_media.php" method="post">
 <input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
 
 <div class="list_table">
-<a href="javascript:win_pop_center('../media.php?bo_table=<?=$bo_table?>&md=admin', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');">미디어 관리자 admin 모드</a>
+<a href="javascript:win_pop_center('../media.php?md=admin', 1000, 600, 'toolbar=0,resizable=1,scrollbars=1');">미디어 관리자 admin 모드</a>
 <table id="admbasic" cellspacing="0" cellpadding="0" border="0">
 <tbody>
 	<tr>

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -27,7 +27,7 @@ $folderViewLevel = $setting['folder_view_level'];
 	#admbasic th { text-align:right; width:150px; padding-right:10px; }
 	#admbasic td { padding-left:5px; }
 </style>
-<form name="frmadm" onsubmit="return submit_check(this);" method="post">
+<form name="frmadm" onsubmit="return submit_check(this);" action="<?=$wiki['url']?>/adm/exe_basic.php" method="post">
 <input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
 
 <div class="list_table">
@@ -126,7 +126,7 @@ $folderViewLevel = $setting['folder_view_level'];
 	  var subject = "";  
 	  $.ajaxSetup({async:false});
 	  $.getJSON(
-	  	"<?=$wiki[path]?>/exe/ajax.filter.php", 
+	  	"<?=$wiki['url']?>/exe/ajax.filter.php", 
 	  	{
 	  		"bo_table": "<?=$wiki[bo_table]?>",
 	      "subject": f.wiki_front.value    
@@ -142,13 +142,6 @@ $folderViewLevel = $setting['folder_view_level'];
 	      return false;
 	  }  
 
-		
-	  <?
-	  if ($g4[https_url])
-	      echo "f.action='$g4[https_url]/$wiki[path]/adm/exe_basic.php'";
-	  else
-	  		echo "f.action='$wiki[path]/adm/exe_basic.php'";
-	  ?> 		
   	return true;
 	}
 </script>

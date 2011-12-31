@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -28,7 +28,12 @@ $parser =& wiki_class_load("Parser");
 $html = $parser->parse($wr);
 
 $no_layout = true;
-include_once "head.php";
+ob_start();
+include_once WIKI_PATH."/head.php";
 echo $html;
-include_once "tail.php";
+include_once WIKI_PATH."/tail.php";
+$content = ob_get_contents();
+ob_clean();
+echo $content;
+
 ?>

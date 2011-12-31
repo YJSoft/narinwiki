@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -36,7 +36,7 @@ if($file_info['mb_id'] != $member['mb_id'] && !$is_wiki_admin) {
 $media->deleteFile($loc, $file);
 
 $thumb =& wiki_class_load("Thumb");	
-$thumb->deleteThumb("media-".$wiki['bo_table']."-".$file_info['id']);
+$thumb->deleteThumb("media-".$bo_table."-".$file_info['id']);
 echo wiki_json_encode(array('code'=>1));
 
 

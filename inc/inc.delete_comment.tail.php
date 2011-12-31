@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage event
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */

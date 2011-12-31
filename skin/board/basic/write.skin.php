@@ -1,4 +1,4 @@
-<?
+﻿<?
 /**
  * 
  * 나린위키 스킨 : 문서 작성 스킨
@@ -8,7 +8,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author sir.co.kr
  * @author	byfun (http://byfun.com)
  * @filesource
@@ -42,7 +42,7 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	
 	<div style="margin:8px 0;padding:5px;border-bottom:1px dashed #ccc;font-size:9pt;">
 		문서를 작성하시고 완료 버튼을 클릭하세요.
-		위키 문법에 대해서 더 알려면 <a href="http://narin.byfun.com/syntax">위키 문법 학습</a> 페이지를 참고하세요.
+		위키 문법에 대해서 더 알려면 <a href="http://narinwiki.org/syntax">위키 문법 학습</a> 페이지를 참고하세요.
 	</div>
 	
 	<table width="100%" class="write_table" border="0" cellspacing="0" cellpadding="0">
@@ -137,8 +137,8 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 	<tr>
 		<th style="padding-top:10px; line-height:20px;">
 		    파일첨부 <br/>
-		    <span onclick="add_file();" style="cursor:pointer;"><img src="<?=$board_skin_path?>/img/btn_file_add.gif"></span> 
-		    <span onclick="del_file();" style="cursor:pointer;"><img src="<?=$board_skin_path?>/img/btn_file_minus.gif"></span>
+		    <span onclick="add_file();" style="cursor:pointer;"><img src="<?=SKIN_URL?>/img/btn_file_add.gif"></span> 
+		    <span onclick="del_file();" style="cursor:pointer;"><img src="<?=SKIN_URL?>/img/btn_file_minus.gif"></span>
 		</th>
 		<td style='padding:5 0 5 0;'>
 		<table id="variableFiles" cellpadding=0 cellspacing=0></table>
@@ -222,14 +222,14 @@ var char_max = parseInt(<?=$write_max?>); // 최대
 			<? } ?>
 			<span class="button red"><input type=submit id="btn_submit" value="완료" border=0 accesskey='s'></span>&nbsp;
 	    <span class="button"><a href="javascript:history.go(-1);" id="btn_back">뒤로</a></span>&nbsp;
-	    <span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>" id="btn_list">시작페이지</a></span></td>
+	    <span class="button"><a href="<?=wiki_url()?>" id="btn_list">시작페이지</a></span></td>
 	  </td>
 	 </tr>
 	</table>
 
 </form>
 
-<script type="text/javascript" src="<?=$g4['path']?>/js/jquery.kcaptcha.js"></script>
+<script type="text/javascript" src="<?=$wiki['g4_url']?>/js/jquery.kcaptcha.js"></script>
 <script type="text/javascript">
 <?
 // 관리자라면 분류 선택에 '공지' 옵션을 추가함
@@ -299,7 +299,7 @@ function fwrite_submit(f)
     var subject = "";
     var content = "";
     $.ajax({
-        url: "<?=$wiki['path']?>/exe/ajax.filter.php",
+        url: wiki_url+"/exe/ajax.filter.php",
         type: "POST",
         data: {
             "subject": f.wr_subject.value,
@@ -361,12 +361,12 @@ function fwrite_submit(f)
 		$.wiki_lightbox_close();
 	}
 	function wiki_delete_tmpsave() {
-		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_delete', wr_doc : wiki_doc}, function(data) {});
+		$.post(wiki_url+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_delete', wr_doc : wiki_doc}, function(data) {});
 		$.wiki_lightbox_close();
 	}		
 	
 	$(document).ready(function() {
-		$.getJSON(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_read', wr_doc : wiki_doc}, function(json) {			
+		$.getJSON(wiki_url+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_read', wr_doc : wiki_doc}, function(json) {			
 			if(json.code == 1) {					
 				tmp_saved = json.wr_content;
 				wiki_dialog('확인', '임시 저장된 문서가 있습니다.<br/>('+json.wr_date+')', {
@@ -383,7 +383,7 @@ function fwrite_submit(f)
 	$("#btn_tmpsave").click(function(evt) {
 		evt.preventDefault();
 		$("#btn_tmpsave").hide();
-		$.post(wiki_path+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_write', wr_doc : wiki_doc, wr_content : $("#wr_content").val()}, function(data) {
+		$.post(wiki_url+"/exe/a.php", { bo_table : g4_bo_table, w : 'tmpsave_write', wr_doc : wiki_doc, wr_content : $("#wr_content").val()}, function(data) {
 			json = $.parseJSON(data);
 			if(json.code == -1) {
 				bgcolor = "#800000";
@@ -397,5 +397,5 @@ function fwrite_submit(f)
 	});
 </script>
 <?}?>
-<script type="text/javascript" src="<?=$g4['path']?>/js/board.js"?>"></script>
+<script type="text/javascript" src="<?=$wiki['g4_url']?>/js/board.js"?>"></script>
 <script type="text/javascript"> window.onload=function() { drawFont(); } </script>

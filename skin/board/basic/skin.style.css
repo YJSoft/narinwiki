@@ -73,7 +73,7 @@
 		#commentContents p { padding:0; margin:0 0 5px 0; }
 		
 /* folder.skin.php ***************/
-	table#folder_list { width:100%; list-style:none; padding-left:0;margin-left:0}	
+	table#folder_list { width:100%; list-style:none; padding-left:0;margin-left:0;font-size:9pt;}
 	table#folder_list th { text-align:left; border-bottom:1px solid #ccc;background:#f8f8f8;font-weight:normal; padding:5px 1px;}
 	table#folder_list td { color:#888; }
 	table#folder_list td.flist { padding:5px 5px 5px 22px; margin-top:3px; }
@@ -82,7 +82,7 @@
 	table#folder_list td.doc { background:url('img/icon_doc.gif') no-repeat left}	
 	table#folder_list .f_comment { font-size:8pt; color:#FF8040; margin-top:2px; margin-left:5px;}
 	
-	#wiki_folder_navi { width:200px; vertical-align:top; scroll:auto; border-right:1px solid #ccc; padding-right:5px;}
+	#wiki_folder_navi { width:200px; vertical-align:top; scroll:auto; border-right:1px solid #ccc; padding-right:5px; visibility:hidden;}
 	#wiki_folder_contents { padding-left:10px; }
 	
 /* history.skin.php **************/

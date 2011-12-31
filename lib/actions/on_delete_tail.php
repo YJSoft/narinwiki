@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage event
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -37,5 +37,7 @@ $wikiCache->delete($wr_id);
 $wikiChanges =& wiki_class_load("Changes");
 $wikiChanges->update("DOC", $doc, "삭제", ($member['mb_id'] ? $member['mb_id'] : $write[wr_name]));
 
+goto_url(wiki_url());
+exit;
 
 ?>

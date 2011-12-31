@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -32,6 +32,6 @@ if($folder != $move_to_folder) {
 	}
 }
 
-header("location:".$wiki['path']."/folder.php?bo_table=".$wiki['bo_table']."&loc=".urlencode($move_to_folder));
+header("location:".wiki_url('folder', array('loc'=>stripcslashes($move_to_folder))));
 
 ?>

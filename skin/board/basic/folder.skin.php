@@ -7,7 +7,7 @@
  * 폴더보기 스킨 페이지
  * 
  * <b>사용 변수</b>
- * - $wiki['path'] : 위키 루트 폴더 경로
+ * - $wiki['url'] : 위키 루트 URL
  * - $wiki['skin_path'] : 스킨 경로 ($wiki 변수는 narin.config.php, narin.wiki.lib.php 파일 참고)
  * - $folder['navi'] : 상단 네비게이션 문자열    e.g. Home > byfun > com > gnuboard
  * - $folder['loc'] : 파라미터로 넘어온 위치 문자열 e.g. /byfun/com/gnuboard
@@ -50,7 +50,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -67,14 +67,14 @@ $colspan = 5;
 		
 		<div class="wiki_tools_left">
 	  	
-	  	<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
+	  	<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 			  	
 		</div> <!--// wiki_tools_left -->
 		
 		<div class="wiki_tools_right">
 		
-			<form action="<?=$wiki['path']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
-			<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>"/>
+			<form action="<?=$wiki['url']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
+			<input type="hidden" name="bo_table" value="<?=$bo_table?>"/>
 			<input type="text" class="search_text txt" name="stx" size="20"/>
 			<span class="button purple"><input type="submit" value="검색"></span>
 			</form>		
@@ -101,7 +101,7 @@ $colspan = 5;
 	
 	<div id="wiki_folder_contents">
 		<form name="frmflist" method="post">
-		<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>">
+		<input type="hidden" name="bo_table" value="<?=$bo_table?>">
 		<input type="hidden" name="folder" value="<?=wiki_input_value($folder['loc'])?>">
 		<input type="hidden" name="move_to_folder">
 
@@ -131,7 +131,7 @@ $colspan = 5;
 			<tr>
 				<td> </td>
 				<td class="flist folder_up">
-					<a href="<?=$wiki['path']?>/folder.php?bo_table=<?=$wiki['bo_table']?>&loc=<?=$folder[up]?>">..</a>
+					<a href="<?=$wiki['url']?>/folder.php?bo_table=<?=$bo_table?>&loc=<?=$folder['up']?>">..</a>
 				</td>
 				<td> </td>
 				<td> </td>
@@ -145,7 +145,7 @@ $colspan = 5;
 				<td>
 				<? if($is_wiki_admin) {				
 					if($folder_list[$i]['type'] == 'doc') {?>
-							<input type="checkbox" name="chk_wr_id[]" class="chk" value="<?=$folder_list[$i][wr_id]?>" style="margin-top:3px"/>
+							<input type="checkbox" name="chk_wr_id[]" class="chk" value="<?=$folder_list[$i]['wr_id']?>" style="margin-top:3px"/>
 					<?}
 					}?>
 				</td>
@@ -176,7 +176,7 @@ $colspan = 5;
 					폴더 :
 					<select name="move_folder" id="move_folder">
 						<? for($i=0; $i<count($all_folders); $i++) {
-							echo "<option value=\"".wiki_input_value($all_folders[$i]['path'])."\">{$all_folders[$i][display]}</option>";
+							echo "<option value=\"".wiki_input_value($all_folders[$i]['path'])."\">".$all_folders[$i]['display']."</option>";
 						}?>
 					</select>
 				</div>
@@ -195,7 +195,7 @@ $colspan = 5;
 
 <? 
 if($is_wiki_admin) {
-	include_once $wiki['path']."/inc/inc.folder.manager.php";
+	include_once WIKI_PATH."/inc/inc.folder.manager.php";
 } 
 ?>
 
@@ -204,7 +204,7 @@ if($is_wiki_admin) {
 	
 	<div class="wiki_tools_left">
 		<span class="button"><a href="javascript:history.go(-1);">뒤로</a></span>
-		<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
+		<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 	</div> <!--// wiki_tools_left -->
 
 	<div class="wiki_tools_right">
@@ -213,10 +213,8 @@ if($is_wiki_admin) {
 		<span class="button"><a href="<?=$create_doc_href?>">문서생성</a></span>
 		<? }?>
 		
-		<? if($folder_manage_href) { ?>
-		<span class='button'><a href="#folderadmin" id="show_folderadmin">폴더 관리</a></span>
-		<? } ?>
 		<? if($is_wiki_admin) { ?>
+		<span class='button'><a href="#folderadmin" id="show_folderadmin">폴더 관리</a></span>
 		<span class="button"><a href="javascript:select_delete();">문서삭제</a></span>
 		<span class="button"><a href="javascript:select_move();">문서이동</a></span>
 		<? }?>
@@ -236,7 +234,10 @@ if($is_wiki_admin) {
 		});
 		$(".narin_tree").treeview({
 			persist: "location",
-			collapsed: true
+			collapsed: true,
+			aftertree : function() {
+				$('#wiki_folder_navi').css('visibility', 'visible');
+			}
 		});
 	});
 
@@ -285,7 +286,7 @@ function select_delete() {
 	if (!confirm("선택한 문서를 정말 삭제 하시겠습니까?"))
   	return;
 	
-	f.action = "<?=$g4[bbs_path]?>/delete_all.php";
+	f.action = "<?=$wiki['g4_url']?>/bbs/delete_all.php";
   f.submit();
 }	
 
@@ -303,7 +304,7 @@ function select_move_do() {
   
   f.move_to_folder.value = $("#move_folder").val();
 
-	f.action = "<?=$wiki['path']?>/exe/move_doc_all.php";
+	f.action = "<?=$wiki['url']?>/exe/move_doc_all.php";
   f.submit();
 }
 

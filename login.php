@@ -5,10 +5,10 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 include_once("./_common.php");
-header("location:".$g4['bbs_path']."/login.php?url=$url");
+header("location:".$wiki['g4_url']."/bbs/login.php?url=$url");
 ?>

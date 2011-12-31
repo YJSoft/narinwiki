@@ -27,7 +27,7 @@
  * 
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -65,46 +65,46 @@ if($clear_href) $btn_width = 220;
 	
 	<? for($i=0; $i<count($history); $i++) {?>
 	<tr>
-		<? if($history[$i][delete_href]) { ?>
+		<? if($history[$i]['delete_href']) { ?>
 		<td>
-			<input type="checkbox" name="hid[]" value="<?=$history[$i][id]?>"/>
+			<input type="checkbox" name="hid[]" value="<?=$history[$i]['id']?>"/>
 		</td>	
 		<?} else if($clear_href) {?>
 		<td></td>
 		<? } ?>
 		<td class="history_date">
-			<?=$history[$i][reg_date]?>
+			<?=$history[$i]['reg_date']?>
 		</td>
 		<td class="history_editor">
-			<?=$history[$i][editor_mb_id]?>&nbsp;
+			<?=$history[$i]['editor_mb_id']?>&nbsp;
 		</td>		
 		<td class="history_summary">
-			<?=$history[$i][summary]?>&nbsp;
+			<?=$history[$i]['summary']?>&nbsp;
 		</td>
 		<td class="history_cmd">
 			<? if($i || $page > 1) { ?>
-			<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>&hid=<?=$history[$i][id]?>">보기</a></span>
-			<span class="button"><a href="<?=$wiki[path]?>/diff.php?bo_table=<?=$bo_table?>&hid=<?=$history[$i][id]?>">차이</a></span>			
+			<span class="button"><a href="<?=wiki_url('read', array('doc'=>$doc, 'hid'=>$history[$i]['id']))?>">보기</a></span>
+			<span class="button"><a href="<?=wiki_url('diff', array('hid'=>$history[$i]['id']))?>">차이</a></span>			
 			<a href="#history_content_layer<?=$i?>" id="show_history_<?=$i?>" style="display:none" class="wiki_modal"></a>
 			<? } else { ?>
 			현재 문서
 			<? } ?>
-			<? if($history[$i][recover_href]) { ?>
-				<span class="button"><a href="<?=$history[$i][recover_href]?>">복원</a></span>
+			<? if($history[$i]['recover_href']) { ?>
+				<span class="button"><a href="<?=$history[$i]['recover_href']?>">복원</a></span>
 			<? } ?>
-			<? if($history[$i][delete_href]) { ?>
-				<span class="button"><a href="<?=$history[$i][delete_href]?>">삭제</a></span>
+			<? if($history[$i]['delete_href']) { ?>
+				<span class="button"><a href="<?=$history[$i]['delete_href']?>">삭제</a></span>
 			<? } ?>
 			<div class="history_content" id="history_content_layer<?=$i?>">
 				<div >
-					<div class="history_content_date"><?=$history[$i][date]?>: <?=$history[$i][summary]?></div>
+					<div class="history_content_date"><?=$history[$i]['date']?>: <?=$history[$i]['summary']?></div>
 					<div id="history_content_<?=$i?>"></div>
 					<div class="wiki_tools">
-						<? if($history[$i][recover_href]) { ?> 	
-							<span class="button"><a href="<?=$history[$i][recover_href]?>">복원</a></span>
+						<? if($history[$i]['recover_href']) { ?> 	
+							<span class="button"><a href="<?=$history[$i]['recover_href']?>">복원</a></span>
 						<? } ?>
-						<? if($history[$i][delete_href]) { ?>
-							<span class="button"><a href="<?=$history[$i][delete_href]?>">삭제</a></span>
+						<? if($history[$i]['delete_href']) { ?>
+							<span class="button"><a href="<?=$history[$i]['delete_href']?>">삭제</a></span>
 						<? } ?>					
 					</div>
 				</div>
@@ -134,8 +134,8 @@ if($clear_href) $btn_width = 220;
 <div class="wiki_tools clear">
 
 	<div class="wiki_tools_left">
-		<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>&doc=<?=urlencode($doc)?>">문서보기</a></span>
-		<span class="button"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>
+		<span class="button"><a href="<?=wiki_url('read', array('doc'=>$doc))?>">문서보기</a></span>
+		<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 	</div>
 	<div class="wiki_tools_right">
 		<? if($clear_href) { ?>
@@ -156,7 +156,7 @@ if($clear_href) $btn_width = 220;
 <?}?>
 <script type="text/javascript">
 	function show_history(idx, hid) {
-		$("#history_content_"+idx).load('<?=$wiki[path]?>/exe/get.php?bo_table=<?=$wiki[bo_table]?>&w=history&doc=<?=urlencode($doc)?>&hid='+hid, function() {
+		$("#history_content_"+idx).load('<?=$wiki['url']?>/exe/get.php?bo_table=<?=$bo_table?>&w=history&doc=<?=urlencode($doc)?>&hid='+hid, function() {
 			$("#show_history_"+idx).trigger('click');
 		});
 	}	

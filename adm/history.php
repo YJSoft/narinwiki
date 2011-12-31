@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -25,7 +25,7 @@ $unlinkedList = $wikiHistory->unlinkedHistory();
 	.list_table input { border:1px solid #ccc; }
 	.desc { color:#888; font-size:90%;text-align:left;font-weight:normal; margin-top:8px;}
 </style>
-<form name="frmadm" onsubmit="return check_form(this);" action="<?=$wiki['path']?>/adm/exe_media.php" method="post">
+<form name="frmadm" onsubmit="return check_form(this);" action="<?=$wiki['url']?>/adm/exe_media.php" method="post">
 <input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
 
 <div class="list_table">
@@ -107,23 +107,23 @@ $unlinkedList = $wikiHistory->unlinkedHistory();
 <script type="text/javascript">
 	function del_unlinked(doc) {
 		if(!confirm('삭제하시겠습니까?')) return;
-		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=del_unlinked&doc='+encodeURIComponent(doc);
+		location.href = 'exe_history.php?md=del_unlinked&doc='+encodeURIComponent(doc);
 	}
 	function clear_unlinked() {
 		if(!confirm('삭제하시겠습니까?')) return;
-		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=clear_unlinked';
+		location.href = 'exe_history.php?md=clear_unlinked';
 	}	
 	function del_expired_history_by_day() {		
 		var ex = $("#history_expire_day").val();
 		if(ex == 0) { alert('값을 선택하세요'); return; }
 		if(!confirm('정리하시겠습니까?')) return;
-		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=ehbd&expire='+ex;
+		location.href = 'exe_history.php?md=ehbd&expire='+ex;
 	}
 	function del_expired_changes_by_day() {		
 		var ex = $("#changes_expire_day").val();
 		if(ex == 0) { alert('값을 선택하세요'); return; }
 		if(!confirm('정리하시겠습니까?')) return;
-		location.href = 'exe_history.php?bo_table='+g4_bo_table+'&md=ecbd&expire='+ex;
+		location.href = 'exe_history.php?md=ecbd&expire='+ex;
 	}	
 
 </script>

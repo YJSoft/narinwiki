@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -38,8 +38,8 @@ if(!$ns_options) $ns_options = "<option value=\"/\">/</option>";
 
 <div style="color:#ff0000;margin-bottom:8px">* 제목에 /, |, \ 문자를 사용할 수 없습니다.</div>
 
-<form name="frmnowiki" onsubmit="return submit_check(this);" method="post">
-<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>"/>
+<form name="frmnowiki" onsubmit="return submit_check(this);" action="<?=$wiki['url']?>/adm/exe_nowiki.php" method="post">
+<input type="hidden" name="bo_table" value="<?=$bo_table?>"/>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup width="20px"/>
 <colgroup width=""/>
@@ -121,13 +121,6 @@ function submit_check(f)
       alert("문서를 하나 이상 선택하세요.");
       return false;
   }
-  
-  <?
-  if ($g4['https_url'])
-      echo "f.action='".$g4['https_url']."/".$wiki['path']."/adm/exe_nowiki.php'";
-  else
-  		echo "f.action='".$wiki['path']."/adm/exe_nowiki.php'";
-  ?>   
     
   return true;
 }	

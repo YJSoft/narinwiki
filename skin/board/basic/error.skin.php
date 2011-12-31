@@ -14,7 +14,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -25,5 +25,5 @@ if (!defined('_GNUBOARD_')) exit;
 <?=$msg?>
 <div class="wikiToolbar">
 	<span class="button"><a href="javascript:history.go(-1);">뒤로</a></span>
-	<span class="button green"><a href="<?=$wiki[path]?>/narin.php?bo_table=<?=$wiki[bo_table]?>">시작페이지</a></span>
+	<span class="button green"><a href="<?=wiki_url()?>">시작페이지</a></span>
 </div>

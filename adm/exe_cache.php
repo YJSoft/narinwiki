@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -15,7 +15,7 @@ include_once("_common.php");
 
 if($md == 'clear') {	
 	
-	$dir = $wiki['path'].'/data/'.$bo_table.'/thumb/';
+	$dir = WIKI_PATH.'/data/'.$bo_table.'/thumb/';
 	if(file_exists($dir)) {
 		foreach(glob($dir.'*.*') as $v){
 			@unlink($v);
@@ -43,7 +43,8 @@ if($md == 'rc' && $page) {
 	$res = sql_query($sql);
 	$idx = 0;
 	$wikiCache =& wiki_class_load("Cache");
-	$wikiParser =& wiki_class_load("Parser");
+	
+	$wikiParser =& wiki_class_load("Parser");	
 	while($write = sql_fetch_array($res)) {		
 		if(!$write['wr_id']) { $idx++; continue; }
 		$content = $wikiParser->parse($write);
@@ -51,7 +52,7 @@ if($md == 'rc' && $page) {
 		$idx++;
 	}
 	if($idx < $page_rows) {
-		list($file_size, $file_count) = wiki_dir_filesize($wiki['path'].'/data/'.$bo_table.'/thumb');
+		list($file_size, $file_count) = wiki_dir_filesize(WIKI_PATH.'/data/'.$bo_table.'/thumb');
 		echo wiki_json_encode(array('code'=>100, 'file_size'=>wiki_file_size($file_size), 'file_count'=>$file_count)); 		// 더이상 없음
 	} else {
 		echo wiki_json_encode(array('code'=>1, 'total'=>$total, 'from'=>$from_record, 'to'=>($from_record+$page_rows)));

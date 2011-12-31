@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -15,8 +15,8 @@ $wikiConfig =& wiki_class_load("Config");
 $history_access_level = $wikiConfig->setting['history_access_level'];
 
 $wikiControl =& wiki_class_load("Control");
-if($member['mb_level'] < $history_access_level) {
-	$wikiControl->error("문서 이력 보기 권한 없음", "문서 이력보기 권한이 없습니다.");	
+if($member['mb_level'] < $history_access_level) {	
+	$wikiControl->error("문서 이력 보기 권한 없음", "문서 이력보기 권한이 없습니다.");
 }
 
 if(!$doc) $doc = "/".$wiki['front'];

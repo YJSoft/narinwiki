@@ -5,26 +5,113 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
+function debug($msg) {
+	echo '=> ' . $msg . '<br/>';
+}
 
-$g4_path = "..";
-include_once($g4_path."/common.php");
+$charset = 'utf-8';
 
-if(!$is_admin) header("location:".$g4['bbs_path']."/login.php");
+$g4_path = $_POST['g4_path'];
+$g4_url = $_POST['g4_url'];
+$wiki_bo_table = $_POST['wiki_bo_table'];
+
+unset($_POST['g4_path']);
+
+$port = ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'.$_SERVER['SERVER_PORT']);
+$wiki_url = 'http://' . $_SERVER['HTTP_HOST'] . $port . dirname($_SERVER['REQUEST_URI']);
+
+//print_r($_POST);
+// 초기 설정
+if(!$g4_path || !$g4_url) {
+?>
+<html>
+<head>
+	<title>나린위키 설치</title>
+	<meta http-equiv="content-type" content="text/html; charset=<?=$charset?>">
+	<link	rel="stylesheet" href="./css/narin.wiki.style.css" type="text/css">
+	<style type="text/css">
+	</style>
+</head>
+<body>	
+<h1>나린위키 설치</h1>
+<form action="./install.php" method="post">
+<div class="list_table" width="500px" >
+<table cellspacing="0" cellpadding="0" border="0">
+<colgroup>
+	<col width="120px">
+	<col>
+</colgroup>	
+<tbody>
+	<tr>
+		<th>그누보드 경로</th>
+		<td>
+			<input type="text" name="g4_path" size="50"/>
+			<div>
+				나린위키 폴더로부터의 상대 경로를 입력합니다. <br/>
+				e.g. g4/narinwiki 일 경우 .. 를 입력 <br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;그누보드와 같은 레벨의 다른 폴더일 경우 ../g4 입력
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th>그누보드 URL</th>
+		<td>
+			<input type="text" name="g4_url" size="50" value="http://<?=$_SERVER['HTTP_HOST']?>"/>
+			<div>
+				'http://<?=$_SERVER['HTTP_HOST']?>/그누보드폴더' 와 같이 전체 URL을 입력하세요. <br/>
+				그누보드가 루트폴더에 설치되어있다면 http://<?=$_SERVER['HTTP_HOST']?> 만 입력합니다.
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<th>게시판 id</th>
+		<td>
+			<input type="text" name="wiki_bo_table" size="50"/>
+			<div>
+				위키로 사용할 게시판 아이디(bo_table)를 입력하세요.
+			</div>
+		</td>
+	</tr>	
+	<tr>
+		<th>&nbsp;</th>
+		<td><span class="button"><input type="submit" value="설치시작"/></span></td>
+	</tr>
+</tbody>
+</table>
+</div>
+</form>
+</body>	
+<?	
+exit;
+}
+
+// 파라미터 검사
+if(!file_exists($g4_path."/dbconfig.php")) {
+?>
+	<script type="text/javascript">
+		alert('그누보드가 설치되어있지 않거나 경로가 올바르지 않습니다.');
+		history.go(-1);
+	</script>
+<?
+exit;
+}
+
+include_once $g4_path."/common.php";
+
+// 관리자 권한 검사
+if(!$is_admin) header("location:".$g4['bbs_path']."/login.php?url=".$_SERVER['PHP_SELF']);
+
+// 설치되어있다면 패스~
 if(file_exists("./narin.config.php")) {
-	header("location:.");
+	header("/");
 	exit;
 }
 
 if($_POST['md'] == "doit") {
-	$wiki_path = trim($wiki_path);
-	if(!$wiki_path) {
-		alert("설치할 수 없습니다!!");
-		exit;
-	}
 
 	$db_prefix = "byfun_";
 
@@ -177,11 +264,14 @@ EOF;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
+	$wiki_fancy_url = file_exists('./.htaccess');
+
 	$config_file = "<?\n";
 	$config_file .= "unset(\$wiki);\n";
-	$config_file .= "\$wiki['path'] = \$g4['path'] . \"/$wiki_path\";\n";
-	$config_file .= "\$wiki['skin_path'] = \$wiki['path'] . \"/skin/board/basic\";\n";
-	$config_file .= "\$wiki['bo_table'] = \$bo_table;\n";
+	$config_file .= "\$wiki['url'] = \"".$wiki_url."\";\n";
+	$config_file .= "\$wiki['g4_path'] = \"".$g4['path']."\";\n";
+	$config_file .= "\$wiki['g4_url'] = \"".$g4_url."\";\n";
+	$config_file .= "\$wiki['bo_table'] = \"".$wiki_bo_table."\";\n";
 	$config_file .= "\$wiki['front'] = \$board['bo_subject'];\n";
 	$config_file .= "\$wiki['tree_top'] = \"Home\";\n";
 	$config_file .= "\$wiki['write_table'] = \$g4['write_prefix'] . \$wiki['bo_table'];\n";
@@ -194,12 +284,13 @@ EOF;
 	$config_file .= "\$wiki['media_table'] = \"{$db_prefix}narin_media\";\n";
 	$config_file .= "\$wiki['media_ns_table'] = \"{$db_prefix}narin_media_namespace\";\n";
 	$config_file .= "\$wiki['contrib_table'] = \"{$db_prefix}narin_contributor\";\n";
+	$config_file .= "\$wiki['fancy_url'] = $wiki_fancy_url;\n";
+	$config_file .= "\$bo_table = \$wiki['bo_table'];\n";
 	$config_file .= "?>\n";
 
 	$fp = @fopen("narin.config.php", "w");
 	if(!$fp) {
-		$s_wiki_path = addslashes($wiki_path);
-		echo "<script>alert('$s_wiki_path 에 쓰기 권한을 주세요'); history.go(-1);</script>";
+		echo "<script>alert('나린위키 폴더에 쓰기 권한을 주세요'); history.go(-1);</script>";
 		exit;
 	}
 	fwrite($fp, $config_file);
@@ -209,16 +300,19 @@ EOF;
 	if(!file_exists($g4['path']."/extend/narin.wiki.extend.php")) {
 		$add = "<b>narin.wiki.extend.php</b> 파일을 <u>g4/extend/</u> 에 복사해주세요";
 	}
-	include_once $g4['path']."/head.php";
+	
 	?>
-<link
-	rel="stylesheet" href="./css/narin.wiki.style.css" type="text/css">
+<html>
+<head><title>나린위키 설치 완료</title></head>
+<meta http-equiv="content-type" content="text/html; charset=<?=$charset?>">
+<link rel="stylesheet" href="./css/narin.wiki.style.css" type="text/css"/>
+<body>	
 
 <h1>나린위키</h1>
 <div style="line-height: 160%;">축하합니다!. <b>나린위키</b>를 설치하였습니다.
 
 <h3>나린위키 설정</h3>
-위키를 사용하기 위해서 다음의 설정을 해야 합니다.
+나린위키를 사용하기 위해서 다음의 설정을 해야 합니다.
 <ul>
 	<li>그누보드의 <b>head.sub.php</b> 의 <u>&lt;body&gt; 태그위</u>에 다음 코드를 넣어주세요 <pre
 		style="border: 1px dashed #ccc; padding: 5px; background-color: #F0F4F7;"><span
@@ -234,9 +328,8 @@ EOF;
 		style="color: #F0F4F7;">;</span> <span
 		style="color: #000000; font-weight: bold;">?&gt;</span></pre></li>
 		<? if($add) echo "<li>$add</li>";	?>
-	<li>위키로 사용할 게시판의 여분필드 1의 제목을 <u>narinwiki</u> 로 설정하고, 여분필드 1의 내용에 <u><?=$wiki_path?></u>
-	를 입력하세요</li>
-	<li>"http://나린위키/narin.php?bo_table=게시판아이디" 로 나린위키 링크를 만들어 사용하세요</li>
+	<li>위키로 사용할 게시판의 bo_1 필드의 제목을 'narinwiki', 내용을 그누보드 설치 폴더부터 나린위키 설치 폴더로의 상대 경로를 입력하세요. (e.g. 그누보드가 /home, 나린위키가 /narinwiki 에 설치되었다면, ../narinwiki 입력)</li>		
+	<li>나린위키 URL은 <a href="<?=$wiki_url?>/"><?=$wiki_url?>/</a> 입니다.</li>
 </ul>
 
 <h3>나린위키 기부</h3>
@@ -245,9 +338,9 @@ EOF;
 나린위키를 제작, 유지보수, 업데이트 하는데 많은 시간과 노력이 필요합니다. 기업/기관에서 나린위키를 사용하신다면 더 좋은
 소프트웨어를 위해 기부를 생각해보세요. 개인도 환영입니다. ^^ <br />
 
-기부는 온라인 결제 사이트인 페이팔을 이용해주세요 : <a href="http://narin.byfun.com/donation">기부하기</a><br />
+기부는 온라인 결제 사이트인 페이팔을 이용해주세요 : <a href="http://narinwiki.org/donation">기부하기</a><br />
 
-무통장입금으로 해주실분은 <a href="http://byfun.com/donation/narinwiki">이곳</a>에서 계좌
+무통장입금으로 해주실분은 <a href="http://narinwiki.org/donation_by_transfer">이곳</a>에서 계좌
 정보를 확인해주세요. <br />
 <br />
 감사합니다. <br />
@@ -256,30 +349,37 @@ EOF;
 
 <h3>나린위키 알아보기</h3>
 <ul>
-	<li><a href="http://narin.byfun.com">나린위키 홈페이지</a></li>
-	<li><a href="http://narin.byfun.com/manual">나린위키 사용자 매뉴얼</a></li>
-	<li><a href="http://narin.byfun.com/syntax">나린위키 위키문법</a></li>
-	<li><a href="http://narin.byfun.com/license">나린위키 저작권</a></li>
+	<li><a href="http://narinwiki.org">나린위키 홈페이지</a></li>
+	<li><a href="http://narinwiki.org/manual">나린위키 사용자 매뉴얼</a></li>
+	<li><a href="http://narinwiki.org/syntax">나린위키 위키문법</a></li>
+	<li><a href="http://narinwiki.org/license">나린위키 저작권</a></li>
 </ul>
 
 
 
 		<?
-		include_once $g4['path']."/tail.php";
 		exit;
 }
 
-include_once $g4['path']."/head.php";
-
 ?>
+<html>
+<head><title>나린위키 설치</title></head>
+<meta http-equiv="content-type" content="text/html; charset=<?=$charset?>">
 <link rel="stylesheet" href="./css/narin.wiki.style.css" type="text/css"/>
-
-<h1>위키 설치</h1>
+<body>
+<h1>나린위키 설치</h1>
 <form name="frmwikiinstall" action="install.php"
 	onsubmit="return submit_check(this);" method="post"><input
 	type="hidden" name="md" value="doit" />
+<input type="hidden" name="g4_path" value="<?=$g4['path']?>"/>
+<input type="hidden" name="g4_url" value="<?=$g4_url?>"/>
+<input type="hidden" name="wiki_bo_table" value="<?=$wiki_bo_table?>"/>
 <div class="list_table">
 <table cellpadding="0" cellspacing="0" border="0">
+<colgroup>
+	<col width="100px">
+	<col>
+</colgroup>
 	<tbody>
 		<tr>
 			<th scope="row">저작권 동의</th>
@@ -290,13 +390,6 @@ include_once $g4['path']."/head.php";
 			<p>설치를 원하시면 위 내용에 동의하셔야 합니다.</p>
 			<input type="checkbox" name="agree" id="agree"><label for="agree"> 네,
 			동의합니다.</label></td>
-		</tr>
-
-		<tr>
-			<th scope="row">위키 경로</th>
-			<td><input type="text" name="wiki_path" size="15" required
-				itemname="위키 경로" /> &nbsp; (그누보드 폴더로 부터의 상대 경로 e.g. <그누보드>/wiki 일 경우
-			wiki 입력)</td>
 		</tr>
 		<tr>
 			<td colspan="2"><span class="button red"><input type="submit"
@@ -318,8 +411,10 @@ function submit_check(f) {
 	return true;
 }
 	
-</script> <?
-include_once $g4['path']."/tail.php";
+</script>
+</body>
+</html>
+ <?
 
 /**
  * 
@@ -355,5 +450,35 @@ function wiki_db_table_columns($table_name) {
 	return $list;
 }
 
+/**
+ * 
+ * 절대경로를 상대 경로로 변환
+ * 
+ * @param string $from 시작 경로
+ * @param string $to 도착 경로 
+ * @return string $from 에서 $to 로의 상대 경로
+ */
 
+function wiki_relative_path($from, $to)
+{
+	$from     = explode('/', realpath($from));
+	$to       = explode('/', realpath($to));
+	$relPath  = $to;
+	
+	foreach($from as $depth => $dir) {
+		if($dir === $to[$depth]) {
+			array_shift($relPath);
+		} else {
+			$remaining = count($from) - $depth;
+			if($remaining > 1) {
+				$padLength = (count($relPath) + $remaining - 1) * -1;
+				$relPath = array_pad($relPath, $padLength, '..');
+				break;
+			} else {
+				$relPath[0] = './' . $relPath[0];
+			}
+		}
+	}
+	return implode('/', $relPath);
+}
 ?>

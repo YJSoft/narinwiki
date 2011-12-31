@@ -4,14 +4,19 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 include_once("_common.php");
 
+if($w == 'jscssrefresh') {
+	$wikiJsCss = wiki_class_load('JsCss');
+	$wikiJsCss->updateJs();
+	$wikiJsCss->updateCss();
+}
 
-header("location:".$wiki['path']."/adm/index.php?bo_table=$bo_table");
+header("location:".$wiki['url']."/adm/");
 ?>
 
 

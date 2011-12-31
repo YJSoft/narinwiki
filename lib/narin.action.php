@@ -4,7 +4,7 @@
  * 나린위키 시스템 액션 플러그인 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -18,7 +18,7 @@
  * 이 클래스에서는 나린위키 이벤트 발생 시 lib/actions/on_(이벤트명).php 파일을 include 하여 처리한다.
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinActionDefault extends NarinActionPlugin {
@@ -55,7 +55,7 @@ class NarinActionDefault extends NarinActionPlugin {
 		while ($entry = $d->read()) {
 			if(is_dir($pluginPath) || substr($entry, 0, 3) != 'on_' || substr($entry, -4) != '.php') continue;
 			$event = strtoupper(substr($entry, 3, strlen($entry)-7));
-			$ctrl->addHandler($event, $this, "common_event_handler");
+			$ctrl->addHandler($event, $this, "common_event_handler", 9999); // 시스템 이벤트 핸들러 order = 9999
 		}
 	}
 
@@ -77,14 +77,14 @@ class NarinActionDefault extends NarinActionPlugin {
 		$is_wiki_admin = $this->is_wiki_admin;
 		$wiki_config = $this->wiki_config;
 		$write = &$this->write;
-		$bo_table = $wiki[bo_table];
+		$bo_table = $wiki['bo_table'];
 		extract($this->shared);
 		extract($params);
 
 		$return_array = array();
 		$shared = array();
 
-		$include_file = "on_".strtolower($params[_type_].'.php');
+		$include_file = "on_".strtolower($params['_type_'].'.php');
 		include_once dirname(__FILE__)."/actions/$include_file";
 
 		// included_file 에서 $shared 에 값을 할당했다면 저장

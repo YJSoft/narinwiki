@@ -8,7 +8,7 @@
 /* 위키 문법 스타일 ***********************************************************/	
 
 	/* 위키 컨텐츠 컨테이너 */
-	.narin_contents { line-height:160%; }
+	.narin_contents * { font-size:10pt; line-height:160%; }
 
 	/* 존재하는 문서 링크 */
 	.narin_contents a.wiki_active_link { color:#002BB8 }
@@ -46,9 +46,8 @@
 	.narin_contents #wiki_toc .toc_6 { margin-left:50px;}
 	
 	/* 목록 설정 (들여쓰기)*/	
-	.narin_contents ul,
-	.narin_contents ol { margin:0; padding-left:25px;}
-	.narin_contents li { margin:2px 0; }	
+	.wiki_list { margin:0; padding-left:25px; }
+	.wiki_list li { margin:2px 0; }
 	
 	/* 순서가 있는 목록 설정 */
 	.narin_contents ol { list-style-type: decimal; }
@@ -75,14 +74,14 @@
 	
 	.narin_contents  h1,
 	.narin_contents  h2,
-	.narin_contents  h3 {padding:2px 5px 5px 0px; margin:15px 0 10px 0; border-bottom:1px solid #9ECFCF;}
+	.narin_contents  h3 {padding:2px 5px 5px 0px; margin:5px 0 10px 0; border-bottom:1px solid #9ECFCF;}
 	
-	.narin_contents  h1 { }
-	.narin_contents  h2 {}
-	.narin_contents  h3 {}	
-	.narin_contents  h4 {}
-	.narin_contents  h5 {}
-	.narin_contents  h6 {}
+	.narin_contents  h1 {font-size:1.7em}
+	.narin_contents  h2 {font-size:1.4em}
+	.narin_contents  h3 {font-size:1.2em}	
+	.narin_contents  h4 {font-size:1.1em}
+	.narin_contents  h5 {font-size:1.05em}
+	.narin_contents  h6 {font-size:1em}
 
 	/* nowiki / code style */	
 	.narin_contents div.wiki_box { padding:5px; margin:5px 0; border:1px dashed #ccc; background-color:#F0F4F7; overflow:auto;}
@@ -112,7 +111,7 @@
 
 
 	/* 위키 테이블 (syntax) */
-	.narin_contents table.wiki_table { background-color:#aaa;}
+	.narin_contents table.wiki_table { background-color:#aaa; }
 	.narin_contents table.wiki_table th,
 	.narin_contents table.wiki_table td { padding:2px 5px;}
 	.narin_contents table.wiki_table th { background-color: #DEEFEF}

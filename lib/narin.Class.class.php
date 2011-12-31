@@ -7,7 +7,7 @@
  * 클래스들에서 주로쓰는 맴버 변수들을 정의한다.
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -22,7 +22,7 @@ if (!defined('_GNUBOARD_')) exit;
  * 클래스들에서 주로쓰는 맴버 변수들을 정의한다.
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinClass {

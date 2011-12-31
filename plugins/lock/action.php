@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinActionLock extends NarinActionPlugin {
@@ -132,7 +132,7 @@ END;
 	 * @param array $params {@link NarinEvent) 에서 넘겨주는 파라미터
 	 */
 	public function on_write_update_head($params) {
-		list($ns, $docname, $doc) = wiki_page_name($params[wr_doc]);
+		list($ns, $docname, $doc) = wiki_page_name($params['wr_doc']);
 		$this->initialize_lock();
 		if($this->locked && $this->locked['ip'] != $this->user_ip) {
 			alert("편집중인 문서입니다.");
@@ -147,7 +147,7 @@ END;
 	 * @param array $params {@link NarinEvent) 에서 넘겨주는 파라미터
 	 */
 	public function on_write_update($params) {
-		list($ns, $docname, $doc) = wiki_page_name($params[wr_doc]);
+		list($ns, $docname, $doc) = wiki_page_name($params['wr_doc']);
 		$this->unlock($doc);
 	}
 	

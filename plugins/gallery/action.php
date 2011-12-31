@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinActionGallery extends NarinActionPlugin {
@@ -226,9 +226,15 @@ class NarinActionGallery extends NarinActionPlugin {
 			if($row['ns'] == $parent) {
 				if(!$row['source']) continue;
 				//if(is_callable($filter) && !$filter($row)) continue;
-				$row['path'] = $this->wiki['path'].'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
-				$row['href'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
-				$row['imgsrc'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&w=img&file='.urlencode(wiki_doc($row['ns'], $row['source']));
+				$row['path'] = $this->wiki['url'].'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
+				
+				if(!$this->wiki['fancy_url']) {
+					$row['href'] = $this->wiki['url'].'/exe/media_download.php?file='.urlencode(wiki_doc($row['ns'], $row['source']));
+					$row['imgsrc'] = $this->wiki['url'].'/exe/media_download.php?file='.urlencode(wiki_doc($row['ns'], $row['source']));
+				} else {
+					$row['href'] = $this->wiki['url'].'/_media/'.wiki_doc($row['ns'], $row['source']);
+					$row['imgsrc'] = $this->wiki['url'].'/_media/'.wiki_doc($row['ns'], $row['source']);
+				}				
 				array_push($files, $row);
 			}
 		}

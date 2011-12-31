@@ -4,7 +4,7 @@
  * 나린위키 문서이력 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -61,7 +61,7 @@
  * </code>
  * 
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinHistory  extends NarinClass {
@@ -187,7 +187,7 @@ class NarinHistory  extends NarinClass {
 			}
 		}
 
-		$paging = get_paging(10, $page, $total_page, $this->wiki['path']."/history.php?bo_table=$bo_table&doc=".urlencode($doc)."&page=");
+		$paging = get_paging(10, $page, $total_page, $this->wiki['url']."/history.php?bo_table=$bo_table&doc=".urlencode($doc)."&page=");
 
 		$ret = array($list, $paging);
 

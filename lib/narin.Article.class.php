@@ -4,7 +4,7 @@
  * 나린위키 문서 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -52,7 +52,7 @@
  * </code>
  * 
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com) 
  */
 class NarinArticle extends NarinClass {
@@ -149,6 +149,7 @@ class NarinArticle extends NarinClass {
 		if($this->cache[$wr_id]) return $this->cache[$wr_id];
 		
 		$wr_id = mysql_real_escape_string($wr_id);
+
 		$sql = "SELECT wb.*, nt.*, wb.wr_subject AS doc, ht.reg_date AS update_date FROM ".$this->wiki['write_table']." AS wb 
 				LEFT JOIN ".$this->wiki['nsboard_table']." AS nt ON wb.wr_id = nt.wr_id 
 				LEFT JOIN ".$this->wiki['history_table']." AS ht ON wb.wr_id = ht.wr_id 
@@ -240,7 +241,7 @@ class NarinArticle extends NarinClass {
 			$bdoc = ($row['ns'] == "/" ? "/" : $row['ns'] . "/") . $row['doc'];
 			if(!$includeSelf && $bdoc == $doc) continue;
 				
-			$row['href'] = $wiki['path'].'/narin.php?bo_table='.$wiki['bo_table'].'&doc='.urlencode($bdoc);
+			$row['href'] = wiki_url('read', array('doc'=>$bdoc));
 			array_push($list, $row);
 		}
 		
@@ -426,7 +427,7 @@ class NarinArticle extends NarinClass {
 	{
 		list($ns, $docname, $fullname) = wiki_page_name($doc);
 		$wr = & $this->getArticle($ns, $docname, __FILE__, __LINE__);
-		if(!$wr) die("No Article");
+		if(!$wr) return;
 		$access_level = mysql_real_escape_string($access_level);
 		$edit_level = mysql_real_escape_string($edit_level);
 		sql_query("UPDATE ".$this->wiki['nsboard_table']." SET access_level = '$access_level', edit_level = '$edit_level' 

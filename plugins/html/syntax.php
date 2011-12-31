@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinSyntaxHtml extends NarinSyntaxPlugin {
@@ -67,9 +67,9 @@ class NarinSyntaxHtml extends NarinSyntaxPlugin {
 	function register($parser)
 	{
 		$setting = $this->plugin_info->getPluginSetting();
-		$this->allow_level = $setting[allow_level][value];
-		$this->allow_iframe_level = $setting[allow_iframe_level][value];
-		$this->allow_script_level = $setting[allow_script_level][value];
+		$this->allow_level = $setting['allow_level']['value'];
+		$this->allow_iframe_level = $setting['allow_iframe_level']['value'];
+		$this->allow_script_level = $setting['allow_script_level']['value'];
 
 		$parser->addBlockParser(
 		$id = $this->plugin_info->getId()."_wiki_html",
@@ -95,9 +95,9 @@ class NarinSyntaxHtml extends NarinSyntaxPlugin {
 
 		// 작성자 레벨 셋팅
 		if($this->writer_level < 0) {
-			if($params[view][mb_id]) {
-				$writer = get_member($params[view][mb_id]);
-				$this->writer_level = $writer[mb_level];
+			if($params['view']['mb_id']) {
+				$writer = get_member($params['view']['mb_id']);
+				$this->writer_level = $writer['mb_level'];
 			} else $this->writer_level = 0;
 		}
 
@@ -158,7 +158,7 @@ class NarinSyntaxHtml extends NarinSyntaxPlugin {
 	 */
 	protected function bad_tag_convert($html)
 	{
-		if ($this->is_admin && $this->member[mb_id] != $this->write[mb_id]) {
+		if ($this->is_admin && $this->member['mb_id'] != $this->write['mb_id']) {
 			// embed 또는 object 태그를 막지 않는 경우 필터링이 되도록 수정
 			$html = preg_replace_callback("#(\<(embed|object)[^\>]*)\>?(\<\/(embed|object)\>)?#i",
 			create_function('$matches', 'return "<div class=\"embedx\">보안문제로 인하여 관리자 아이디로는 embed 또는 object 태그를 볼 수 없습니다. 확인하시려면 관리권한이 없는 다른 아이디로 접속하세요.</div>";'),

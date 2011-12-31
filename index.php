@@ -4,9 +4,10 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
-header("location:narin.php?".$_SERVER['QUERY_STRING']);
+//header("location:narin.php?".$_SERVER['QUERY_STRING']);
+include_once("narin.php");
 ?>

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -14,8 +14,9 @@ $use_minify = true;
 if($use_minify) ob_start();	
 include_once "_common.php";
 
-@mkdir($wiki['path'].'/data/'.$bo_table, 0707);
-@mkdir($wiki['path'].'/data/'.$bo_table.'/files', 0707);
+@mkdir(WIKI_PATH.'/data/'.$bo_table, 0707);
+@mkdir(WIKI_PATH.'/data/'.$bo_table.'/files', 0707);
+@mkdir(WIKI_PATH.'/data/'.$bo_table.'/thumb', 0707);
 
 $g4['title'] = '나린위키 미디어 관리자';
 
@@ -48,7 +49,7 @@ include_once "head.php";
 	#chmod_option { display:none; text-align:right; padding:5px; margin:5px; background-color:#efefef;}
 	#media_option { text-align:right; margin-bottom:5px; }	
 	#media_search { }
-	#media_search #stx { float:right;border:1px solid #ccc; }
+	#media_search #stx { float:right;margin-right:5px;margin-top:2px;border:1px solid #ccc; }
 	#media_search .button { float:right; margin-top:2px;}
 	#media_gallery { float:left; margin-top:2px;}
 	#gallery_table { width:100%; margin-top:8px; border-top:2px solid #888; padding:0; border-bottom:1px solid #888}
@@ -233,10 +234,10 @@ include_once "head.php";
 	</div>
 </div>
 
-<style type="text/css">@import url(<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/plupload.full.js"></script>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
-<script type="text/javascript" src="<?=$wiki['path']?>/js/plupload/i18n/ko.js"></script>
+<style type="text/css">@import url(<?=$wiki['url']?>/js/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css);</style>
+<script type="text/javascript" src="<?=$wiki['url']?>/js/plupload/plupload.full.js"></script>
+<script type="text/javascript" src="<?=$wiki['url']?>/js/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script type="text/javascript" src="<?=$wiki['url']?>/js/plupload/i18n/ko.js"></script>
 
 <script type="text/javascript">
 	
@@ -412,7 +413,7 @@ include_once "head.php";
 		$('#clear_media').live('click', function() {
 			if(!confirm('폴더내의 모든 파일이 삭제됩니다.\n진행하시겠습니까?')) return;
 			if(!confirm('정말 진행하시겠습니까?')) return;
-			$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_clear&loc='+encodeURIComponent(mm.loc), function(data) {
+			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_clear&loc='+encodeURIComponent(mm.loc), function(data) {
 				mm.load();
 			});
 		});
@@ -420,9 +421,9 @@ include_once "head.php";
 		// 압축 다운로드 버튼 클릭
 		$('#zipdown').click(function(evt) { 
 			evt.preventDefault();
-			$.getJSON(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
+			$.getJSON(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
 				if(json.code == 1) {
-					location.href = wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip_download&loc='+encodeURIComponent(mm.loc)+'&file='+json.file;
+					location.href = wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip_download&loc='+encodeURIComponent(mm.loc)+'&file='+json.file;
 				} else mm.show_msg(json.msg, 2);
 			});
 		});
@@ -461,7 +462,7 @@ include_once "head.php";
 					return;
 				} else {
 					mm.show_msg('새 폴더를 만드는 중입니다. 잠시만 기다리세요.');
-					$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_mkdir&ploc='+encodeURIComponent(mm.loc)+'&loc='+encodeURIComponent(folder), function(data) {
+					$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_mkdir&ploc='+encodeURIComponent(mm.loc)+'&loc='+encodeURIComponent(folder), function(data) {
 								json = $.parseJSON(data);		
 								if(json.code == 1) {
 									mm.tree_load(mm.loc);
@@ -481,7 +482,7 @@ include_once "head.php";
 				return;
 			}
 			if(!confirm('폴더를 삭제하시겠습니까?')) return;
-			$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_rmdir&loc='+encodeURIComponent(mm.loc), function(data) {
+			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_rmdir&loc='+encodeURIComponent(mm.loc), function(data) {
 				json = $.parseJSON(data);
 				if(json.code == 1) {
 					mm.loc = json.updir;
@@ -510,7 +511,7 @@ include_once "head.php";
 			al = $("#ns_access_level").val();
 			cl = $("#ns_mkdir_level").val();
 			ul = $("#ns_upload_level").val();
-			$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_chmod&loc='+encodeURIComponent(mm.loc), {
+			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_chmod&loc='+encodeURIComponent(mm.loc), {
 					access_level : al,
 					upload_level : ul,
 					mkdir_level : cl
@@ -565,10 +566,10 @@ include_once "head.php";
 	// 트리 로딩	
 	mm.tree_load = function(dir, callback) {	
 		mm.folder_label.text(dir);	
-		$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_get_tree&loc='+encodeURIComponent(dir), function(data) {
+		$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_get_tree&loc='+encodeURIComponent(dir), function(data) {
 			json = $.parseJSON(data);
 			if(json.code < 0) {
-				window.location.href = wiki_path + '/media.php?bo_table=' + g4_bo_table;
+				window.location.href = wiki_url + '/media.php?bo_table=' + g4_bo_table;
 			}
 			
 			$("#tree_wrapper").html(json.tree);
@@ -629,7 +630,7 @@ include_once "head.php";
 	mm.delete_file = function(fname, tr) {
 		if(!confirm('삭제하시겠습니까?\n파일을 삭제하면 파일을 링크하고 있는 문서의 링크가 끊깁니다.')) return;
 		mm.show_msg('삭제중입니다. 잠시만 기다려주세요.');
-		$.post(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_delete&loc='+encodeURIComponent(mm.loc)+'&file='+encodeURIComponent(fname), function(data) {
+		$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_delete&loc='+encodeURIComponent(mm.loc)+'&file='+encodeURIComponent(fname), function(data) {
 			json = $.parseJSON(data);		
 			if(json.code == 1) {
 				del_idx = -1;
@@ -681,7 +682,7 @@ include_once "head.php";
 		mm.stx.val('');
 		mm.table.find('.flist').remove();
 		mm.show_msg('파일 목록을 읽어오고 있습니다...');
-		$.get(wiki_path + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_list&loc='+encodeURIComponent(mm.loc), function(data) {
+		$.get(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_list&loc='+encodeURIComponent(mm.loc), function(data) {
 			json = $.parseJSON(data);
 			if(json.code == -101) {
 				mm.show_msg(json.msg, 2);
@@ -718,7 +719,7 @@ include_once "head.php";
 				img_info = '';
 			}
 			if(file.mb_id == mm.mb_id || mm.is_wiki_admin) {
-				cmd_del = '<a href="javascript:;" class="file_del"><img src="'+wiki_path+'/imgs/media_manager/delete.gif" border="0"/></a>';
+				cmd_del = '<a href="javascript:;" class="file_del"><img src="'+wiki_url+'/imgs/media_manager/delete.gif" border="0"/></a>';
 			} else cmd_del = '';
 
 			if(mm.loc == '/') file_path = '/' + file.source;
@@ -787,10 +788,10 @@ include_once "head.php";
 		uploader = $('<div></div>').attr('id', 'narin_uploader').html('<p>&nbsp;</p>').appendTo(mm.uploader_wrapper);
 
 		mm.uploader = uploader.pluploadQueue({
-			runtimes : 'gears,flash,silverlight,html5',
-			url : wiki_path+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc),
+			runtimes : 'silverlight',
+			url : wiki_url+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc),
 			max_file_size : '<?=$media_setting['max_file_size']?>',
-			chunk_size : '1mb',
+			chunk_size : '500kb',
 			unique_names : true,
 				
 			<? if($media_setting['allow_extensions']) { ?>
@@ -799,12 +800,12 @@ include_once "head.php";
 			],
 			<? } ?>
 	
-			flash_swf_url : wiki_path+'/js/plupload/plupload.flash.swf',
-			silverlight_xap_url : wiki_path+'/js/plupload/plupload.silverlight.xap',
+			flash_swf_url : wiki_url+'/js/plupload/plupload.flash.swf',
+			silverlight_xap_url : wiki_url+'/js/plupload/plupload.silverlight.xap',
 
 			preinit : {
 		 		UploadFile: function(up, file) {
-					up.settings.url = wiki_path+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc)+'&filename='+encodeURIComponent(file.name);
+					up.settings.url = wiki_url+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc)+'&filename='+encodeURIComponent(file.name);
 				}				
 			},                 
 
@@ -839,7 +840,7 @@ include_once "head.php";
 
 					if(file.percent == 100 && file.status == 5) {
 						mm.uploading_count++;
-						$.post(wiki_path+'/exe/a.php', { w : 'media_reg', bo_table : g4_bo_table, loc : mm.loc, source : file.name, file : file.target_name }, function(data) {
+						$.post(wiki_url+'/exe/a.php', { w : 'media_reg', bo_table : g4_bo_table, loc : mm.loc, source : file.name, file : file.target_name }, function(data) {
 							mm.uploading_count--;
 							try {
 								json = $.parseJSON(data);
@@ -881,7 +882,7 @@ include_once "head.php";
 		<? if(!$is_admin_mode) { ?>
 		if(!window.opener) {
 			alert('잘못된 접근입니다.');
-			window.location.href = wiki_path + '/narin.php?bo_table='+g4_bo_table;
+			window.location.href = wiki_url;
 			return;
 		}
 		<? } ?>
@@ -897,9 +898,9 @@ if($use_minify) {
 	$content = ob_get_contents();
 	ob_end_clean();
 	
-	include_once $wiki[path]."/lib/Minifier/htmlmin.php";
-	include_once $wiki[path]."/lib/Minifier/jsmin.php";
-	include_once $wiki[path]."/lib/Minifier/cssmin.php";
+	include_once WIKI_PATH."/lib/Minifier/htmlmin.php";
+	include_once WIKI_PATH."/lib/Minifier/jsmin.php";
+	include_once WIKI_PATH."/lib/Minifier/cssmin.php";
 	echo Minify_HTML::minify($content, $options=array("jsMinifier"=>"JSMin::minify", "cssMinifier"=>"CssMin::minify"));
 }
 ?>

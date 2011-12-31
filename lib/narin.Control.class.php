@@ -4,7 +4,7 @@
  * 나린위키 흐름 제어(control) 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -24,7 +24,7 @@
  * </code>
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinControl extends NarinClass {
@@ -87,7 +87,7 @@ class NarinControl extends NarinClass {
 	 * @param string $doc 경로를 포함한 문서명
 	 */  
 	function noDocument($ns, $docname, $doc) {
-		$write_href = $this->g4['path']."/bbs/write.php?bo_table=".$this->wiki['bo_table']."&doc=".urlencode($doc);
+		$write_href = $this->wiki['g4_url']."/bbs/write.php?bo_table=".$this->wiki['bo_table']."&doc=".urlencode($doc);
 		$this->includePage(
 						$this->wiki['inc_skin_path'] . "/nodoc.skin.php", 
 						true, 
@@ -144,8 +144,8 @@ class NarinControl extends NarinClass {
 	 * @param int $wr_id 문서 id
 	 */ 
 	function viewDocument($doc, $wr_id) {		
-		$path = $this->g4['path']."/bbs/board.php";		
-		chdir($this->g4['path']."/bbs");
+		$path = $this->wiki['g4_path']."/bbs/board.php";		
+		chdir($this->g4['g4_path']."/bbs");
 		$write = sql_fetch(" select * from ".$this->wiki['write_table']." where wr_id = '$wr_id' ");
 		$this->includePage($path, false, array("wr_id"=>$wr_id, "write"=>$write));
 	}
@@ -168,13 +168,13 @@ class NarinControl extends NarinClass {
 			$wikiArticle =& wiki_class_load("Article");
 			$view = & $wikiArticle->getArticleById($wr_id);
 			$doc = ($view[ns] == "/" ? "" : $view[ns]."/") . $view[doc];
-			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']."&doc=".urlencode($doc));
+			header("location:".wiki_url('read', array('doc'=>$doc)));
 			exit;			
 		}
 		
 		// list
 		if($scriptFile == "board.php" && !$wr_id) {
-			header("location:".$this->wiki['path']."/narin.php?bo_table=".$board['bo_table']);
+			header("location:".wiki_url());
 			exit;
 		}	
 						
@@ -201,7 +201,7 @@ class NarinControl extends NarinClass {
 				
 		// write
 		if($scriptFile == "write.php" && !$doc && !$wr_id ) {
-			header("location:{$this->wiki['path']}/narin.php?bo_table={$board['bo_table']}");
+			header("location:".wiki_url());
 			exit;			
 		}						
 	}
@@ -221,9 +221,9 @@ class NarinControl extends NarinClass {
 		if(is_array($params)) foreach ( $params as $key => $value ) { $$key = $value; }	
 		list($ns, $docname, $doc) = wiki_page_name($doc);
 		
-		if($layout) include_once $this->wiki['path'] . "/head.php";		
+		if($layout) include_once WIKI_PATH . "/head.php";		
 		include $include_path;		
-		if($layout) include_once $this->wiki['path'] . "/tail.php";				
+		if($layout) include_once WIKI_PATH . "/tail.php";				
 		
 	}
 	

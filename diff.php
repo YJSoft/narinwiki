@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -159,8 +159,8 @@ h1 { padding:0; margin:0; }
 </div>
 
 <?
-require_once $wiki['path']."/lib/Diff/Diff.php";
-require_once $wiki['path']."/lib/Diff/Renderer/Html/SideBySide.php";
+require_once WIKI_PATH."/lib/Diff/Diff.php";
+require_once WIKI_PATH."/lib/Diff/Renderer/Html/SideBySide.php";
 $options = array(
 	//'ignoreWhitespace' => true,
 	//'ignoreCase' => true
@@ -184,9 +184,9 @@ echo $diffData;
 
 <div class="clear" style="margin-top:10px">
 	<div style="float:left">
-		<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$bo_table?>">시작페이지</a></span>
-		<span class="button"><a href="<?=$wiki['path']?>/history.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서이력  목록</a></span>
-		<span class="button red"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$bo_table?>&doc=<?=urlencode($doc)?>">문서보기</a></span>
+		<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
+		<span class="button"><a href="<?=wiki_url('history', array('doc'=>$doc))?>">문서이력  목록</a></span>
+		<span class="button red"><a href="<?=wiki_url('read', array('doc'=>$doc))?>">문서보기</a></span>
 		<? if($is_wiki_admin || $is_doc_owner) { ?>
 		<span class="button green"><a href="javascript:recover_history(<?=$article['wr_id']?>, <?=$hid?>);">이 문서로 복원</a></span>
 		<? } ?>

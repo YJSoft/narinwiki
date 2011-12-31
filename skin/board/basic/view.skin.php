@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author sir.co.kr
  * @author	byfun (http://byfun.com)
  * @filesource
@@ -24,7 +24,6 @@
  
 if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가 
 ?>
-
 <div id="wiki_title_bar">
 	
 	<span id="wiki_title">[[<a href="#backlinks" id="show_backlinks"><?=$view['subject']?></a>]]</span>
@@ -33,15 +32,15 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 		
 		<div class="wiki_tools_left">
 	  	
-	  	<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
+	  	<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 			<? if($history_href) {?>
 		  	<span class='button'><a href='<?=$history_href?>'>문서 이력</a></span>
 			<? }?>
 			  	
 		</div> <!--// wiki_tools_left -->
 		<div class="wiki_tools_right">			
-			<form action="<?=$wiki['path']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
-			<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>"/>
+			<form action="<?=$wiki['url']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
+			<input type="hidden" name="bo_table" value="<?=$bo_table?>"/>
 			<input type="text" class="search_text txt" name="stx" size="20"/>
 			<span class="button purple"><input type="submit" value="검색"></span>
 			</form>					
@@ -79,7 +78,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 	
 	<? if($use_comment) { ?>		
 	<div id="wiki_comment">
-		<? include_once($wiki['path']."/inc/view_comment.php"); ?>
+		<? include_once(WIKI_PATH."/inc/view_comment.php"); ?>
 	</div> <!--// wiki_comment -->
 	<? }?>
 
@@ -117,7 +116,7 @@ if (!defined("_GNUBOARD_")) exit; // 개별 페이지 접근 불가
 <? 
 // 문서 관리
 if($is_wiki_admin || $is_doc_owner) {
-	include_once($wiki['path']."/inc/inc.doc.manager.php");
+	include_once(WIKI_PATH."/inc/inc.doc.manager.php");
 } 
 ?>
 
@@ -125,9 +124,7 @@ if($is_wiki_admin || $is_doc_owner) {
 	
 	<div class="wiki_tools_left">	
 		
-  	<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
-  	<? if ($scrap_href) { echo "<span class='button'><a href=\"javascript:;\" onclick=\"win_scrap('$scrap_href');\">스크랩</a></span> "; } ?>
-  	<? if ($trackback_url) { ?><span class='button'><a href="javascript:trackback_send_server('<?=$trackback_url?>');" style="letter-spacing:0;" title='주소 복사'>트랙백</a></span><?}?>
+  	<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 	</div> <!--// wiki_tools_left -->	
 	
 	<div class="wiki_tools_right">		
@@ -175,11 +172,13 @@ function file_download(link, file) {
 }
 </script>
 
-<script type="text/javascript" src="<?=$g4['path']?>/js/board.js"></script>
+<?php  
+if(0) { ?><script type="text/javascript" src="<?=$wiki['g4_url']?>/js/board.js"></script>
+<?php }?>
 <script type="text/javascript">
 $(document).ready(function() {
-	resizeBoardImage(<?=(int)$board['bo_image_width']?>);
-	drawFont();
+	//resizeBoardImage(<?=(int)$board['bo_image_width']?>);
+	//drawFont();
 	$("#show_backlinks").click(function(evt) {
 		evt.preventDefault();
 		if($("#wiki_back_links").is(":visible")) {
