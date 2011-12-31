@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -32,9 +32,7 @@ $plugins = wiki_plugin_load();
 }
 </style>
 
-<form name="frmplugin" onsubmit="return submit_check(this);"
-	method="post"><input type="hidden" name="bo_table"
-	value="<?=$wiki['bo_table']?>" />
+<form name="frmplugin" onsubmit="return submit_check(this);" action="<?=$wiki['url']?>/adm/exe_plugin.php" method="post"><input type="hidden" name="bo_table"	value="<?=$bo_table?>" />
 
 <div class="list_table">
 <table id="" cellspacing="0" width="100%" cellpadding="0" border="1">
@@ -70,12 +68,13 @@ $plugins = wiki_plugin_load();
 			</select> <? } ?></td>
 			<td><?=$info->description()?></td>
 			<td><? if($info->shouldInstall()) { ?> <span class="button"><a
-				href="<?=$wiki['path']?>/adm/plugin_install.php?bo_table=<?=$bo_table?>&w=install&plugin=<?=$p['name']?>">설치</a></span>
+				href="<?=$wiki['url']?>/adm/plugin_install.php?bo_table=<?=$bo_table?>&w=install&plugin=<?=$p['name']?>">설치</a></span>
 				<? } else if($info->getSetting()) { ?> <span class="button"><a
-				href="<?=$wiki['path']?>/adm/plugin_setting.php?bo_table=<?=$bo_table?>&plugin=<?=$p['name']?>">설정</a></span>
+				href="<?=$wiki['url']?>/adm/plugin_setting.php?bo_table=<?=$bo_table?>&plugin=<?=$p['name']?>">설정</a></span>
+				<?}?>
 				<? if($info->shouldUnInstall()) { ?> <span class="button"><a
-				href="<?=$wiki['path']?>/adm/plugin_install.php?bo_table=<?=$bo_table?>&w=uninstall&plugin=<?=$p['name']?>">제거</a></span>
-				<?}?> <? } ?> &nbsp;</td>
+				href="<?=$wiki['url']?>/adm/plugin_install.php?bo_table=<?=$bo_table?>&w=uninstall&plugin=<?=$p['name']?>">제거</a></span>
+				 <? } ?> &nbsp;</td>
 		</tr>
 
 		<? } ?>
@@ -90,13 +89,7 @@ $plugins = wiki_plugin_load();
 
 function submit_check(f)
 {
-  
-  <?
-  if ($g4['https_url'])
-	echo "f.action='".$g4['https_url']."/".$wiki['path']."/adm/exe_plugin.php'";
-  else
-	echo "f.action='".$wiki['path']."/adm/exe_plugin.php'";
-  ?>   
+
     
   return true;
 }	

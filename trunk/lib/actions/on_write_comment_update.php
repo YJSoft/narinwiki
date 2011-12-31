@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage event
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -30,4 +30,7 @@ if($w == 'c' || $w == 'cu') {
 	else $status = "댓글 편집";
 	$wikiChanges->update("DOC", $doc, $status, ($member['mb_id'] ? $member['mb_id'] : $wr_name));		
 }
+
+goto_url(addslashes(wiki_url('read', array('doc'=>$doc.'#c_'.$comment_id))));
+exit;
 ?>

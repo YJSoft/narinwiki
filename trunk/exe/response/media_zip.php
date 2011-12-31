@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -30,7 +30,7 @@ if(!class_exists('ZipArchive')) {
 }
 $zip = new ZipArchive();
 $name = md5(time());
-$zipFile = $wiki['path'].'/data/'.$bo_table.'/'.$name.'.zip';
+$zipFile = WIKI_PATH.'/data/'.$bo_table.'/'.$name.'.zip';
 
 if(!$zip->open($zipFile, ZIPARCHIVE::CREATE)) {
 	echo wiki_json_encode(array('code'=>-1, 'msg'=>'압축파일 생성 실패 (1)'));

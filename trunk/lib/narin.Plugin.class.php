@@ -4,7 +4,7 @@
  * 나린위키 플러그인 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -14,7 +14,7 @@
  * 나린위키 플러그인 클래스
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinPlugin extends NarinClass {
@@ -42,11 +42,5 @@ class NarinPlugin extends NarinClass {
 		$this->id = $class_name;
 		$this->plugin_info = wiki_plugin_info($class_name);
 	}
-
-	/**
-	 * 변수 초기화를 위해 사용
-	 */
-	public function init() {}
-
 }
 ?>

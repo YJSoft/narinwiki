@@ -4,7 +4,7 @@
  * 나린위키 유틸리티 클래스 스크립트
  * 
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -27,7 +27,7 @@
  * </code>
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinUtil extends NarinClass
@@ -127,8 +127,8 @@ class NarinUtil extends NarinClass
 	public function nowiki_backup($content, &$nowikis) {
 		$this->nowikis = &$nowikis;
 		foreach($this->nowiki_patterns as $pattern) {
-			$this->current_pattern_id = $pattern[id];
-			$regex = "/".$pattern[start_regex]."(.*?)".$pattern[end_regex] . "/si";
+			$this->current_pattern_id = $pattern['id'];
+			$regex = "/".$pattern['start_regex']."(.*?)".$pattern['end_regex'] . "/si";
 			$content = preg_replace_callback($regex, array($this,"_saveNoWikiBlock"), $content);
 		}
 		return $content;
@@ -162,8 +162,8 @@ class NarinUtil extends NarinClass
 		$this->nowikis = &$nowikis;
 		asort($this->nowiki_patterns);
 		foreach($this->nowiki_patterns as $pattern) {
-			$this->current_pattern_id = $id = $pattern[id];
-			$regex = "/<".$pattern[id]."><\/".$pattern[id] . ">/i";
+			$this->current_pattern_id = $id = $pattern['id'];
+			$regex = "/<".$pattern['id']."><\/".$pattern['id'] . ">/i";
 			$content = preg_replace_callback($regex, array($this,"_restoreNoWikiBlock"), $content);
 		}
 		asort($this->nowiki_patterns);

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -40,7 +40,7 @@ if(!$info->checkSetting($setting)) alert("플러그인 설정 오류");
 <h1>플러그인 셋팅</h1>
 
 <form name="frmplugin" onsubmit="return check_submit(this);"
-	action="<?=$wiki[path]?>/adm/exe_plugin_setting.php" method="post"><input
+	action="<?=$wiki['url']?>/adm/exe_plugin_setting.php" method="post"><input
 	type="hidden" name="plugin" value="<?=$plugin?>" /> <input
 	type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>" />
 <div class="list_table">

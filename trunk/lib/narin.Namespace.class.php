@@ -4,7 +4,7 @@
  * 나린위키 네임스페이스(폴더) 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -54,7 +54,7 @@
  * </code>
  * 
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinNamespace extends NarinClass {
@@ -156,25 +156,23 @@ class NarinNamespace extends NarinClass {
 
 		// $srcNS / $document[] 에 대한 백 링크들을 업데이트한다.
 		for($i=0; $i<count($list); $i++) {
-			if($list[$i]['type'] == 'folder')	continue;
-			$wikiArticle->fromDoc = $fromDoc = $list[$i]['path'];
+			if($list[$i][type] == 'folder')	continue;
+
+			$wikiArticle->fromDoc = $fromDoc = $list[$i][path];
 			$wikiArticle->toDoc = preg_replace("/^(".preg_quote($srcNS, "/").")(.*?)/", $toNS, $fromDoc);
 				
 			// 백링크 업데이트
 			$backLinks = $wikiArticle->getBackLinks($fromDoc, $includeSelf=true);
-				
-			for($k=0; $k<count($backLinks); $k++) {
-
+			
+			for($k=0; $k<count($backLinks); $k++) {							
 				$content = mysql_real_escape_string(preg_replace_callback('/(\[\[)(.*?)(\]\])/', array(&$wikiArticle, 'wikiLinkReplace'), $backLinks[$k]['wr_content']));
-
 				// 문서 이력에 백업
 				$wikiHistory->update($backLinks[$k]['wr_id'], stripcslashes($content), $this->member['mb_id'], "폴더명 변경에 따른 자동 업데이트");
 				$wikiArticle->shouldUpdateCache($backLinks[$k]['wr_id'], 1);
-
 				sql_query("UPDATE ".$this->wiki['write_table']." SET wr_content = '$content' WHERE wr_id = ".$backLinks[$k]['wr_id']."");
 			}
 		}
-
+		
 		sql_query("UPDATE ".$this->wiki['ns_table']." SET ns = '$escapedToNS'
 				   WHERE bo_table = '".$this->wiki['bo_table']."' AND ns = '$escapedSrcNS'", false);				
 		sql_query("UPDATE ".$this->wiki['nsboard_table']." SET ns = '$escapedToNS'
@@ -206,15 +204,21 @@ class NarinNamespace extends NarinClass {
 	/**
 	 *
 	 * 접근 권한 변경
+	 * 
 	 * @param string $ns 폴더 경로
 	 * @param int $level 접근 권한
 	 */
-	function updateAccessLevel($ns, $level)
+	function updateAccessLevel($ns, $level, $recursive = true)
 	{
 		if($ns) $ns = mysql_real_escape_string($ns);
 		if($level) $level = mysql_real_escape_string($level);
-		sql_query("UPDATE ".$this->wiki['ns_table']." SET ns_access_level = '$level'
-				   WHERE bo_table = '".$this->wiki['bo_table']."' AND ns LIKE '$ns%'");						
+		if($recursive) {
+			sql_query("UPDATE ".$this->wiki['ns_table']." SET ns_access_level = '$level'
+				   WHERE bo_table = '".$this->wiki['bo_table']."' AND ( ns = '$ns' OR ns LIKE '$ns/%' )");
+		} else {
+			sql_query("UPDATE ".$this->wiki['ns_table']." SET ns_access_level = '$level'
+				   WHERE bo_table = '".$this->wiki['bo_table']."' AND ns = '$ns'");
+		}
 	}
 
 
@@ -331,7 +335,7 @@ class NarinNamespace extends NarinClass {
 						AND ns NOT REGEXP '^$regp(.*)/' 
 						AND bo_table ='".$this->wiki['bo_table']."'";
 		if($withArticle) {
-			$sql = "SELECT nt.ns, nt.bo_table, wb.mb_id, wb.wr_name, mb.mb_nick, wb.wr_subject AS doc, wb.wr_id, wb.wr_datetime, ht.editor_mb_id AS editor, ht.reg_date AS update_date, wb.wr_good, wb.wr_nogood, wb.wr_comment, wb.wr_hit
+			$sql = "SELECT nt.ns, nt.bo_table, nt.ns_access_level, nb.access_level, nb.edit_level, wb.mb_id, wb.wr_name, mb.mb_nick, wb.wr_subject AS doc, wb.wr_id, wb.wr_datetime, ht.editor_mb_id AS editor, ht.reg_date AS update_date, wb.wr_good, wb.wr_nogood, wb.wr_comment, wb.wr_hit
 					FROM ".$this->wiki['ns_table']." AS nt 
 					LEFT JOIN ".$this->wiki['nsboard_table']." AS nb ON nt.ns = nb.ns AND nt.bo_table = nb.bo_table 
 					LEFT JOIN ".$this->wiki['write_table']." AS wb ON nb.wr_id = wb.wr_id 
@@ -356,12 +360,12 @@ class NarinNamespace extends NarinClass {
 				if(!$row['doc']) continue;
 				$row['name'] = $row['doc'];
 				$row['path'] = ($row['ns'] == "/" ? "/" : $row['ns']."/").$row['doc'];
-				$row['href'] = $this->wiki['path'].'/narin.php?bo_table='.$this->wiki['bo_table'].'&doc='.urlencode($row['path']);
+				$row['href'] = wiki_url('read', array('doc'=>$row['path']));
 				$row['internal_link'] = "[[".$row['path']."]]";
 				$row['type'] = 'doc';				
 				array_push($files, $row);
 			} else {
-				$row['href'] = $this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($row['ns']);
+				$row['href'] = wiki_url('folder', array('loc'=>$row['ns']));
 				$name = ereg_replace($parent."/", "", $row['ns']);
 				$row['name'] = ereg_replace($parent, "", $name);
 				$row['path'] = $row['ns'];
@@ -417,17 +421,8 @@ class NarinNamespace extends NarinClass {
 		$tree = $this->_build_tree($list);
 		$tree_html = $this->_build_list($tree, "/", $current);
 
-		if($parent == "/") return '<ul class="narin_tree filetree">
-									<li class="open">
-										<span class="root folder">
-											<a href="folder.php?bo_table='.$this->wiki['bo_table'].'&loc='.urlencode($parent).'">'
-											.$pname.
-											'</a>
-										</span>'
-										.$tree_html.
-									'</li>
-								</ul>';
-										else return $tree_html;
+		if($parent == "/") return '<ul class="narin_tree filetree"><li class="open"><span class="root folder"><a href="'.wiki_url('folder', array('loc'=>$parent)).'" code="'.wiki_input_value($parent).'">'.$pname.'</a></span>'.$tree_html.'</li></ul>';
+		else return $tree_html;
 	}
 
 	/**
@@ -459,23 +454,23 @@ class NarinNamespace extends NarinClass {
 	 * @return string 트리 HTML
 	 */
 	function _build_list($tree, $prefix = '', $current = '') {
-		$url = $this->wiki['path'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc=';
+		$url = $this->wiki['url'].'/folder.php?bo_table='.$this->wiki['bo_table'].'&loc=';
 		$ul = '';
 		foreach ($tree as $key => $value) {
 			$li = '';
 			$folder = $prefix.$key;
 			if(preg_match("/^".preg_quote($folder, "/")."/", $current)) $class = ' class="open"';
 			else $class = '';
-			$link = $url . '' . urlencode($folder);
+			$link = wiki_url('folder', array('loc'=>$folder));
 			if (is_array($value)) {
-				$li .= '<li'.$class.'><span class="folder"><a href="'.$link.'">'.$key.'</a></span>';
+				$li .= '<li'.$class.'><span class="folder"><a href="'.$link.'" code="'.wiki_input_value($folder).'">'.$key.'</a></span>';
 				$sub = $this->_build_list($value, "$prefix$key/", $current);
 				if($sub) $li .= $sub;
 				$ul .= $li.'</li>';
 			} else {
-				if($class != '') $closed = "";
-				else $closed = " leaf_folder";
-				$ul .= '<li'.$class.'><span class="folder '.$closed.'"><a href="'.$link.'">'.$key.'</a></span></li>';
+				if($class != '') $closed = " leaf";
+				else $closed = " leaf leaf_folder";
+				$ul .= '<li'.$class.'><span class="folder '.$closed.'"><a href="'.$link.'" code="'.wiki_input_value($folder).'">'.$key.'</a></span></li>';
 			}
 		}
 		return strlen($ul) ? sprintf('<ul>%s</ul>', $ul) : '';

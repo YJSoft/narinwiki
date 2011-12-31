@@ -5,14 +5,12 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 
 include_once "./_common.php";
-
-list($ns, $docname, $fulldoc) = wiki_validate_doc(stripslashes($doc));
 
 $wikiArticle =& wiki_class_load("Article");
 $write = &$wikiArticle->getArticle($ns, $docname);
@@ -56,6 +54,6 @@ if($write[ns] != $wiki_folder || $write[doc] != $wiki_doc) {
 
 $wikiArticle->updateLevel($toDoc, $wiki_access_level, $wiki_edit_level);
 
-header("location:".$wiki['path']."/narin.php?bo_table=".$wiki['bo_table']."&doc=".urlencode(stripcslashes($toDoc)));
+header("location:".wiki_url('read', array('doc'=>$toDoc)));
 
 ?>

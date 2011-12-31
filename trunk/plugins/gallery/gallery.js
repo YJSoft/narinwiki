@@ -41,7 +41,7 @@ $.fn.wiki_gallery = function() {
 															$loading = $('<div style="background:url(plugins/gallery/loading.gif) 10px 40% no-repeat;padding:5px 5px 5px 30px;margin:10px auto;border:1px solid #888; width:170px;">이미지를 불러오는 중입니다.</div>');
 															$link.before($loading);
 															$.ajax({
-																url : wiki_path + '/p.php?bo_table=' + g4_bo_table + '&p=gallery&m=view', 
+																url : wiki_url + '/p.php?bo_table=' + g4_bo_table + '&p=gallery&m=view', 
 																data : params, 
 																dataType : 'json',
 																success : function(json) {
@@ -68,7 +68,7 @@ $.fn.wiki_gallery = function() {
 		params = $.extend(setting, params);
 		$this.html('<div style="background:url(plugins/gallery/loading.gif) left 40% no-repeat;padding:5px 5px 5px 20px;">이미지를 불러오는 중입니다.</div>').show();
 		$.ajax({
-			url : wiki_path + '/p.php?bo_table=' + g4_bo_table + '&p=gallery&m=view', 
+			url : wiki_url + '/p.php?bo_table=' + g4_bo_table + '&p=gallery&m=view', 
 			data : params, 
 			dataType : 'json',
 			success : function(json) {

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -15,7 +15,7 @@ $pageid = "cache";
 include_once("_common.php");
 include_once "admin.head.php";
 
-list($file_size, $file_count) = wiki_dir_filesize($wiki['path'].'/data/'.$bo_table.'/thumb');
+list($file_size, $file_count) = wiki_dir_filesize(WIKI_PATH.'/data/'.$bo_table.'/thumb');
 ?>
 <style type="text/css">
 #admbasic th {
@@ -68,7 +68,7 @@ list($file_size, $file_count) = wiki_dir_filesize($wiki['path'].'/data/'.$bo_tab
 		evt.preventDefault();
 		if(confirm('썸네일을 모두 삭제하고 캐시를 재작성 하겠습니까?\n사용되지 않는 썸네일은 삭제되고 모든 캐시와 썸네일이 새로 만들어집니다.\n문서가 많을 경우 시간이 오래 걸릴 수 도 있습니다.')) {
 			pan.html('썸네일을 삭제하고 있습니다.');
-			$.getJSON(wiki_path+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=clear', function(json) {
+			$.getJSON(wiki_url+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=clear', function(json) {
 				if(json.code == 1) {
 					pan.html('캐시를 새로 작성합니다. 잠시만 기다려주세요...');
 					recreate_cache(1);					
@@ -78,7 +78,7 @@ list($file_size, $file_count) = wiki_dir_filesize($wiki['path'].'/data/'.$bo_tab
 	});
 	
 	function recreate_cache(page) {
-		$.getJSON(wiki_path+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=rc&page='+page, function(json) {
+		$.getJSON(wiki_url+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=rc&page='+page, function(json) {
 			if(json.code == 100) {
 				pan.html('완료');
 				$("#file_size").html(json.file_size);

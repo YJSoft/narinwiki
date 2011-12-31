@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinSyntaxList extends NarinSyntaxPlugin {
@@ -57,13 +57,22 @@ class NarinSyntaxList extends NarinSyntaxPlugin {
 		$args['path'] = $matches[1];
 
 		$list = $this->wiki_list_nojs($args, &$params);
-		if(isset($args['nojs'])) {
-			return $list;
-		}		
 		
 		$options = wiki_json_encode($args);		
 		
-		return $list.'<div class="wiki_lister" style="display:none">'.$options.'</div>';
+		return '<nocache plugin="list" method="cache_render" params="'.addslashes($options).'">'.$list.'</nocache>';
+		//return $list.'<div class="wiki_lister" style="display:none">'.$options.'</div>';
+	}
+
+	/**
+	 * 
+	 * 부분 캐시 랜더 함수
+	 * 
+	 * @param array $args {@link narin.php} 에서 전달하는 파라미터
+	 * @return string HTML 태그
+	 */
+	public function cache_render($args) {
+		return $this->wiki_list_nojs($args, null);
 	}
 
 	/**

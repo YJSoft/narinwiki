@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -17,11 +17,17 @@ if($wiki_front_apply_exist_doc) {
 	sql_query("UPDATE $write_table SET wr_subject = '$wiki_front' WHERE wr_id = ".$front['wr_id']);
 }
 
-sql_query("UPDATE {$g4[board_table]} SET bo_subject = '$wiki_front' WHERE bo_table = '$bo_table'");
+sql_query("UPDATE ".$g4['board_table']." SET bo_subject = '$wiki_front' WHERE bo_table = '$bo_table'");
 $narin_config =& wiki_class_load("Config");
 $narin_config->update("/setting", $_POST['setting']);
 
-header("location:".$wiki['path']."/adm/basic.php?bo_table=".$bo_table);
+if($wiki['skin'] != $_POST['setting']['skin']) {
+	$wikiJsCss = wiki_class_load('JsCss');
+	$wikiJsCss->updateJs();
+	$wikiJsCss->updateCss();
+}
+
+header("location:".$wiki['url']."/adm/basic.php");
 ?>
 
 

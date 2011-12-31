@@ -4,7 +4,7 @@
  * 나린위키 헬퍼 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -19,7 +19,7 @@
  * 모든 클래스의 property 를 제공하는 역할($narinGlobal 맴버 참조)을 하는 클래스
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinHelperPlugin extends NarinPlugin {

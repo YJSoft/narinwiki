@@ -10,7 +10,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -28,8 +28,8 @@ if($is_nogood) $colspan++;
 		위키 검색	
 	</div>
 	
-	<form action="<?=$wiki['path']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
-	<input type="hidden" name="bo_table" value="<?=$wiki['bo_table']?>"/>
+	<form action="<?=$wiki['url']?>/search.php" onsubmit="return wiki_search(this);" method="get" class="wiki_form">
+	<input type="hidden" name="bo_table" value="<?=$bo_table?>"/>
 	<input type="text" class="search_text txt" name="stx" size="20" value="<?=wiki_input_value(stripcslashes($stx))?>"/>
 	<span class="button purple"><input type="submit" value="검색"></span>
 	</form>		
@@ -42,28 +42,26 @@ if($is_nogood) $colspan++;
 ?>
 	<div class="bg<?=$bg?>">
 			<?
-			echo "<a href='{$list[$i][href]}' class='title' style='margin-right:10px'>{$list[$i][subject]}</a>";
-			if ($list[$i][comment_cnt])
-				echo " <a href=\"{$list[$i][comment_href]}\"><span class='comment'>{$list[$i][comment_cnt]}</span></a>";			
+			echo "<a href='".$list[$i]['doc_href']."' class='title' style='margin-right:10px'>".$list[$i]['subject']."</a>";
+			if ($list[$i]['comment_cnt'])
+				echo " <a href=\"".$list[$i]['comment_href']."\"><span class='comment'>".$list[$i]['comment_cnt']."</span></a>";			
                 
-      echo " " . $list[$i][icon_new];
-      echo " " . $list[$i][icon_file];
-      echo " " . $list[$i][icon_link];
-      echo " " . $list[$i][icon_hot];
-      echo " " . $list[$i][icon_secret];
+      echo " " . $list[$i]['icon_new'];
+      echo " " . $list[$i]['icon_file'];
+      echo " " . $list[$i]['icon_link'];
+      echo " " . $list[$i]['icon_hot'];
+      echo " " . $list[$i]['icon_secret'];
       echo $nobr_end;
       ?>
   </div>
 	<div class="doc_url bg<?=$bg?>">
-			<a href="<?=$list[$i][doc_href]?>"><?=$list[$i][doc]?></a>
-	    - <span class="name"><?=$list[$i][name]?></span>
-	    <span class="datetime"><?=$list[$i][datetime]?></span>
-	    <span class="hit"><?=$list[$i][wr_hit]?> hits</span>				
-		<? if ($is_good) { ?><span class="good"><?=$list[$i][wr_good]?></span><? } ?>
-    <? if ($is_nogood) { ?><span class="nogood"><?=$list[$i][wr_nogood]?></span><? } ?>    	    
+			<a href="<?=$list[$i]['doc_href']?>"><?=$list[$i]['doc']?></a>
+	    - <span class="name"><?=$list[$i]['name']?></span>
+	    <span class="datetime"><?=$list[$i]['datetime']?></span>
+	    <span class="hit"><?=$list[$i]['wr_hit']?> hits</span>				   	    
 	</div>
 	<div class="search_content bg<?=$bg?>">
-			<?=$list[$i][content]?>
+			<?=$list[$i]['content']?>
 	</div>
 <?}?>	
 </div>
@@ -81,7 +79,7 @@ if($is_nogood) $colspan++;
 <div class="wikiToolbar clear">
 	
 	<div class="wikiLeftTools">
-  	<span class="button"><a href="<?=$wiki['path']?>/narin.php?bo_table=<?=$wiki['bo_table']?>">시작페이지</a></span>
+  	<span class="button"><a href="<?=wiki_url()?>">시작페이지</a></span>
 	</div> <!--// wikiLeftTools -->	
 	
 	<div class="wikiRightTools">		  	  	  	  		

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinPluginInfoLock extends NarinPluginInfo {
@@ -185,13 +185,13 @@ if(wiki_script == 'write.php') {
 	}
 	
 	function lock_do() {
-		$.post(wiki_path+"/p.php", { p : "lock", m : "keep_alive", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
+		$.post(wiki_url+"/p.php", { p : "lock", m : "keep_alive", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
 		});			
 	}
 	
 	function lock_do_unlock() {
-		$.ajaxSetup({async:false});
-		$.post(wiki_path+"/p.php", { p : "lock", m : "unlock", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
+		$.ajaxSetup({async:false, global: false});
+		$.post(wiki_url+"/p.php", { p : "lock", m : "unlock", bo_table : g4_bo_table, doc : wiki_doc }, function(data) {
 			
 		});			
 	}	

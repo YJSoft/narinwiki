@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage inc
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -23,9 +23,9 @@ $ns = $wikiNS->get($loc);
 	
 	<h1>폴더관리</h1> 
 	
-	<form name="frmwikiman" onsubmit="return wiki_submit(this);" method="post">
+	<form name="frmwikiman" onsubmit="return wiki_submit(this);" action="<?=$wiki['url']?>/exe/folder_update.php" method="post">
 	<input type="hidden" name="w" value="u">	
-	<input type="hidden" name="bo_table" value="<?=$wiki[bo_table]?>">	
+	<input type="hidden" name="bo_table" value="<?=$bo_table?>">	
 	<input type="hidden" name="loc" value="<?=wiki_input_value($loc)?>">	
 	<div class="list_table">
 	<table id="wiki_man" cellpadding="0" cellspacing="0" border="0">	
@@ -41,7 +41,7 @@ $ns = $wikiNS->get($loc);
 		<td>
 			<select name="wiki_access_level" style="width:50px" class="tx" >
 				<? for($i=1; $i<=10; $i++) {
-					$selected = ($ns[ns_access_level] == $i ? "selected" : "");
+					$selected = ($ns['ns_access_level'] == $i ? "selected" : "");
 					echo "<option value='$i' $selected>$i</option>";
 				} ?>
 			</select>
@@ -51,7 +51,7 @@ $ns = $wikiNS->get($loc);
 	<tr>
 		<th scope="row">템플릿</th>
 		<td>
-		<textarea name="wiki_template" style="width:100%;height:120px" class="tx"><?=$ns[tpl]?></textarea>
+		<textarea name="wiki_template" style="width:100%;height:120px" class="tx"><?=$ns['tpl']?></textarea>
 		<table id="wiki_template_desc">
 			<tr>
 				<td>@DOCNAME@ : 문서명</td>
@@ -77,11 +77,11 @@ $ns = $wikiNS->get($loc);
 	<tr>		
 		<th scope="row">폴더명 변경</th>
 		<td>
-			<? if($ns[ns] == "/") { ?>
-			<input type="hidden" name="wiki_loc" value="<?=wiki_input_value($ns[ns])?>"/>
-			<?=$ns[ns]?> &nbsp; (최상위 폴더는 변경할 수 없습니다)
+			<? if($ns['ns'] == "/") { ?>
+			<input type="hidden" name="wiki_loc" value="<?=wiki_input_value($ns['ns'])?>"/>
+			<?=$ns['ns']?> &nbsp; (최상위 폴더는 변경할 수 없습니다)
 			<? } else { ?>
-			<input type="text" name="wiki_loc" value="<?=wiki_input_value($ns[ns])?>" size="50" class="tx"/>
+			<input type="text" name="wiki_loc" value="<?=wiki_input_value($ns['ns'])?>" size="50" class="tx"/>
 			<? } ?>
 		</td>
 	</tr>
@@ -115,9 +115,9 @@ function wiki_submit(f)
   var subject = "";
   $.ajaxSetup({async:false});
   $.getJSON(
-  	"<?=$wiki[path]?>/exe/ajax.filter.php", 
+  	"<?=$wiki['url']?>/exe/ajax.filter.php", 
   	{
-  		"bo_table": "<?=$wiki[bo_table]?>",
+  		"bo_table": "<?=$bo_table?>",
       "subject": f.wiki_loc.value
     }, 
     function(data) {
@@ -130,12 +130,7 @@ function wiki_submit(f)
       f.wiki_loc.focus();
       return false;
   }
-  <?
-  if ($g4[https_url])
-      echo "f.action = '$g4[https_url]/$wiki[path]/exe/folder_update.php';";
-  else
-      echo "f.action = '$wiki[path]/exe/folder_update.php';";
-  ?>       
+
   
   return true;
 }	

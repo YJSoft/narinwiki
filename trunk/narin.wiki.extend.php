@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -30,7 +30,6 @@ if($board['bo_1_subj'] == "narinwiki" && $board['bo_1'] != "") {
 		
 		include_once $wiki_config;	
 		include_once $wiki_path . "/lib/narin.wiki.lib.php";	
-		include_once $wiki_path ."/lib/narin.Class.class.php";
 		
 		$wikiControl =& wiki_class_load("Control");
 		
@@ -38,12 +37,12 @@ if($board['bo_1_subj'] == "narinwiki" && $board['bo_1'] != "") {
 		$board_skin_path = $wiki['inc_skin_path'];
 		
 		// 게시판 스킨 & 헤더-테일 변경
-		$board[bo_include_head] = $wiki['path'] . "/head.php";
-		$board[bo_include_tail] = $wiki['path'] . "/tail.php";				
+		$board['bo_include_head'] = WIKI_PATH . "/head.php";
+		$board['bo_include_tail'] = WIKI_PATH . "/tail.php";				
 		
 		// 위키를 전체 검색에 노출 안되도록 함
 		// 위키 자체 권한, 파싱 문제 등...
-		$board[bo_use_search] = 0;
+		$board['bo_use_search'] = 0;
 				
 		$wikiControl->board($scriptFile);		
 						

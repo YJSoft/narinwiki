@@ -4,7 +4,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -37,7 +37,7 @@ foreach($chk as $idx => $i) {
 	$wikiArticle->addArticle($doc, $_POST['wr_id'][$i]);	
 }
 
-header("location:".$wiki['path']."/adm/nowiki.php?bo_table=$bo_table");
+header("location:".$wiki['url']."/adm/nowiki.php");
 ?>
 
 

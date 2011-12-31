@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -38,9 +38,9 @@ if($f['img_width']) {
 } else $f['thumb'] = "";
 
 preg_match("/\.([a-zA-Z0-9]{2,4})$/", $f['source'], $m);
-if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
-	$f['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
-} else $f['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/_blank.png';
+if($m[1] && file_exists(WIKI_PATH.'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
+	$f['ext_icon'] = $wiki['url'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
+} else $f['ext_icon'] = $wiki['url'].'/imgs/media_manager/ext/_blank.png';
 
 $f['code'] = 1;
 $f['filesize'] = wiki_file_size($f['filesize']);

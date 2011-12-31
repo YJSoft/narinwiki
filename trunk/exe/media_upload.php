@@ -4,7 +4,7 @@
  * 미디어 파일 업로드 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -29,7 +29,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 // Settings
-$targetDir = $wiki['path'].'/data/'.$bo_table.'/files/';
+$targetDir = WIKI_PATH.'/data/'.$bo_table.'/files/';
 
 // 5 minutes execution time
 @set_time_limit(5 * 60);
@@ -39,7 +39,7 @@ $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
 $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
 $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
-if(!$loc || !$filename) {
+if(!$loc || !trim($filename)) {
 	die('{"jsonrpc" : "2.0", "error" : {"code": 901, "message": "잘못된 요청"}, "id" : "id"}');
 }
 
@@ -96,12 +96,12 @@ if (strpos($contentType, "multipart") !== false) {
 				while ($buff = fread($in, 4096))
 					fwrite($out, $buff);
 			} else
-				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "파일 입력 스트림 생성 실패"}, "id" : "id"}');
+				die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "파일 입력 스트림 생성 실패 1"}, "id" : "id"}');
 			fclose($in);
 			fclose($out);
 			@unlink($_FILES['file']['tmp_name']);
 		} else
-			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "파일 출력 스트림 생성 실패"}, "id" : "id"}');
+			die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "파일 출력 스트림 생성 실패 1"}, "id" : "id"}');
 	} else
 		die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "임시로 업로드된 파일 이동 실패"}, "id" : "id"}');
 } else {
@@ -115,12 +115,12 @@ if (strpos($contentType, "multipart") !== false) {
 			while ($buff = fread($in, 4096))
 				fwrite($out, $buff);
 		} else
-			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "파일 입력 스트림 생성 실패"}, "id" : "id"}');
+			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "파일 입력 스트림 생성 실패 2"}, "id" : "id"}');
 
 		fclose($in);
 		fclose($out);
 	} else
-		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "파일 출력 스트림 생성 실패"}, "id" : "id"}');
+		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "파일 출력 스트림 생성 실패 2"}, "id" : "id"}');
 }
 
 // Return JSON-RPC response

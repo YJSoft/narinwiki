@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage event
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -23,7 +23,7 @@ if(!$w) {
 	$folder = $wikiNS->get($folder);
 	$tpl = $folder['tpl'];
 	$source = array("/@DOCNAME@/", "/@FOLDER@/", "/@USER@/", "/@NAME@/", "/@NICK@/", "/@MAIL@/", "/@DATE@/");
-	$target = array($docname, $folder, $member['mb_id'], $member['mb_name'], $member['mb_nick'], $member['mb_email'], date("Y-m-d h:i:s"));	
+	$target = array($docname, $folder['ns'], $member['mb_id'], $member['mb_name'], $member['mb_nick'], $member['mb_email'], date("Y-m-d h:i:s"));	
 	$content = preg_replace($source, $target, $tpl);
 	$return_array['content'] = $content;
 }

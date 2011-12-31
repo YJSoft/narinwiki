@@ -25,7 +25,7 @@ table.list_table tbody .list_folder { color:#aaa; margin-left:8px; font-size:90%
 
 
 /* 리스트 목록 */
-ul.list_list { }
+ul.list_list { line-height:150%; }
 
 /* 댓글수 출력 span 태그 */
 ul.list_list .list_comment { color:#EA7500; margin-left:5px; font-size:90% }
@@ -34,3 +34,10 @@ ul.list_list .list_comment { color:#EA7500; margin-left:5px; font-size:90% }
 ul.list_list .list_editor,
 ul.list_list .list_folder,
 ul.list_list .list_date { color:#aaa; margin-left:5px; font-size:90% }
+
+/* 에디터 툴바 설정 (이 부분에 대해 잘 아는 사람만 편집하세요.) */
+.markItUp .narin_plugin .plugin_list a {	background-image:url(list_plugin.png);	}
+.list_plugin_pan td { padding:3px; }
+.list_plugin_pan input { border:1px solid #ccc; }
+.list_plugin_pan .chk { width:13px;height:13px;margin:1px 5px 2px 0;padding:0;vertical-align:middle }
+.list_plugin_pan label { margin:0;cursor:pointer }

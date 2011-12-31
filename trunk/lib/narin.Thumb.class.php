@@ -4,14 +4,14 @@
  * 썸네일 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 
 
 // easy php thumbnail 클래스를 이용함
-require_once $wiki['path']."/lib/Thumb/easyphpthumbnail.class.php";
+include_once WIKI_PATH."/lib/Thumb/easyphpthumbnail.class.php";
 
 /**
  *
@@ -32,7 +32,7 @@ require_once $wiki['path']."/lib/Thumb/easyphpthumbnail.class.php";
  * </code>
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinThumb extends NarinClass {
@@ -42,6 +42,12 @@ class NarinThumb extends NarinClass {
 	 * @var string 썸네일 저장 폴더
 	 */
 	var $thumb_path;
+	
+	/**
+	 *
+	 * @var string 썸네일 URL
+	 */
+	var $thumb_url;	
 
 	/**
 	 * 생성자
@@ -49,7 +55,8 @@ class NarinThumb extends NarinClass {
 	public function __construct() {
 
 		parent::__construct();
-		$this->thumb_path = $this->wiki['path'] . "/data/".$this->wiki['bo_table']."/thumb";
+		$this->thumb_path = WIKI_PATH."/data/".$this->wiki['bo_table']."/thumb";
+		$this->thumb_url = $this->wiki['url']."/data/".$this->wiki['bo_table']."/thumb";
 	}
 
 	/**
@@ -59,6 +66,7 @@ class NarinThumb extends NarinClass {
 	 * @param string $namePrefix 썸네일명 형식 => "$namePrefix_너비x높이"
 	 */
 	function deleteThumb($namePrefix) {
+		if(!file_exists($this->thumb_path)) return;
 		if ($handle = opendir($this->thumb_path)) {
 			while (false !== ($file = readdir($handle))) {
 				if ($file != "." && $file != "..") {
@@ -165,7 +173,7 @@ class NarinThumb extends NarinClass {
 			
 		// 원본 이미지 파일 경로
 		$file = $fileinfo[$img_idx]['path'] . '/' .$fileinfo[$img_idx]['file'];
-
+		
 		$pathinfo = pathinfo($file);
 		$extension = strtolower($pathinfo[extension]);
 
@@ -220,13 +228,13 @@ class NarinThumb extends NarinClass {
 			
 		// 원본 이미지 파일 경로
 		$file = $fileinfo['path'];
-
+		
 		$pathinfo = pathinfo($file);
 		$extension = strtolower($pathinfo['extension']);
 
 		// 확장자 검사 : 가능 이미지 아니면 원본 이미지 경로 반환
 		if ($extension != 'jpg' && $extension != 'jpeg' && $extension != 'png' && $extension != 'gif') {
-			return $file;
+			return $this->wiki['url'] . "/data/".$this->bo_table."/files/".$fileinfo['source'];
 		}
 
 		// 원본 이미지 파일명
@@ -236,9 +244,9 @@ class NarinThumb extends NarinClass {
 		$croping = ($crop ? "-c" : "");
 		$thumb_name = "media-".$bo_table."-".$fileinfo['id'] . "-". $quality . $croping . "_".$thumb_width."x".$thumb_height. "." . $extension;
 		$thumb_file = $this->thumb_path."/".$thumb_name;
-
+		
 		// 썸네일이 이미 존재하면 리턴
-		if(file_exists($thumb_file)) return $thumb_file;
+		if(file_exists($thumb_file)) return $this->thumb_url . "/". $thumb_name;
 			
 			
 		if($crop) {						
@@ -268,9 +276,10 @@ class NarinThumb extends NarinClass {
 		if($crop) {
 			$thumbLib->Cropimage = array(1, 1, $left, $right, $top, $bottom);
 		}
+
 		$thumbLib->Createthumb($file, 'file');
 			
-		return $thumb_file;
+		return $this->thumb_url . "/".$thumb_name;
 	}
 
 }

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,20 +16,11 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinSyntaxCode extends NarinSyntaxPlugin {
 
-	/**
-	 *
-	 * 생성자
-	 */
-	public function __construct() {
-		$this->id = "wiki_code";
-		parent::__construct();
-	}
-	
 	/**
 	 *
 	 * @var array 코드블럭을 임시로 저장할 변수
@@ -56,12 +47,13 @@ class NarinSyntaxCode extends NarinSyntaxPlugin {
 		$endRegx = "&lt;\/code&gt;",
 		$method = "wiki_code");
 
+		/*
 		$parser->addLineParser(
 		$id = $this->plugin_info->getId()."_wiki_pre",
 		$klass = $this,
 		$regx = "^(&lt;[\/]?code&gt;)(.*?)",
 		$method = "wiki_pre");
-
+		*/
 		$parser->addEvent(EVENT_AFTER_PARSING_ALL, $this, "wiki_restore_code");
 	}
 
@@ -95,7 +87,7 @@ class NarinSyntaxCode extends NarinSyntaxPlugin {
 	 * @param array $params {@link NarinParser} 에서 전달하는 파라미터
 	 */	
 	public function wiki_restore_code($params) {
-		$params[output] = preg_replace_callback('/<code><\/code>/i', array($this,"_restoreCode"), $params[output]);
+		$params['output'] = preg_replace_callback('/<code><\/code>/i', array($this,"_restoreCode"), $params['output']);
 	}
 
 	/**

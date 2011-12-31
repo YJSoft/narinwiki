@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
  
@@ -139,7 +139,6 @@ class NarinPluginInfoGallery extends NarinPluginInfo {
 		$js = file_get_contents($this->plugin_path."/gallery.js");
 		if(!$css) $css = file_get_contents($this->plugin_path."/gallery.css");
 		
-		$js = str_replace("{_pluginpath_}", $this->plugin_path, $js);
 		// js 파일 작성
 		$fp = fopen($this->data_js_file, "w");
 		fwrite($fp, $js);

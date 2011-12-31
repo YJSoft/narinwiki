@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -29,7 +29,9 @@ $total_page  = ceil($total_count / $page_rows);
 $from_record = ($page - 1) * $page_rows;
 
 $sql = "SELECT * FROM ".$wiki['changes_table']." WHERE bo_table = '".$wiki['bo_table']."' ORDER BY id DESC LIMIT $from_record, $page_rows";
-$paging = get_paging(10, $page, $total_page, $wiki['path']."/recent.php?bo_table=$bo_table&page=");
+
+$page_base_url = wiki_url('recent', array('page'=>''));
+$paging = get_paging(10, $page, $total_page, $page_base_url);
 
 
 if($is_wiki_admin) {
@@ -43,11 +45,10 @@ if($is_wiki_admin) {
 $list = array();
 $res = sql_query($sql);
 while($row = sql_fetch_array($res)) {
-	$target = urlencode($row[target]);
 	if($row['target_type'] == "DOC") {
-		$row['view_href'] = $wiki['path']."/narin.php?bo_table=".$wiki['bo_table']."&doc=".$target;
+		$row['view_href'] = wiki_url('read', array('doc'=>$row[target]));
 	} else if($row['target_type'] == "FOLDER") {
-		$row['view_href'] = $wiki['path']."/folder.php?bo_table=".$wiki['bo_table']."&loc=".$target;		
+		$row['view_href'] = wiki_url('folder', array('loc'=>$row[target]));		
 	}
 	array_push($list, $row);
 }

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -38,7 +38,7 @@ if($md == 'ecbd' && $expire) {
 }
 
 
-header("location:".$wiki['path']."/adm/history.php?bo_table=$bo_table");
+header("location:".$wiki['url']."/adm/history.php");
 ?>
 
 

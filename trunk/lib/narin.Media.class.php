@@ -4,7 +4,7 @@
  * 나린위키 미디어 클래스
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -72,7 +72,7 @@
  * </code>
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinMedia extends NarinClass {
@@ -89,7 +89,7 @@ class NarinMedia extends NarinClass {
 	 */
 	function __construct() {
 		parent::__construct();
-		$this->path = $this->wiki['path']."/data/".$this->wiki['bo_table']."/files/";
+		$this->path = WIKI_PATH."/data/".$this->wiki['bo_table']."/files/";
 	}
 
 	/**
@@ -254,9 +254,15 @@ class NarinMedia extends NarinClass {
 
 		$row = sql_fetch($sql);
 		if(!$row) return null;
-		$row['path'] = $this->wiki['path'].'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
-		$row['href'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
-		$row['imgsrc'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
+		
+		$row['path'] = WIKI_PATH.'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
+		if(!$this->wiki['fancy_url']) {
+			$row['href'] = $this->wiki['url'].'/exe/media_download.php?file='.urlencode(wiki_doc($row['ns'], $row['source']));
+			$row['imgsrc'] = $this->wiki['url'].'/exe/media_download.php?file='.urlencode(wiki_doc($row['ns'], $row['source']));
+		} else {
+			$row['href'] = $this->wiki['url'].'/_media'.wiki_doc($row['ns'], $row['source']);
+			$row['imgsrc'] = $this->wiki['url'].'/_media'.wiki_doc($row['ns'], $row['source']);
+		}
 		return $row;
 	}
 
@@ -379,9 +385,9 @@ class NarinMedia extends NarinClass {
 			if($row['ns'] == $parent) {
 				if(!$row['source']) continue;
 				//if(is_callable($filter) && !$filter($row)) continue;
-				$row['path'] = $this->wiki['path'].'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
-				$row['href'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
-				$row['imgsrc'] = $this->wiki['path'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&w=img&file='.urlencode(wiki_doc($row['ns'], $row['source']));
+				$row['path'] = WIKI_PATH.'/data/'.$this->wiki['bo_table'].'/files/'.$row['file'];
+				$row['href'] = $this->wiki['url'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&file='.urlencode(wiki_doc($row['ns'], $row['source']));
+				$row['imgsrc'] = $this->wiki['url'].'/exe/media_download.php?bo_table='.$this->wiki['bo_table'].'&w=img&file='.urlencode(wiki_doc($row['ns'], $row['source']));
 				array_push($files, $row);
 			}
 		}
@@ -481,7 +487,7 @@ class NarinMedia extends NarinClass {
 	 * @return string 트리 HTML
 	 */
 	function _build_list($tree, $prefix = '', $current = '') {
-		$url = $this->wiki['path'].'/media.php?bo_table='.$this->wiki['bo_table'].'&loc=';
+		$url = $this->wiki['url'].'/media.php?bo_table='.$this->wiki['bo_table'].'&loc=';
 		$ul = '';
 		foreach ($tree as $key => $value) {
 			$li = '';

@@ -1,5 +1,6 @@
-Header unset Etag
-FileETag none
+Options +FollowSymlinks
+RewriteEngine on
+RewriteBase /narinwiki
 
 <ifModule mod_gzip.c>
 	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/x-javascript
@@ -9,6 +10,9 @@ FileETag none
 	Header append Vary User-Agent
 </ifModule>
 
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+</IfModule>
 
 <ifModule mod_headers.c>
   <filesMatch "\\.(ico|pdf|flv|jpg|jpeg|png|gif|swf)$">
@@ -18,7 +22,7 @@ FileETag none
     Header set Cache-Control "max-age=604800, public"
   </filesMatch>
   <filesMatch "\\.(js)$">
-    Header set Cache-Control "max-age=216000, privyate"
+    Header set Cache-Control "max-age=216000, private"
   </filesMatch>
   <filesMatch "\\.(xml|txt)$">
     Header set Cache-Control "max-age=216000, public, must-revalidate"
@@ -27,3 +31,33 @@ FileETag none
     Header set Cache-Control "max-age=1, private, must-revalidate"
   </filesMatch>
 </ifModule>
+
+
+RewriteRule ^(.*)/$ $1/index.php [L,NC]
+
+RewriteRule ^_narin\.js$ js.php [L,NC]
+RewriteRule ^_narin\.css$ css.php [L,NC]
+RewriteRule ^_media/(.*)$ exe/media_download.php?file=$1 [L,NC]
+RewriteRule ^(adm|exe|css|js|data|imgs|plugins|install)(.*)$ $1$2 [L,NC]
+
+RewriteRule ^search/(.*)$ search.php?stx=$1 [L,NC]
+
+RewriteRule ^recent/(.*)$ recent.php?page=$1 [L,NC]
+
+RewriteRule ^diff/(.*)$ diff.php?hid=$1 [L,NC]
+
+RewriteRule ^history/(.*)$ history.php?doc=$1 [L,NC]
+
+RewriteRule ^read/(.*)$ narin.php?doc=$1 [L,NC]
+
+RewriteRule ^read narin.php [L,NC]
+
+RewriteRule ^folder/(.*)$ folder.php?loc=$1 [L,NC]
+
+
+
+RewriteCond %{REQUEST_FILENAME}	!-f 
+RewriteCond %{REQUEST_FILENAME}	!-d
+RewriteCond %{REQUEST_FILENAME}\.php	-f
+RewriteRule ^(.*)$ $1.php
+

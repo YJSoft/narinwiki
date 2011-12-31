@@ -63,7 +63,7 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 		$list = array();
 		
 		while($row = sql_fetch_array($res)) {
-			$href = $wiki['path']."/narin.php?bo_table=".$wiki['bo_table']."&doc=".urlencode(wiki_doc($row['ns'], $row['title']));
+			$href = wiki_url('read', array('doc'=>wiki_doc($row['ns'], $row['title'])));
 			$row['title'] = conv_subject($row['title'], $subject_len, "…");
 			$row['href'] = $href;
 			$row['datetime'] = $row['date'];			
@@ -79,55 +79,6 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 		return $list;		
 	}	
 
-	/**
-	 *
-	 * 최근 업데이트 된 문서 목록
-	 * 
-	 * @deprecated
-	 * @param string $ns 폴더 경로
-	 * @param boolean $recursive 하위 폴더도 읽어올 것인가
-	 * @param string $dateformat 날짜 출력 포맷
-	 * @param int $coubnt 몇개의 문서를 읽어올 것인가
-	 * @param int $subject_len 제목 길이를 얼마로 자를 것인가
-	 * @return array 문서 목록
-	 */
-	function wiki_list_recentUpdate($wiki, $g4, $ns, $recursive = true, $dateformat, $count=5, $subject_len=255, $reverse = false, $with_content = false) {		
-		$ns = mysql_real_escape_string($ns);
-		
-		$addselect = ($with_content ? ' , wt.wr_content AS content' : '');
-		
-		if($recursive) $ns_match = " nt.ns LIKE '".$ns."%'";
-		else $ns_match = " nt.ns = '$ns'";
-		
-		$sort = ($reverse ? ' ASC' : ' DESC');
-		
-		$sql = "SELECT nt.ns, wt.wr_subject AS title, ht.editor_mb_id AS editor, mt.mb_name as name, mt.mb_nick as nick, ht.reg_date as date,   wt.wr_comment AS comments, wt.wr_hit AS hits $addselect
-						FROM ".$wiki['history_table']." AS ht 
-						JOIN ( SELECT MAX(id) AS id FROM ".$wiki['history_table']." GROUP BY wr_id ORDER BY id $sort)
-									 AS ht2 ON ht.id = ht2.id
-						JOIN ".$wiki['write_table']." AS wt ON ht.wr_id = wt.wr_id 
-						JOIN ".$wiki['nsboard_table']." AS nt ON nt.wr_id = wt.wr_id AND nt.bo_table = '".$wiki['bo_table']."' AND $ns_match
-						JOIN ".$g4['member_table']." AS mt ON ht.editor_mb_id = mt.mb_id
-						LIMIT $count
-						";
-				
-		$res = sql_query($sql);
-		$list = array();
-		while($row = sql_fetch_array($res)) {
-			$href = $wiki['path']."/narin.php?bo_table=".$wiki['bo_table']."&doc=".urlencode(wiki_doc($row['ns'], $row['title']));
-			$row['title'] = conv_subject($row['title'], $subject_len, "…");
-			$row['href'] = $href;
-			$row['datetime'] = $row['date'];			
-			$row['date'] = date($dateformat, strtotime($row['date']));
-			$row['elapsed'] = wiki_list_elapsedTime($row['datetime'], $g4);
-			if(!$row['nick']) $row['nick'] = $row['editor'];
-			if(!$row['name']) $row['name'] = $row['editor'];
-			array_push($list, $row);
-		}
-		return $list;		
-	}	
-
-
 	function wiki_list_elapsedTime($date, $g4) {
 	
 		$timeyear = 365 * 24 * 60 * 60;
@@ -142,13 +93,13 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 		$x = $g4['server_time'] - $argtime;
 		if($x >= $timeyear) 
 		{	
-			return date("Y년 M월 j일", strtotime($argtime));
+			return date("Y년 M월 j일", $argtime);
 		} else if($x >= $timemonth) {
-			return date("M월 j일", strtotime($argtime));
+			return date("n월 j일", $argtime);
 		} else if($x >= $timeday) {
 			$x = round($x / $timeday);
-			if($x < 7)	return "지난 " . $dates[date("N", $argtime)];
-			else return date("n월 j일", strtotime($argtime));	
+			if($x < 7)	return "" . $dates[date("N", $argtime)];
+			else return date("n월 j일", $argtime);	
 		} else if($x >= $timehour) {
 			$x = round($x / $timehour); 
 			return $x . ' 시간전';
@@ -161,5 +112,5 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 		}
 		
 		// may not be reached here
-		return date("j M Y", strtotime($argtime));
+		return date("j M Y", $argtime);
 	}		

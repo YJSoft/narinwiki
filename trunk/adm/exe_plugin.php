@@ -1,16 +1,20 @@
 <?
 /**
- * 
+ *
  * 위키 관리 : plugin 실행 스크립트
  *
  * @package	narinwiki
  * @subpackage admin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
 
 include_once("_common.php");
+
+$wikiConfig =& wiki_class_load("Config");
+
+$current_using_plugins = $wikiConfig->using_plugins;
 
 $use_plugins = array();
 for($i=0; $i<count($wiki_plugin); $i++)
@@ -18,13 +22,21 @@ for($i=0; $i<count($wiki_plugin); $i++)
 	if($wiki_plugin_use[$i]) array_push($use_plugins, $wiki_plugin[$i]);
 }
 
-$wikiConfig =& wiki_class_load("Config");
 $wikiConfig->update("/using_plugins", $use_plugins);
 
-wiki_set_option("js_modified", "timestamp", time());
-wiki_set_option("css_modified", "timestamp", time());
+$unused_plugins = array_diff($current_using_plugins, $use_plugins);
+foreach($unused_plugins as $k=>$p) {
+	$pi = wiki_plugin_info($p);
+	$pi->onUnused();	
+}
 
-header("location:".$wiki['path']."/adm/plugin.php?bo_table=$bo_table");
+$wikiJsCss = wiki_class_load('JsCss');
+$wikiJsCss->updateJs();
+$wikiJsCss->updateCss();
+
+header("location:".$wiki['url']."/adm/plugin.php");
+
+
 ?>
 
 

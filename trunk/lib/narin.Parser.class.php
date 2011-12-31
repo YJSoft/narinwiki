@@ -4,7 +4,7 @@
  * 나린위키 문법 분석(parsing) 실행 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -27,7 +27,7 @@ define("EVENT_AFTER_PARSING_LINE", "EVT_PARSING_FINSISHING_LINE");
  * </code>
  * 
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinParser extends NarinClass
@@ -162,18 +162,19 @@ class NarinParser extends NarinClass
 	 */
 	protected function loadPlugins()
 	{
-		include_once $this->wiki['path']."/lib/narin.Plugin.class.php";
-		include_once $this->wiki['path']."/lib/narin.SyntaxPlugin.class.php";
+		include_once WIKI_PATH."/lib/narin.Plugin.class.php";
+		include_once WIKI_PATH."/lib/narin.SyntaxPlugin.class.php";
 
-		$path = $this->wiki['path']."/plugins";
+		$path = WIKI_PATH."/plugins";
 		$use_plugins = array();
 		foreach($this->wiki_config->using_plugins as $v) $use_plugins[$v] = $v;
 
+		$plugins = array();
+		
 		// 기본 문법 해석기 로드
 		include_once "narin.syntax.php";
-		$syntax = new NarinSyntaxDefault();
-		$syntax->register($this);
-		array_push($this->plugins, $syntax);
+		$syntax = new NarinSyntaxDefault();		
+		array_push($plugins, array('order'=>$syntax->order, 'plugin'=>$syntax));
 
 		// syntax 플러그인 로드
 		$d = dir($path);
@@ -195,15 +196,21 @@ class NarinParser extends NarinClass
 					if(class_exists($realClassName)) {
 
 						$p = new $realClassName();
-						array_push($this->plugins, $p);
 						if(!is_a($p, "NarinSyntaxPlugin")) continue;
-						$p->register($this);
+						array_push($plugins, array('order'=>$p->order, 'plugin'=>$p));
 					}
 
 				}
 			}
 		}
-
+		
+		$plugins = wiki_subval_asort($plugins, 'order');
+		
+		foreach($plugins as $k=>$p) {
+			$p['plugin']->register($this);
+			array_push($this->plugins, $p['plugin']);
+		}
+		
 		$this->addLineParser($id = $syntax->id."_wiki_par",
 		$klass = $syntax,
 		$regx = '^(.*?)$',
@@ -349,7 +356,7 @@ class NarinParser extends NarinClass
 	protected function parse_variable($matches)
 	{
 		$loc = wiki_input_value($this->folder);
-		$path = $this->wiki['path'];
+		$path = WIKI_PATH;
 
 		foreach ($this->variableParsers as $id => $p)
 		{
@@ -553,7 +560,7 @@ class NarinParser extends NarinClass
 		}
 		$target = array("icon_cool.gif", "icon_eek.gif", "icon_sad.gif", "icon_smile.gif", "icon_smile2.gif", "icon_doubt.gif", "icon_doubt2.gif", "icon_confused.gif", "icon_biggrin.gif", "icon_razz.gif", "icon_surprised.gif", "icon_silenced.gif", "icon_neutral.gif", "icon_wink.gif", "icon_fun.gif", "icon_question.gif", "icon_exclaim.gif", "icon_lol.gif", "fixme.gif", "delete.gif", );
 		foreach($target as $k => $v) {
-			$target[$k] = "<img src=\"".$this->wiki['path']."/imgs/smileys/$v\" class=\"middle\" alt=\"\\0\" title=\"\\0\"/>";
+			$target[$k] = "<img src=\"".$this->wiki['url']."/imgs/smileys/$v\" class=\"middle\" alt=\"\\0\" title=\"\\0\"/>";
 		}
 		$content = preg_replace($source, $target, $content);
 		return $content;

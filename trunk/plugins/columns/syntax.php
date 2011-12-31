@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,7 +16,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinSyntaxColumns extends NarinSyntaxPlugin {
@@ -94,7 +94,7 @@ class NarinSyntaxColumns extends NarinSyntaxPlugin {
 	public function columns_start($matches, $params) {
 		$params['parser']->stop = true;
 		$this->save_section(&$params);
-		return $this->get_close(&$params).'<!-- wiki_columns--><div style="overflow:auto"><table class="wiki_columns" border="0" cellspacing="0" cellpadding="0" '.strip_tags($matches[1]).'><tr>';
+		return $this->get_close(&$params).'<!-- wiki_columns--><div style="overflow:hidden;"><table class="wiki_columns" border="0" cellspacing="0" cellpadding="0" '.strip_tags($matches[1]).'><tr>';
 	}
 	
 	/**

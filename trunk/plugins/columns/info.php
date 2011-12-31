@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -16,11 +16,18 @@
  *
  * @package	narinwiki
  * @subpackage plugin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinPluginInfoColumns extends NarinPluginInfo {
 
+	
+	var $jsfile;
+	
+	var $cssfile;
+	
+	var $iconfile;
+	
 	/**
 	 * 
 	 * 생성자
@@ -30,6 +37,10 @@ class NarinPluginInfoColumns extends NarinPluginInfo {
 				
 		$this->id = "wiki_columns";				
 		$this->init();
+		
+		$this->jsfile = $this->data_path . '/js/columns_plugin.js';
+		$this->cssfile = $this->data_path . '/css/columns_plugin.css';
+		$this->iconfile = $this->data_path . '/css/columns_plugin.png';
 	}	  	
 
 	/**
@@ -43,6 +54,26 @@ class NarinPluginInfoColumns extends NarinPluginInfo {
 		return "칼럼 플러그인 (저자 : byfun, byfun@byfun.com)";
 	}
 
+	public function shouldInstall() {
+		return !file_exists($this->jsfile);
+	}
+	
+	public function shouldUnInstall() {
+		return file_exists($this->jsfile);
+	}
+	
+	public function install() {		
+		copy($this->plugin_path."/columns.js", $this->jsfile);
+		copy($this->plugin_path."/columns.css", $this->cssfile);
+		copy($this->plugin_path."/columns.png", $this->iconfile);
+	}
+	
+	public function uninstall() {
+		@unlink($this->jsfile);
+		@unlink($this->cssfile);
+		@unlink($this->iconfile);
+	}
+	
 }
 
 

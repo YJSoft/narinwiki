@@ -4,7 +4,7 @@
  * 나린위키 플러그인 정보 클래스 스크립트
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -14,7 +14,7 @@
  * 나린위키 플러그인 정보 클래스
  *
  * @package	narinwiki
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  */
 class NarinPluginInfo extends NarinClass {
@@ -52,8 +52,8 @@ class NarinPluginInfo extends NarinClass {
 		
 		$class_name = substr(get_class($this), 15);
 		$class_name{0} = strtolower($class_name{0});
-		$this->plugin_path = $this->wiki[path]."/plugins/".$class_name;
-		$this->data_path = $this->wiki[path]."/data/".$this->wiki[bo_table];		
+		$this->plugin_path = WIKI_PATH."/plugins/".$class_name;
+		$this->data_path = WIKI_PATH."/data/".$this->wiki[bo_table];		
 		
 	}
 	
@@ -184,7 +184,7 @@ class NarinPluginInfo extends NarinClass {
 	 *
 	 * 플러그인 설치해야 하나?
 	 *
-	 * syntax / action 플러그인에서 중복구현 되어야 함
+	 * 플러그인에서 중복구현 되어야 함
 	 *
 	 * @see adm/plugin.php
 	 * @return true|false 설치해야 하면 true, 아니면 false
@@ -195,7 +195,7 @@ class NarinPluginInfo extends NarinClass {
 	 *
 	 * 플러그인 언인스톨해야 하나?
 	 *
-	 * syntax / action 플러그인에서 중복구현 되어야 함
+	 * 플러그인에서 중복구현 되어야 함
 	 *
 	 * @see adm/plugin.php
 	 * @return true|false 언인스톨해야 하면 true, 아니면 false
@@ -207,7 +207,7 @@ class NarinPluginInfo extends NarinClass {
 	 * 플러그인 설치
 	 *
 	 * @see adm/plugin_install.php
-	 * syntax / action 플러그인에서 중복구현 되어야 함
+	 * 플러그인에서 중복구현 되어야 함
 	 */
 	public function install() { }
 
@@ -216,7 +216,7 @@ class NarinPluginInfo extends NarinClass {
 	 * 플러그인 삭제
 	 *
 	 * @see adm/plugin_install.php
-	 * syntax / action 플러그인에서 중복구현 되어야 함
+	 * 플러그인에서 중복구현 되어야 함
 	 */
 	public function uninstall() { }
 
@@ -224,12 +224,22 @@ class NarinPluginInfo extends NarinClass {
 	 *
 	 * 관리자페이지에서 플러그인 설정 후 호출
 	 *
-	 * syntax / action 플러그인에서 중복구현 되어야 함
+	 * 플러그인에서 중복구현 되어야 함
 	 *
 	 * @see adm/exe_plugin_setting.php
 	 * @param array 업데이트된 설정 값
 	 */
 	public function afterSetSetting($setting) {}
 
+	/**
+	 *
+	 * 관리자페이지에서 플러그인을 사용안함 으로 설정할 때 호출
+	 *
+	 * 플러그인에서 중복구현 되어야 함
+	 *
+	 * @see adm/exe_plugin.php
+	 * @param array 업데이트된 설정 값
+	 */	
+	public function onUnused() {}
 }
 ?>

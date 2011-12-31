@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage event
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -54,8 +54,8 @@ for ($i=count($wr_id_array)-1; $i>=0; $i--)
 if($folder) {
 	$bo_table = $wiki['bo_table'];
 	$ns = $wikiNS->get($folder);
-	if(!$ns) goto_url($this->wiki['path']."/narin.php?bo_table=$bo_table");
-	else goto_url($this->wiki['path']."/folder.php?bo_table=$bo_table&loc=".urlencode($folder));
+	if(!$ns) goto_url(wiki_url());
+	else goto_url(addslashes(wiki_url('folder', array('loc'=>$folder))));
 	exit;
 }		
 

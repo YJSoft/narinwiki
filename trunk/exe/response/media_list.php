@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage pages
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author	byfun (http://byfun.com)
  * @filesource
  */
@@ -20,7 +20,7 @@ $media =& wiki_class_load("Media");
 $ns = $media->getNS($loc);
 
 if(!$ns) {
-	echo wiki_json_encode(array('code'=>-101, 'msg'=>'존재하지 않는 폴더입니다.'));
+	echo wiki_json_encode(array('code'=>-101, 'msg'=>'존재하지 않는 폴더입니다 : ' . $loc));
 	exit;
 }
 
@@ -42,9 +42,9 @@ foreach($files as $k=>$file) {
 		$files[$k]['thumb'] = $thumb_path;
 	} else $files[$k]['thumb'] = "";
 	preg_match("/\.([a-zA-Z0-9]{2,4})$/", $file['source'], $m);
-	if($m[1] && file_exists($wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
-		$files[$k]['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
-	} else $files[$k]['ext_icon'] = $wiki['path'].'/imgs/media_manager/ext/_blank.png';
+	if($m[1] && file_exists(WIKI_PATH.'/imgs/media_manager/ext/'.strtolower($m[1]).'.png')) {		
+		$files[$k]['ext_icon'] = $wiki['url'].'/imgs/media_manager/ext/'.strtolower($m[1]).'.png';			
+	} else $files[$k]['ext_icon'] = $wiki['url'].'/imgs/media_manager/ext/_blank.png';
 	$files[$k]['filesize'] = wiki_file_size($file['filesize']);
 	$files[$k]['bytes'] = $file['filesize'];
 }

@@ -5,7 +5,7 @@
  *
  * @package	narinwiki
  * @subpackage skin
- * @license http://narin.byfun.com/license GPL2
+ * @license GPL2 (http://narinwiki.org/license)
  * @author sir.co.kr
  * @author	byfun (http://byfun.com)
  * @filesource
@@ -26,12 +26,12 @@ var char_max = parseInt(<?=$comment_max?>); // 최대
 <div id="commentContents">
 <?
 for ($i=0; $i<count($list); $i++) {
-    $comment_id = $list[$i][wr_id];
+    $comment_id = $list[$i]['wr_id'];
 ?>
 <a name="c_<?=$comment_id?>"></a>
 <table width=100% cellpadding=0 cellspacing=0 border=0>
 <tr>
-    <td><? for ($k=0; $k<strlen($list[$i][wr_comment_reply]); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
+    <td><? for ($k=0; $k<strlen($list[$i]['wr_comment_reply']); $k++) echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"; ?></td>
     <td width='100%'>
 
         <table border=0 cellpadding=0 cellspacing=0 width=100%>
@@ -43,16 +43,16 @@ for ($i=0; $i<count($list); $i++) {
         </tr>
         <tr>
             <td valign=top>
-                <div style="height:28px; background:url(<?=$board_skin_path?>/img/co_title_bg.gif); clear:both; line-height:28px;">
+                <div style="height:28px; background:url(<?=SKIN_URL?>/img/co_title_bg.gif); clear:both; line-height:28px;">
                 <div style="float:left; margin:2px 0 0 2px;">
-                <strong><?=$list[$i][name]?></strong>
-                <span style="color:#888888; font-size:11px;"><?=$list[$i][datetime]?></span>
+                <strong><?=$list[$i]['name']?></strong>
+                <span style="color:#888888; font-size:11px;"><?=$list[$i]['datetime']?></span>
                 </div>
                 <div style="float:right; ">
-                <? if ($is_ip_view) { echo "&nbsp;<span style=\"color:#B2B2B2; font-size:11px;\">{$list[$i][ip]}</span>"; } ?>
-                <? if ($list[$i][is_reply]) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'c');\"><img src='$board_skin_path/img/co_btn_reply.gif' border=0 align=absmiddle alt='답변'></a> "; } ?>
-                <? if ($list[$i][is_edit]) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'cu');\"><img src='$board_skin_path/img/co_btn_modify.gif' border=0 align=absmiddle alt='수정'></a> "; } ?>
-                <? if ($list[$i][is_del])  { echo "<a href=\"javascript:comment_delete('{$list[$i][del_link]}');\"><img src='$board_skin_path/img/co_btn_delete.gif' border=0 align=absmiddle alt='삭제'></a> "; } ?>
+                <? if ($is_ip_view) { echo "&nbsp;<span style=\"color:#B2B2B2; font-size:11px;\">{$list[$i]['ip']}</span>"; } ?>
+                <? if ($list[$i]['is_reply']) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'c');\"><img src='".SKIN_URL."/img/co_btn_reply.gif' border=0 align=absmiddle alt='답변'></a> "; } ?>
+                <? if ($list[$i]['is_edit']) { echo "<a href=\"javascript:comment_box('{$comment_id}', 'cu');\"><img src='".SKIN_URL."/img/co_btn_modify.gif' border=0 align=absmiddle alt='수정'></a> "; } ?>
+                <? if ($list[$i]['is_del'])  { echo "<a href=\"javascript:comment_delete('".$list[$i]['del_link']."');\"><img src='".SKIN_URL."/img/co_btn_delete.gif' border=0 align=absmiddle alt='삭제'></a> "; } ?>
                 &nbsp;
                 </div>
                 </div>
@@ -60,8 +60,8 @@ for ($i=0; $i<count($list); $i++) {
                 <!-- 코멘트 출력 -->
                 <div class='wiki_contents' style='line-height:20px; padding:7px; word-break:break-all; overflow:hidden; clear:both; '>
                 <?
-                if (strstr($list[$i][wr_option], "secret")) echo "<div style='float:left;color:#ff6600;margin-right:5px;'>[비밀!]</div> ";
-                $str = $list[$i][content];
+                if (strstr($list[$i]['wr_option'], "secret")) echo "<div style='float:left;color:#ff6600;margin-right:5px;'>[비밀!]</div> ";
+                $str = $list[$i]['content'];
                 $str = preg_replace("/\[\<a\s.*href\=\"(http|https|ftp|mms)\:\/\/([^[:space:]]+)\.(mp3|wma|wmv|asf|asx|mpg|mpeg)\".*\<\/a\>\]/i", "<script>doc_write(obj_movie('$1://$2.$3'));</script>", $str);
                 // FLASH XSS 공격에 의해 주석 처리 - 110406
                 //$str = preg_replace("/\[\<a\s.*href\=\"(http|https|ftp)\:\/\/([^[:space:]]+)\.(swf)\".*\<\/a\>\]/i", "<script>doc_write(flash_movie('$1://$2.$3'));</script>", $str);
@@ -69,12 +69,12 @@ for ($i=0; $i<count($list); $i++) {
                 echo "<div style='float:left'>".$str."</div>";
                 ?>
                 </div>
-                <? if ($list[$i][trackback]) { echo "<p>".$list[$i][trackback]."</p>"; } ?>
+                <? if ($list[$i]['trackback']) { echo "<p>".$list[$i]['trackback']."</p>"; } ?>
                 <span id='edit_<?=$comment_id?>' style='display:none;'></span><!-- 수정 -->
                 <span id='reply_<?=$comment_id?>' style='display:none;'></span><!-- 답변 -->
                 </div>
-                <input type=hidden id='secret_comment_<?=$comment_id?>' value="<?=strstr($list[$i][wr_option],"secret")?>">
-                <textarea id='save_comment_<?=$comment_id?>' style='display:none;'><?=get_text($list[$i][content1], 0)?></textarea></td>
+                <input type=hidden id='secret_comment_<?=$comment_id?>' value="<?=strstr($list[$i]['wr_option'],"secret")?>">
+                <textarea id='save_comment_<?=$comment_id?>' style='display:none;'><?=get_text($list[$i]['content1'], 0)?></textarea></td>
         </tr>
         <tr>
             <td height=5 colspan=3></td>
@@ -92,7 +92,7 @@ for ($i=0; $i<count($list); $i++) {
 <!-- 코멘트 입력 -->
 <div id=comment_write style="display:none;">
 <table width=100% border=0 cellpadding=1 cellspacing=0 style="border-top:1px dashed #ccc"><tr><td>
-<form name="fviewcomment" method="post" action="<?=$g4[bbs_path]?>/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" autocomplete="off" style="margin:0px;">
+<form name="fviewcomment" method="post" action="<?=$g4['bbs_path']?>/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" autocomplete="off" style="margin:0px;">
 <input type=hidden name=w           id=w value="c">
 <input type=hidden name=bo_table    value="<?=$bo_table?>">
 <input type=hidden name=wr_id       value="<?=$wr_id?>">
@@ -141,7 +141,7 @@ for ($i=0; $i<count($list); $i++) {
 </td></tr></table>
 </div>
 
-<script type="text/javascript" src="<?="$g4[path]/js/jquery.kcaptcha.js"?>"></script>
+<script type="text/javascript" src="<?=$wiki['g4_url']?>/js/jquery.kcaptcha.js"></script>
 <script type="text/javascript">
 var save_before = '';
 var save_html = document.getElementById('comment_write').innerHTML;
@@ -176,7 +176,7 @@ function fviewcomment_submit(f)
     var subject = "";
     var content = "";
     $.ajax({
-        url: "<?=$board_skin_path?>/ajax.filter.php",
+        url: "<?=SKIN_URL?>/ajax.filter.php",
         type: "POST",
         data: {
             "subject": "",
@@ -249,26 +249,6 @@ function fviewcomment_submit(f)
     return true;
 }
 
-/*
-jQuery.fn.extend({
-    kcaptcha_load: function() {
-        $.ajax({
-            type: 'POST',
-            url: g4_path+'/'+g4_bbs+'/kcaptcha_session.php',
-            cache: false,
-            async: false,
-            success: function(text) {
-                $('#kcaptcha_image')
-                    .attr('src', g4_path+'/'+g4_bbs+'/kcaptcha_image.php?t=' + (new Date).getTime())
-                    .css('cursor', '')
-                    .attr('title', '');
-                md5_norobot_key = text;
-            }
-        });
-    }
-});
-*/
-
 function comment_box(comment_id, work)
 {
     var el_id;
@@ -320,8 +300,9 @@ function comment_box(comment_id, work)
         wrestInitialized();
 
     //jQuery(this).kcaptcha_load();
-    if (comment_id && work == 'c')
-        $.kcaptcha_run();
+    if (comment_id && work == 'c') {
+       $.kcaptcha_run();
+    }
 }
 
 function comment_delete(url)
@@ -331,8 +312,7 @@ function comment_delete(url)
 
 comment_box('', 'c'); // 코멘트 입력폼이 보이도록 처리하기위해서 추가 (root님)
 
-
 </script>
 <? } ?>
 
-<? if($cwin==1) { ?></td><tr></table><p align=center><a href="javascript:window.close();"><img src="<?=$board_skin_path?>/img/btn_close.gif" border="0"></a><br><br><?}?>
+<? if($cwin==1) { ?></td><tr></table><p align=center><a href="javascript:window.close();"><img src="<?=SKIN_URL?>/img/btn_close.gif" border="0"></a><br><br><?}?>
