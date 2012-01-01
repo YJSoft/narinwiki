@@ -98,7 +98,8 @@ if(!defined("_LIST_PLUGIN_")) die("잘못된 접근");
 			return date("n월 j일", $argtime);
 		} else if($x >= $timeday) {
 			$x = round($x / $timeday);
-			if($x < 7)	return "" . $dates[date("N", $argtime)];
+			$lb = ( date("W", $argtime) == date("W", $g4['server_time']) ? "" : "지난 ");
+			if($x < 7)	return $lb . $dates[date("N", $argtime)];
 			else return date("n월 j일", $argtime);	
 		} else if($x >= $timehour) {
 			$x = round($x / $timehour); 
