@@ -1,0 +1,122 @@
+/**
+ *
+ * 나린위키 스킨 CSS
+ *
+ * @package	narinwiki
+ * @subpackage skin
+ * @license http://narin.byfun.com/license GPL2
+ * @author	byfun (http://byfun.com)
+ * @filesource
+ */
+ 
+	
+/** 스킨 설정 **************************************************************/	
+		
+
+	/* 검색 폼 */	
+	.wiki_form { position:relative; line-height:20px; }
+	.wiki_form input.txt { float:left;border:1px solid #ccc; height:20px; padding:0;margin:0 5px 0 0;vertical-align: middle;line-height:20px;}
+	.wiki_form .button { float:left; margin:0;padding:0;}
+	.wiki_form .form_label { float:left; margin:0 5px 0 0;padding:0;}
+	
+	/* folder view plugin */
+	ul.folder_list { list-style:none; padding-left:0;}
+	ul.folder_list li { padding:5px 5px 5px 22px; margin-top:3px; border-bottom:1px dotted #ccc }
+	ul.folder_list li.folder { background:url('img/icon_folder.gif') no-repeat left}
+	ul.folder_list li.folder_up { background:url('img/icon_folder_up.gif') no-repeat left}
+	ul.folder_list li.doc { background:url('img/icon_doc.gif') no-repeat left}		
+	
+	/* 검색된 검색어 스타일 */
+	.wiki_search_word { font-weight:bold; }
+
+
+/* write.skin.php *************************************************************/
+	
+	/* 작성일/작성자/아이피... */
+	#wiki_after_contents { margin-bottom:5px; font-size:8pt; }
+	#wiki_contributors { padding:5px 0;font-size:8pt; }
+	
+	/* 쓰기폼 테이블 */
+
+	table.write_table { border-top:1px solid #ddd}
+	table.write_table th,
+	table.write_table td { padding:5px;border:0;vertical-align:middle}
+	table.write_table th { width:100px;border-bottom:1px solid #ddd;background:#f0f0f0;text-align:right}
+	table.write_table td { border-bottom:1px solid #ddd}
+	
+/* view.skin.php **************************************************************/
+		
+		#wiki_title_bar { }
+		
+		#wiki_title { font-size:16pt; padding:10px 0 10px 0; margin:0; color:#BDDFDF; font-weight:bold;}
+		#wiki_title a { color:#3C7B7B; text-decoration:none; font-weight:bold;}
+		
+		.wiki_tools {border-top:1px solid #ddd; border-bottom:1px solid #ddd; background-color:#f8f8f8; padding:5px 3px;}
+		.wiki_tools_left { float:left;}
+		.wiki_tools_right { float:right; }
+		.wiki_navigation { background-color:#fafafa; margin-bottom:10px; padding-left:3px;}
+		.wiki_navigation,
+		.wiki_navigation a { color:#888; font-size:0.96em}
+		
+		#wiki_back_links { display:none; }
+		#wiki_back_links ul li { padding:2px; }
+		
+		#wiki_comment { margin-top:10px; }	
+		#wiki_after_contents { margin-top:10px; text-align:right; color:#888; font-size:9pt}
+		#wiki_signature { margin-top:10px; padding-top:8px; }	
+		
+		.wikiToolbar { position:relative;margin-top:10px; padding:5px; border-top:1px dotted #c9c9c9; }
+		.wikiRightTools { float:right; }
+		.wikiLeftTools { float:left; }
+		#wikiAtt { margin-top:10px;  }
+		
+		#commentContents p { padding:0; margin:0 0 5px 0; }
+		
+/* folder.skin.php ***************/
+	table#folder_list { width:100%; list-style:none; padding-left:0;margin-left:0;font-size:9pt;}
+	table#folder_list th { text-align:left; border-bottom:1px solid #ccc;background:#f8f8f8;font-weight:normal; padding:5px 1px;}
+	table#folder_list td { color:#888; }
+	table#folder_list td.flist { padding:5px 5px 5px 22px; margin-top:3px; }
+	table#folder_list td.folder { background:url('img/icon_folder.gif') no-repeat left}
+	table#folder_list td.folder_up { background:url('img/icon_folder_up.gif') no-repeat left}
+	table#folder_list td.doc { background:url('img/icon_doc.gif') no-repeat left}	
+	table#folder_list .f_comment { font-size:8pt; color:#FF8040; margin-top:2px; margin-left:5px;}
+	
+	#wiki_folder_navi { width:200px; vertical-align:top; scroll:auto; border-right:1px solid #ccc; padding-right:5px; visibility:hidden;}
+	#wiki_folder_contents { padding-left:10px; }
+	
+/* history.skin.php **************/
+	#wiki_history .history_date { }
+	#wiki_history  td { vertical-align:middle; }
+	#wiki_history .history_summary { padding:0 10px; overflow:hidden;}
+	#wiki_history .history_cmd { }
+	#wiki_history .history_content { display:none; padding:0px; border:1px dotted #ccc}
+	.history_content_date { background-color:#293445; color:#fff; padding:10px; margin-bottom:8px; overflow:hidden}
+
+/* search.skin.php ***************/
+	#search_list { min-width:500px; max-width:990px; padding-top:10px;}
+	#search_list a.title { text-decoration:underline; color:#2200C1; font-size:12pt; }
+	#search_list div.doc_url { padding-top:5px; text-decoration:none}
+	#search_list div.doc_url a { color:#0E774A; }
+	#search_list div.search_content { padding:10px 5px; color:#555; text-decoration:none;}
+	#search_list span.name { }
+	#search_list span.datetime { color:#3366CC }
+	#search_list span.hit { font-size:0.88em; color:#408080}
+	#search_list div.bg0 { background-color:#fafafa; } 
+	#search_list div.bg1 { background-color:#ffffff; } 
+	
+	#paging { margin-top:10px; }
+	#nodata { height:100px; }
+	
+	#search_head { padding:10px 0; border-bottom:1px dotted #ccc }
+	#search_title { float:left; font-size:18pt; font-weight:bold; margin-right:20px;}
+	#search_form { float:left; position:relative; margin-top:3px;}
+	#search_form #wiki_search_text { position:absolute; border:1px solid #ccc; height:18px; font-size:17px; overflow:visible;}
+	#search_form .button { position:absolute; margin-left:200px;}
+	
+	/* kcaptcha 이미지 (기본은 크기가 너무 커서 ;;;) */
+	#kcaptcha_image { position:absolute;height:25px; width:80px; margin:0;padding:0;}
+	
+	
+	
+	
