@@ -228,7 +228,7 @@ class NarinThumb extends NarinClass {
 			
 		// 원본 이미지 파일 경로
 		$file = $fileinfo['path'];
-		
+		if(!file_exists($file)) return "";
 		$pathinfo = pathinfo($file);
 		$extension = strtolower($pathinfo['extension']);
 
