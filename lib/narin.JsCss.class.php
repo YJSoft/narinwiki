@@ -84,6 +84,9 @@ class NarinJsCss extends NarinClass {
 
 		parent::__construct();
 		$this->data_path = WIKI_PATH.'/data/'.$this->wiki['bo_table'];
+		if(!file_exists($this->data_path)) {
+			@mkdir($this->data_path, 0707);
+		}
 		$this->js = $this->data_path .'/_js.txt';
 		$this->css = $this->data_path .'/_css.txt';
 		$this->css_print = $this->data_path .'/_css_print.txt';
