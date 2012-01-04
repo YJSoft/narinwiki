@@ -264,7 +264,7 @@ EOF;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	$wiki_fancy_url = file_exists('./.htaccess');
+	$wiki_fancy_url = (file_exists('./.htaccess') ? 'true' : 'false');
 
 	$config_file = "<?\n";
 	$config_file .= "unset(\$wiki);\n";
@@ -322,8 +322,7 @@ EOF;
 		style="color: #009900;">&#40;</span><span style="color: #0000ff;">&quot;__NARINWIKI__&quot;</span><span
 		style="color: #009900;">&#41;</span><span style="color: #009900;">&#41;</span> <span
 		style="color: #b1b100;">include_once</span> <span
-		style="color: #000088;">$wiki</span><span style="color: #009900;">&#91;</span>path<span
-		style="color: #009900;">&#93;</span><span style="color: #339933;">.</span><span
+		style="color: #000088;">WIKI_PATH</span><span style="color: #339933;">.</span><span
 		style="color: #0000ff;">&quot;/inc/inc.head.sub.php&quot;</span><span
 		style="color: #F0F4F7;">;</span> <span
 		style="color: #000000; font-weight: bold;">?&gt;</span></pre></li>

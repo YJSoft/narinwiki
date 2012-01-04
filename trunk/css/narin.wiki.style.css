@@ -8,7 +8,7 @@
 /* 위키 문법 스타일 ***********************************************************/	
 
 	/* 위키 컨텐츠 컨테이너 */
-	.narin_contents * { font-size:10pt; line-height:160%; }
+	.narin_contents * { font-size:12px; line-height:170%; }
 
 	/* 존재하는 문서 링크 */
 	.narin_contents a.wiki_active_link { color:#002BB8 }

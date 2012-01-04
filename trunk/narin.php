@@ -122,7 +122,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 			$cached_content = $wikiParser->parse($view);
 			$wikiCache->update($wr_id, $view['content']);
 		} else {
-			
+
 			// partial nocache (부분 캐시 사용 안함)
 			preg_match_all('/<nocache plugin="(.*?)" method="(.*?)" params="(.*?)">(.*?)<\/nocache>/i', $cached_content, $m);
 			
@@ -153,8 +153,8 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 						if(class_exists($realClassName)) {
 							
 							// 문법 플러그인 객체 생성
-							$p = new $realClassName();
-							
+							$p = new $realClassName();								
+						
 							// 부분 캐시 업데이트 메소드 확인
 							if(is_callable(array($p, $method))) {
 								
@@ -173,7 +173,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 				
 				// DB의 캐시 업데이트 --> 캐시에 최신 내용 유지
 				$wikiCache->update($wr_id, $cached_content);
-				
+
 			} // if m
 		} // else
 

@@ -186,8 +186,9 @@ class NarinHistory  extends NarinClass {
 				}
 			}
 		}
-
-		$paging = get_paging(10, $page, $total_page, $this->wiki['url']."/history.php?bo_table=$bo_table&doc=".urlencode($doc)."&page=");
+		
+		$page_base_url = wiki_url('history', array('doc'=>$doc, 'page'=>''));
+		$paging = get_paging(10, $page, $total_page, $page_base_url);
 
 		$ret = array($list, $paging);
 

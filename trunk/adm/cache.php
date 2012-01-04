@@ -57,12 +57,14 @@ list($file_size, $file_count) = wiki_dir_filesize(WIKI_PATH.'/data/'.$bo_table.'
 <script type="text/javascript">
 	
 	pan = $("#progress");
-
+	
+	/*
 	$.ajaxSetup({
 		error:function(x,e){
 			pan.html('<font color="red">AJAX 에러 : ' + (x.status || e) + '</font>');
 		}
 	});
+	*/
 	
 	$("#cache_clear").click(function(evt) {
 		evt.preventDefault();
@@ -78,7 +80,13 @@ list($file_size, $file_count) = wiki_dir_filesize(WIKI_PATH.'/data/'.$bo_table.'
 	});
 	
 	function recreate_cache(page) {
-		$.getJSON(wiki_url+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=rc&page='+page, function(json) {
+		$.get(wiki_url+'/adm/exe_cache.php?bo_table='+g4_bo_table+'&md=rc&page='+page, function(json) {
+			try {
+				json = $.parseJSON(json);
+			} catch(ex) {
+				alert('[ 서버 에러 ]\n\n' + json);
+				return;
+			}
 			if(json.code == 100) {
 				pan.html('완료');
 				$("#file_size").html(json.file_size);

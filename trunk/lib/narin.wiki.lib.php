@@ -190,7 +190,7 @@ function wiki_query_url($args)
  */
 function wiki_fancy_url($args)
 {
-	global $wiki;
+	global $wiki, $is_wiki_admin;
 
 	// 파라미터가 없는 경우... 첫 페이지로
 	if(empty($args)) return $wiki['url'] ;
@@ -201,7 +201,9 @@ function wiki_fancy_url($args)
 	$rest = '';
 	$params = array_shift($args);
 
-	if(!is_array($params)) return $wiki['url'].'/'.$mode;
+	if(!is_array($params)) {		
+		return $wiki['url'].'/'.$mode .'/';
+	}
 
 	// URL 경로 설정
 	$first = array_shift($params);
@@ -220,9 +222,9 @@ function wiki_fancy_url($args)
 	}
 	if(!empty($qarr)) $qury_string = '?'.implode('&', $qarr);
 	else $qury_string = '';
-
+		
 	// 기본 URL
-	return preg_replace('/\/$/', '', $wiki['url'].'/'.$mode. str_replace(' ', '+', $rest.$qury_string).$hash);
+	return $wiki['url'].'/'.$mode. str_replace(' ', '+', $rest.$qury_string).$hash;
 }
 
 
