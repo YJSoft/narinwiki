@@ -413,7 +413,7 @@ include_once "head.php";
 		$('#clear_media').live('click', function() {
 			if(!confirm('폴더내의 모든 파일이 삭제됩니다.\n진행하시겠습니까?')) return;
 			if(!confirm('정말 진행하시겠습니까?')) return;
-			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_clear&loc='+encodeURIComponent(mm.loc), function(data) {
+			$.post(wiki_url + '/exe/a.php?w=media_clear&loc='+encodeURIComponent(mm.loc), function(data) {
 				mm.load();
 			});
 		});
@@ -421,9 +421,9 @@ include_once "head.php";
 		// 압축 다운로드 버튼 클릭
 		$('#zipdown').click(function(evt) { 
 			evt.preventDefault();
-			$.getJSON(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
+			$.getJSON(wiki_url + '/exe/a.php?w=media_zip&loc='+encodeURIComponent(mm.loc), function(json) {
 				if(json.code == 1) {
-					location.href = wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_zip_download&loc='+encodeURIComponent(mm.loc)+'&file='+json.file;
+					location.href = wiki_url + '/exe/a.php?w=media_zip_download&loc='+encodeURIComponent(mm.loc)+'&file='+json.file;
 				} else mm.show_msg(json.msg, 2);
 			});
 		});
@@ -462,7 +462,7 @@ include_once "head.php";
 					return;
 				} else {
 					mm.show_msg('새 폴더를 만드는 중입니다. 잠시만 기다리세요.');
-					$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_mkdir&ploc='+encodeURIComponent(mm.loc)+'&loc='+encodeURIComponent(folder), function(data) {
+					$.post(wiki_url + '/exe/a.php?w=media_mkdir&ploc='+encodeURIComponent(mm.loc)+'&loc='+encodeURIComponent(folder), function(data) {
 								json = $.parseJSON(data);		
 								if(json.code == 1) {
 									mm.tree_load(mm.loc);
@@ -482,7 +482,7 @@ include_once "head.php";
 				return;
 			}
 			if(!confirm('폴더를 삭제하시겠습니까?')) return;
-			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_rmdir&loc='+encodeURIComponent(mm.loc), function(data) {
+			$.post(wiki_url + '/exe/a.php?w=media_rmdir&loc='+encodeURIComponent(mm.loc), function(data) {
 				json = $.parseJSON(data);
 				if(json.code == 1) {
 					mm.loc = json.updir;
@@ -511,7 +511,7 @@ include_once "head.php";
 			al = $("#ns_access_level").val();
 			cl = $("#ns_mkdir_level").val();
 			ul = $("#ns_upload_level").val();
-			$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_chmod&loc='+encodeURIComponent(mm.loc), {
+			$.post(wiki_url + '/exe/a.php?w=media_chmod&loc='+encodeURIComponent(mm.loc), {
 					access_level : al,
 					upload_level : ul,
 					mkdir_level : cl
@@ -566,10 +566,10 @@ include_once "head.php";
 	// 트리 로딩	
 	mm.tree_load = function(dir, callback) {	
 		mm.folder_label.text(dir);	
-		$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_get_tree&loc='+encodeURIComponent(dir), function(data) {
+		$.post(wiki_url + '/exe/a.php?w=media_get_tree&loc='+encodeURIComponent(dir), function(data) {
 			json = $.parseJSON(data);
 			if(json.code < 0) {
-				window.location.href = wiki_url + '/media.php?bo_table=' + g4_bo_table;
+				window.location.href = wiki_url + '/media.php';
 			}
 			
 			$("#tree_wrapper").html(json.tree);
@@ -630,7 +630,7 @@ include_once "head.php";
 	mm.delete_file = function(fname, tr) {
 		if(!confirm('삭제하시겠습니까?\n파일을 삭제하면 파일을 링크하고 있는 문서의 링크가 끊깁니다.')) return;
 		mm.show_msg('삭제중입니다. 잠시만 기다려주세요.');
-		$.post(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_delete&loc='+encodeURIComponent(mm.loc)+'&file='+encodeURIComponent(fname), function(data) {
+		$.post(wiki_url + '/exe/a.php?w=media_delete&loc='+encodeURIComponent(mm.loc)+'&file='+encodeURIComponent(fname), function(data) {
 			json = $.parseJSON(data);		
 			if(json.code == 1) {
 				del_idx = -1;
@@ -682,7 +682,7 @@ include_once "head.php";
 		mm.stx.val('');
 		mm.table.find('.flist').remove();
 		mm.show_msg('파일 목록을 읽어오고 있습니다...');
-		$.get(wiki_url + '/exe/a.php?bo_table='+g4_bo_table+'&w=media_list&loc='+encodeURIComponent(mm.loc), function(data) {
+		$.get(wiki_url + '/exe/a.php?w=media_list&loc='+encodeURIComponent(mm.loc), function(data) {
 			json = $.parseJSON(data);
 			if(json.code == -101) {
 				mm.show_msg(json.msg, 2);
@@ -789,7 +789,7 @@ include_once "head.php";
 
 		mm.uploader = uploader.pluploadQueue({
 			runtimes : 'silverlight',
-			url : wiki_url+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc),
+			url : wiki_url+'/exe/media_upload.php?loc='+encodeURIComponent(mm.loc),
 			max_file_size : '<?=$media_setting['max_file_size']?>',
 			chunk_size : '500kb',
 			unique_names : true,
@@ -805,7 +805,7 @@ include_once "head.php";
 
 			preinit : {
 		 		UploadFile: function(up, file) {
-					up.settings.url = wiki_url+'/exe/media_upload.php?bo_table=<?=$wiki['bo_table']?>&loc='+encodeURIComponent(mm.loc)+'&filename='+encodeURIComponent(file.name);
+					up.settings.url = wiki_url+'/exe/media_upload.php?loc='+encodeURIComponent(mm.loc)+'&filename='+encodeURIComponent(file.name);
 				}				
 			},                 
 
@@ -840,7 +840,7 @@ include_once "head.php";
 
 					if(file.percent == 100 && file.status == 5) {
 						mm.uploading_count++;
-						$.post(wiki_url+'/exe/a.php', { w : 'media_reg', bo_table : g4_bo_table, loc : mm.loc, source : file.name, file : file.target_name }, function(data) {
+						$.post(wiki_url+'/exe/a.php', { w : 'media_reg', loc : mm.loc, source : file.name, file : file.target_name }, function(data) {
 							mm.uploading_count--;
 							try {
 								json = $.parseJSON(data);
