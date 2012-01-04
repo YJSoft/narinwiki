@@ -62,7 +62,7 @@ f.get_json = function(m, params, callback) {
 
 // 문서 보기 링크
 f.get_url = function(doc) {
-	if(wiki_fancy) return wiki_url + '/read' + doc.replace(/\s/g, '+');
+	if(typeof wiki_fancy != 'undefined') return wiki_url + '/read' + doc.replace(/\s/g, '+');
 	else return wiki_url + '/narin.php?doc=' + doc;
 };
 
@@ -153,6 +153,7 @@ f.render_list = function(json) {
 								$table.find('.flist').each(function() {
 									_type = $(this).data('type');
 									_path = $(this).data('path');
+									if(g4_charset != 'utf-8') _path = encodeURIComponent(_path);
 									_acc_level = $(this).next().find('select').val();
 									_edit_level = ( _type == 'doc' ? $(this).next().next().find('select').val() : '');
 									ulist.push({type : _type, path : _path, access_level : _acc_level, edit_level : _edit_level});
