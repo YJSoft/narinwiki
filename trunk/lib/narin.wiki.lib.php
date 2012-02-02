@@ -18,8 +18,9 @@ if (!defined('_GNUBOARD_')) exit;
 define("WIKI_PATH", dirname(dirname(__FILE__)));
 define("G4_PATH", realpath(WIKI_PATH.'/'.$wiki['g4_path']));
 
+
 // URL 에 URL ENCODING 을 안쓰기 위함
-if(wiki_is_euckr() && ($fj == 1 || $wiki['fancy_url']) ) {
+if(wiki_is_euckr() && ($fj == 1 || ( $wiki['fancy_url'] &&  mb_detect_encoding($wr_doc) == 'ASCII') ) ) {
 	wiki_euckr($_GET);
 	wiki_euckr($_POST);
 	@extract($_GET);
