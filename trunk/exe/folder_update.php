@@ -54,6 +54,5 @@ $wikiNS->setTemplate($wiki_loc, $wiki_template);
 $wikiNS->updateAccessLevel($wiki_loc, $wiki_access_level);
 
 // 리다이렉트
-header("location:".wiki_url('folder', array('loc'=>stripcslashes($wiki_loc))));
-
+wiki_goto_url(wiki_url('folder', array('loc'=>stripcslashes($wiki_loc))));
 ?>
