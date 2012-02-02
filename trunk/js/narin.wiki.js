@@ -227,10 +227,10 @@ function createDoc(folder)
 			return;
 		}
 		docpath = ( folder == "/" ? "/" : folder+"/") + doc;
-		if(wiki_fancy != undefined) {
+		if(typeof wiki_fancy != 'undefined') {
 			location.href = wiki_url + '/read' + docpath;
 		} else {
-			location.href = wiki_url + "/narin.php?doc=" + encodeURIComponent(docpath);			
+			location.href = wiki_url + "/narin.php?doc=" + encodeURIComponent(docpath) + "&fj=1";
 		}
 		
 	}
@@ -243,7 +243,7 @@ function wiki_search(f)
 		alert("검색어를 입력하세요");
 		return false;
 	}
-	if(wiki_fancy != undefined) {
+	if(typeof wiki_fancy != 'undefined') {
 		location.href = wiki_url + '/search/' + stx;
 		return false;
 	}

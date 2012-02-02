@@ -19,7 +19,7 @@ define("WIKI_PATH", dirname(dirname(__FILE__)));
 define("G4_PATH", realpath(WIKI_PATH.'/'.$wiki['g4_path']));
 
 // URL 에 URL ENCODING 을 안쓰기 위함
-if(wiki_is_euckr()) {
+if(wiki_is_euckr() && ($fj == 1 || $wiki['fancy_url']) ) {
 	wiki_euckr($_GET);
 	wiki_euckr($_POST);
 	@extract($_GET);
@@ -69,6 +69,7 @@ else if(!$doc && $wr_id) {
 	$doc = wiki_doc($wr['ns'], $wr['doc']);
 } else if(!$doc) $doc = "/".$wiki['front'];
 $doc = preg_replace('/\/+/', '/', $doc);
+
 list($ns, $docname, $doc) = wiki_validate_doc($doc);
 
 
