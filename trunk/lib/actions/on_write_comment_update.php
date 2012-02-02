@@ -31,6 +31,6 @@ if($w == 'c' || $w == 'cu') {
 	$wikiChanges->update("DOC", $doc, $status, ($member['mb_id'] ? $member['mb_id'] : $wr_name));		
 }
 
-goto_url(addslashes(wiki_url('read', array('doc'=>$doc.'#c_'.$comment_id))));
+wiki_goto_url(wiki_url('read', array('doc'=>$doc.'#c_'.$comment_id)));
 exit;
 ?>

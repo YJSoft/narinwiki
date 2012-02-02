@@ -31,6 +31,7 @@ $from_record = ($page - 1) * $page_rows;
 $sql = "SELECT * FROM ".$wiki['changes_table']." WHERE bo_table = '".$wiki['bo_table']."' ORDER BY id DESC LIMIT $from_record, $page_rows";
 
 $page_base_url = wiki_url('recent', array('page'=>''));
+if($wiki['fancy_url']) $page_base_url .= '/';
 $paging = get_paging(10, $page, $total_page, $page_base_url);
 
 

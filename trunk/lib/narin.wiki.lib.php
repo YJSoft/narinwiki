@@ -191,7 +191,7 @@ function wiki_query_url($args)
 function wiki_fancy_url($args)
 {
 	global $wiki, $is_wiki_admin;
-
+	//print_r2($args);
 	// 파라미터가 없는 경우... 첫 페이지로
 	if(empty($args)) return $wiki['url'] ;
 
@@ -202,7 +202,7 @@ function wiki_fancy_url($args)
 	$params = array_shift($args);
 
 	if(!is_array($params)) {		
-		return $wiki['url'].'/'.$mode .'/';
+		return $wiki['url'].'/'.$mode;
 	}
 
 	// URL 경로 설정
@@ -224,7 +224,9 @@ function wiki_fancy_url($args)
 	else $qury_string = '';
 		
 	// 기본 URL
-	return $wiki['url'].'/'.$mode. str_replace(' ', '+', $rest.$qury_string).$hash;
+	$goto_url = preg_replace('/\/$/', '', $wiki['url'].'/'.$mode. str_replace(' ', '+', $rest.$qury_string).$hash);
+	
+	return wiki_input_value($goto_url);
 }
 
 
@@ -332,15 +334,52 @@ function wiki_check_folder_name($name)
  *
  * input 태그에서 사용하기 위한 문자열 변환
  *
- * 큰따옴표(")를  &#034 로 바꿔준다.
+ * 큰따옴표(")를  &#034 로 
+ * 작은따옴표(')를 &#039; 로 바꿔준다.
  *
  * @param string $v 문자열
  * @retrun string 변환된 문자열
  */
 function wiki_input_value($v)
 {
-	return str_replace("\"", "&#034;", $v);
+	return str_replace("'", "&#039;", str_replace("\"", "&#034;", $v));
 }
+
+/**
+ *
+ * 작은따옴표, 큰따옴표를 디코딩한다
+ *
+ * @param string $v 문자열
+ * @retrun string 변환된 문자열
+ */
+function wiki_decode_quote($s) {
+	return str_replace("&#039;", "'", str_replace("&#034;", "\"", $s));
+}
+
+
+/**
+ *
+ * 자바스크립트를 이용한 URL 리다이렉션
+ *
+ * @param string $url 리다이렉트 URL
+ */
+function wiki_goto_url($url) {
+	global $g4;
+	$url = addslashes(wiki_decode_quote($url));
+	?>
+	<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=<?=$g4['charset']?>">
+	</head>
+	<body>
+	<?
+	goto_url($url);
+	?>
+	</body>
+	</html>	
+	<?
+}
+
 
 /**
  *

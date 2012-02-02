@@ -18,5 +18,4 @@ if($article_of_delete_comment) {
 	$wikiChanges =& wiki_class_load("Changes");
 	$wikiChanges->update("DOC", $doc, "댓글삭제", ($member['mb_id'] ? $member['mb_id'] : $write['wr_name']));		
 }
-
 ?>

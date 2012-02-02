@@ -193,7 +193,7 @@ class NarinSyntaxList extends NarinSyntaxPlugin {
 		$table_style = (isset($args['table_style']) ? ' style="'.$args['table_style'].'"' : '');
 		
 		// 테이블 열기
-		$table = '<table cellspacing="0" cellpadding="0" class="list_table" $table_style>';
+		$table = '<table cellspacing="0" cellpadding="0" class="list_table" '.$table_style.'>';
 
 		if(isset($args['elapsed'])) $head['date'] = '시간';
 		

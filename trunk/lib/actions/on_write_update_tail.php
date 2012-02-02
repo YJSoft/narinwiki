@@ -11,6 +11,7 @@
  */
  
 if (!defined('_GNUBOARD_')) exit;
-goto_url(addslashes(wiki_url('read', array('doc'=>$wr_doc))));
+
+wiki_goto_url(wiki_url('read', array('doc'=>$wr_doc)));
 ?>
 
