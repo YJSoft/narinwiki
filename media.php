@@ -788,7 +788,7 @@ include_once "head.php";
 		uploader = $('<div></div>').attr('id', 'narin_uploader').html('<p>&nbsp;</p>').appendTo(mm.uploader_wrapper);
 
 		mm.uploader = uploader.pluploadQueue({
-			runtimes : 'silverlight',
+			runtimes : 'flash,silverlight,html5',
 			url : wiki_url+'/exe/media_upload.php?loc='+encodeURIComponent(mm.loc),
 			max_file_size : '<?=$media_setting['max_file_size']?>',
 			chunk_size : '500kb',
