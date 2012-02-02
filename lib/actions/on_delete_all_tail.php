@@ -54,8 +54,8 @@ for ($i=count($wr_id_array)-1; $i>=0; $i--)
 if($folder) {
 	$bo_table = $wiki['bo_table'];
 	$ns = $wikiNS->get($folder);
-	if(!$ns) goto_url(wiki_url());
-	else goto_url(addslashes(wiki_url('folder', array('loc'=>$folder))));
+	if(!$ns) wiki_goto_url(wiki_url());
+	else wiki_goto_url(wiki_url('folder', array('loc'=>$folder)));
 	exit;
 }		
 

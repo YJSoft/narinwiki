@@ -124,7 +124,7 @@ if(!$hid && !preg_match("/~~NOCACHE~~/", $no_nowiki_content)) {
 		} else {
 
 			// partial nocache (부분 캐시 사용 안함)
-			preg_match_all('/<nocache plugin="(.*?)" method="(.*?)" params="(.*?)">(.*?)<\/nocache>/i', $cached_content, $m);
+			preg_match_all('/<nocache plugin="(.*?)" method="(.*?)" params="(.*?)">(.*?)<\/nocache>/is', $cached_content, $m);
 			
 			// 부분 캐시 업데이트가 필요하면
 			if($m) {

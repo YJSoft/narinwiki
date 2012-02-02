@@ -37,7 +37,7 @@ $wikiCache->delete($wr_id);
 $wikiChanges =& wiki_class_load("Changes");
 $wikiChanges->update("DOC", $doc, "삭제", ($member['mb_id'] ? $member['mb_id'] : $write[wr_name]));
 
-goto_url(wiki_url());
+wiki_goto_url(wiki_url());
 exit;
 
 ?>

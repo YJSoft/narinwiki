@@ -168,7 +168,7 @@ class NarinControl extends NarinClass {
 			$wikiArticle =& wiki_class_load("Article");
 			$view = & $wikiArticle->getArticleById($wr_id);
 			$doc = ($view[ns] == "/" ? "" : $view[ns]."/") . $view[doc];
-			header("location:".wiki_url('read', array('doc'=>$doc)));
+			wiki_goto_url(wiki_url('read', array('doc'=>$doc)));
 			exit;			
 		}
 		
