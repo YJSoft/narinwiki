@@ -31,5 +31,5 @@ if (!defined('_GNUBOARD_')) exit;
 <div class="wikiToolbar">
 	<span class="button"><a href="javascript:history.go(-1);">뒤로</a></span>
 	<span class="button green"><a href="<?=wiki_url()?>">시작페이지</a></span>
-	<span class="button red"><a href="<?=$wiki['g4_url']?>/bbs/write.php?bo_table=<?=$bo_table?>&doc=<?=$doc?>">페이지 만들기</a></span>
+	<span class="button red"><a href="<?=$wiki['g4_url']?>/bbs/write.php?bo_table=<?=$bo_table?>&doc=<?=wiki_input_value($doc)?>">페이지 만들기</a></span>
 </div>
