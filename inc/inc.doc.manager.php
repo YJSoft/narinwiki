@@ -77,7 +77,7 @@ $input_full = wiki_input_value($doc);
 			<select name="wiki_folder_select" id="wiki_folder_select" class="tx" >
 				<? foreach($folders as $k=>$v) {
 					$selected = ($ns == $v ? "selected" : "");
-					echo "<option value='$v' $selected>$k</option>";
+					echo "<option value='".wiki_input_value($v)."' $selected>$k</option>";
 				} ?>
 			</select>		
 			<span class="button"><a href="#enterFolder" id="enter_folder">직접입력</a></span>
