@@ -54,6 +54,6 @@ if($write[ns] != $wiki_folder || $write[doc] != $wiki_doc) {
 
 $wikiArticle->updateLevel($toDoc, $wiki_access_level, $wiki_edit_level);
 
-header("location:".wiki_url('read', array('doc'=>$toDoc)));
+wiki_goto_url(wiki_url('read', array('doc'=>$toDoc)));
 
 ?>
