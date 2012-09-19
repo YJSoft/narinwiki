@@ -1,3 +1,5 @@
+  * 2012-09-19
+    * 플러그인 설정시 문자열 escape 문제 수정 (adm/exe_plugin_setting.php 파일만 변경)
   * 2012-02-02
     * 부분 nocache 정규식에 /s 추가
     * 네비게이션 'Home' 링크 오류 수정
