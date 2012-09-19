@@ -31,7 +31,7 @@ $setting = $info->getSetting();
 if(!$info->checkSetting($setting)) alert("플러그인 설정 오류");
 
 $wikiConfig =& wiki_class_load("Config");
-$wikiConfig->update("/plugin_setting/".$info->getId(), $_POST['setting']);
+$wikiConfig->update("/plugin_setting/".$info->getId(), wiki_unescape($_POST['setting']));
 $info->afterSetSetting($_POST['setting']);
 
 $wikiJsCss = wiki_class_load('JsCss');
