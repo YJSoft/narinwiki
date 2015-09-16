@@ -18,3 +18,4 @@
  - 구 나린위키 개발 사이트 : http://narinwiki.googlecode.com/
 
 작성자 : byfun (chongmyung.park@gmail.com)
+유지 보수 : YJSoft(yjsoft@yjsoft.pe.kr)
