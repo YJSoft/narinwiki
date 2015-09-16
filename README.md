@@ -1,8 +1,4 @@
-################################################################################
-
-   나린위키 (NarinWiki)
-
-################################################################################
+#나린위키 (NarinWiki)
 
 나린위키는 그누보드 기반의 위키입니다. 
 그누보드에서 지원하는 게시판 관리, 권한 설정 등의 기능들을 그대로 사용할 수 있으며 
@@ -11,18 +7,14 @@
 있습니다. 또한 그누보드 게시판을 하나의 위키로 사용하며 여러개의 위키를 운영할 수 
 있습니다.
 
-좀더 자세한 사항은 http://narinwiki.org 에서 보실 수 있습니다.
-
- - 나린위키 공식 사이트 : http://narinwiki.org
-   - 라이센스 : http://narinwiki.org/license
-   - 설치문서 : http://narinwiki.org/install
-   - 다운로드 : http://narinwiki.org/download
-   - 매뉴얼 : http://narinwiki.org/manual
+ - 나린위키 공식 사이트(접속 불가) : http://narinwiki.org
+   - 라이센스 : [GPLv2](LICENSE)
+   - 설치문서 : [INSTALL](INSTALL)
+   - 다운로드 : [master](https://github.com/YJSoft/narinwiki/archive/master.zip)
+   - 매뉴얼(접속 불가) : http://narinwiki.org/manual
       
  - 나린위키 토론 그룹 : http://groups.google.com/group/narinwiki
  
- - 나린위키 개발 사이트 : http://narinwiki.googlecode.com/
-
-
+ - 구 나린위키 개발 사이트 : http://narinwiki.googlecode.com/
 
 작성자 : byfun (chongmyung.park@gmail.com)
