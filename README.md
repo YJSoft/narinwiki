@@ -10,7 +10,7 @@
  - 나린위키 공식 사이트(접속 불가) : http://narinwiki.org
    - 라이센스 : [GPLv2](LICENSE)
    - 설치문서 : [INSTALL](INSTALL)
-   - 다운로드 : [master](https://github.com/YJSoft/narinwiki/archive/master.zip)
+   - 다운로드 : [버전 목록](https://github.com/YJSoft/narinwiki/releases/tag/narin-old)
    - 매뉴얼(접속 불가) : http://narinwiki.org/manual
       
  - 나린위키 토론 그룹 : http://groups.google.com/group/narinwiki
