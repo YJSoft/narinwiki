@@ -7,11 +7,11 @@
 있습니다. 또한 그누보드 게시판을 하나의 위키로 사용하며 여러개의 위키를 운영할 수 
 있습니다.
 
- - 나린위키 공식 사이트(접속 불가) : http://narinwiki.org
+ - 나린위키 공식 사이트 : http://narinwiki.lovelyus.net
    - 라이센스 : [GPLv2](LICENSE)
    - 설치문서 : [INSTALL](INSTALL)
    - 다운로드 : [버전 목록](https://github.com/YJSoft/narinwiki/releases/tag/narin-old)
-   - 매뉴얼(접속 불가) : http://narinwiki.org/manual
+   - 매뉴얼 : http://narinwiki.lovelyus.net/docs/read/narin/%EB%82%98%EB%A6%B0%EC%9C%84%ED%82%A4+%EC%82%AC%EC%9A%A9%EC%9E%90+%EB%A7%A4%EB%89%B4%EC%96%BC
       
  - 나린위키 토론 그룹 : http://groups.google.com/group/narinwiki
  
